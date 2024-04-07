@@ -1,19 +1,4 @@
 ---
-tags: 
-type: Note
----
-# README.md
-زمان ایجاد : 13:22 28-03-2024
-زمان آخرین تغییر : `=this.file.mtime`
-کلمات کلیدی :
-
-**فهرست:**
-```toc
-    style: bullet 
-    min_depth: 1 
-    max_depth: 6 
-```
----
 
 ![246x90](Left%201.png)
 # ماژول کرونو
