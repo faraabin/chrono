@@ -1,21 +1,21 @@
 /**
-	******************************************************************************
-	* @file           : chrono_test.h
-	* @brief          : chrono module unit tests header file.
-	******************************************************************************
-	* @attention
-	*
-	* Copyright (c) 2024 FaraabinCo.
-	* All rights reserved.
-	*
+  ******************************************************************************
+  * @file           : chrono_test.h
+  * @brief          : chrono module unit tests header file.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2024 FaraabinCo.
+  * All rights reserved.
+  *
   * This software is licensed under terms that can be found in the LICENSE file
   * in the root directory of this software component.
-	*
-	* https://faraabinco.ir/
-	* https://github.com/FaraabinCo
-	*
+  *
+  * https://faraabinco.ir/
+  * https://github.com/FaraabinCo
+  *
   ******************************************************************************
-	*/
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __chrono_test_H

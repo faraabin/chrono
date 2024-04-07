@@ -1,21 +1,21 @@
 /**
-	******************************************************************************
-	* @file           : chrono_test.c
-	* @brief          : Chrono module unit tests.
-	******************************************************************************
-	* @attention
-	*
-	* Copyright (c) 2024 FaraabinCo.
-	* All rights reserved.
-	*
+  ******************************************************************************
+  * @file           : chrono_test.c
+  * @brief          : Chrono module unit tests.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2024 FaraabinCo.
+  * All rights reserved.
+  *
   * This software is licensed under terms that can be found in the LICENSE file
   * in the root directory of this software component.
-	*
-	* https://faraabinco.ir/
-	* https://github.com/FaraabinCo
-	*
+  *
+  * https://faraabinco.ir/
+  * https://github.com/FaraabinCo
+  *
   ******************************************************************************
-	*/
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "chrono_test.h"
@@ -138,10 +138,10 @@ int ChronoUnitTestsRun(void) {
   RUN_TEST(Chrono_IsTimedoutUsIsCalledWhenChronoIsNotInit_ReturnZero);
   RUN_TEST(Chrono_IsTimedoutUsIsCalledWhenNotInRun_ReturnZero);
   RUN_TEST(Chrono_IsTimedoutUsIsCalledWhenChronoIsInit_ReturnTimeoutStatus);
-	RUN_TEST(Chrono_IntervalSIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST(Chrono_IntervalSIsCalledWhenChronoIsNotInit_ReturnZero);
   RUN_TEST(Chrono_IntervalSIsCalledWhenChronoIsNotRun_ReturnZero);
   RUN_TEST(Chrono_IntervalSIsCalledWhenChronoIsInit_ReturnInterval);
-	RUN_TEST(Chrono_IntervalMsIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST(Chrono_IntervalMsIsCalledWhenChronoIsNotInit_ReturnZero);
   RUN_TEST(Chrono_IntervalMsIsCalledWhenChronoIsNotRun_ReturnZero);
   RUN_TEST(Chrono_IntervalMsIsCalledWhenChronoIsInit_ReturnInterval);
   RUN_TEST(Chrono_IntervalUsIsCalledWhenChronoIsNotInit_ReturnZero);
@@ -162,7 +162,7 @@ int ChronoUnitTestsRun(void) {
  * 
  */
 void setUp(void) {
-	
+  
 }
 
 /**
@@ -170,7 +170,7 @@ void setUp(void) {
  * 
  */
 void tearDown(void) {
-	
+  
 }
 
 /**
@@ -206,18 +206,18 @@ static void Chrono_GetTickIsCalledWhileChronoIsNotInit_ReturnZero(void) {
 static void Chrono_GetTickIsCalled_ReturnCurrentTick(void) {
 
   fChrono_Init(0xFFFFFFFF, 1000, &tickVal);
-	
-	tickVal = 0;
-	TEST_ASSERT_EQUAL_UINT32(tickVal, fChrono_GetTick());
-	
-	tickVal = 0xFFFFFFFF;
-	TEST_ASSERT_EQUAL_UINT32(tickVal, fChrono_GetTick());
-	
-	tickVal = 0xFFFFFFFE;
-	TEST_ASSERT_EQUAL_UINT32(tickVal, fChrono_GetTick());
-	
-	tickVal = 0x01;
-	TEST_ASSERT_EQUAL_UINT32(tickVal, fChrono_GetTick());
+  
+  tickVal = 0;
+  TEST_ASSERT_EQUAL_UINT32(tickVal, fChrono_GetTick());
+  
+  tickVal = 0xFFFFFFFF;
+  TEST_ASSERT_EQUAL_UINT32(tickVal, fChrono_GetTick());
+  
+  tickVal = 0xFFFFFFFE;
+  TEST_ASSERT_EQUAL_UINT32(tickVal, fChrono_GetTick());
+  
+  tickVal = 0x01;
+  TEST_ASSERT_EQUAL_UINT32(tickVal, fChrono_GetTick());
 }
 
 /**
@@ -226,7 +226,7 @@ static void Chrono_GetTickIsCalled_ReturnCurrentTick(void) {
  */
 static void Chrono_GetTickMsIsCalledWhileChronoIsNotInit_ReturnZero(void) {
   
-	uint64_t ret = 0xFFFFFFFFFFFFFFFF;
+  uint64_t ret = 0xFFFFFFFFFFFFFFFF;
 
   fChrono_Init(0, 0, NULL);
   
@@ -274,8 +274,8 @@ static void Chrono_GetTickTopValueIsCalledWhileChronoIsNotInit_ReturnZero(void) 
   uint32_t expectedValues[] = {0, 0, 0, 0, 0};
 
   for(int i = 0; i < ArraySize_(topValues); i++) {
-		
-		fChrono_Init(topValues[i], 0, NULL);
+    
+    fChrono_Init(topValues[i], 0, NULL);
     retValues[i] = fChrono_GetTickTopValue();
   }
 
@@ -352,8 +352,8 @@ static void Chrono_GetTickMaxTimeMsIsCalledWhileChronoIsNotInit_ReturnZero(void)
   for(int i = 0; i < ArraySize_(topValues); i++) {
 
     fChrono_Init(topValues[i], coefValues[i], NULL);
-		
-		uint64_t ret = fChrono_GetMaxMeasurableTimeMs();
+    
+    uint64_t ret = fChrono_GetMaxMeasurableTimeMs();
   
     TEST_ASSERT_EQUAL(0, ret);
   }
@@ -377,7 +377,7 @@ static void Chrono_GetTickMaxTimeMsIsCalledWhenChronoIsInit_ReturnExpectedValues
     retValues[i] = fChrono_GetMaxMeasurableTimeMs();
     expectedValues[i] = (uint64_t)(topValues[i] * ((float)coefValues[i] / 1000000.0f));
   }
-	
+  
   TEST_ASSERT_EQUAL_UINT64_ARRAY(expectedValues, retValues, ArraySize_(retValues));
 }
 
@@ -403,31 +403,31 @@ static void Chrono_TimeSpanSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  */
 static void Chrono_TimeSpanSIsCalledWhenChronoIsInit_ReturnTimeLength(void) {
 
-	float ret = 0.0f;
+  float ret = 0.0f;
   fChrono_Init(0xFFFFFFFF, 1000000000, &tickVal);
 
-	ret = fChrono_TimeSpanS(0, 0);
+  ret = fChrono_TimeSpanS(0, 0);
   TEST_ASSERT_EQUAL_FLOAT(0, ret);
-	
-	ret = fChrono_TimeSpanS(0x10000000, 0x10000000);
+  
+  ret = fChrono_TimeSpanS(0x10000000, 0x10000000);
   TEST_ASSERT_EQUAL_FLOAT(0, ret);
-	
-	ret = fChrono_TimeSpanS(0xFFFFFFFE, 0xFFFFFFFE);
+  
+  ret = fChrono_TimeSpanS(0xFFFFFFFE, 0xFFFFFFFE);
   TEST_ASSERT_EQUAL_FLOAT(0, ret);
-	
-	ret = fChrono_TimeSpanS(0, 0xFFFFFFFE);
+  
+  ret = fChrono_TimeSpanS(0, 0xFFFFFFFE);
   TEST_ASSERT_EQUAL_FLOAT((float)(0xFFFFFFFE), ret);
-	
-	ret = fChrono_TimeSpanS(0xFFFFFFFE, 0);
+  
+  ret = fChrono_TimeSpanS(0xFFFFFFFE, 0);
   TEST_ASSERT_EQUAL_FLOAT((float)(0x1), ret);
-	
-	ret = fChrono_TimeSpanS(0x10000000, 0xFFFFFFFE);
+  
+  ret = fChrono_TimeSpanS(0x10000000, 0xFFFFFFFE);
   TEST_ASSERT_EQUAL_FLOAT((float)(0xEFFFFFFE), ret);
-	
-	ret = fChrono_TimeSpanS(0x10000000, 0x80000000);
+  
+  ret = fChrono_TimeSpanS(0x10000000, 0x80000000);
   TEST_ASSERT_EQUAL_FLOAT((float)(0x70000000), ret);
-	
-	ret = fChrono_TimeSpanS(0xFFFFFFFE, 0x10000000);
+  
+  ret = fChrono_TimeSpanS(0xFFFFFFFE, 0x10000000);
   TEST_ASSERT_EQUAL_FLOAT((float)(0xFFFFFFFF - 0xFFFFFFFE + 0x10000000), ret);
 
 }
@@ -438,31 +438,31 @@ static void Chrono_TimeSpanSIsCalledWhenChronoIsInit_ReturnTimeLength(void) {
  */
 static void Chrono_TimeSpanMsIsCalledWhenChronoIsInit_ReturnTimeLength(void) {
 
-	float ret = 0.0f;
+  float ret = 0.0f;
   fChrono_Init(0xFFFFFFFF, 1000000, &tickVal);
-	
-	ret = fChrono_TimeSpanS(0, 0);
+  
+  ret = fChrono_TimeSpanS(0, 0);
   TEST_ASSERT_EQUAL_FLOAT(0, ret);
-	
-	ret = fChrono_TimeSpanMs(0x10000000, 0x10000000);
+  
+  ret = fChrono_TimeSpanMs(0x10000000, 0x10000000);
   TEST_ASSERT_EQUAL_FLOAT(0, ret);
-	
-	ret = fChrono_TimeSpanMs(0xFFFFFFFE, 0xFFFFFFFE);
+  
+  ret = fChrono_TimeSpanMs(0xFFFFFFFE, 0xFFFFFFFE);
   TEST_ASSERT_EQUAL_FLOAT(0, ret);
-	
-	ret = fChrono_TimeSpanMs(0, 0xFFFFFFFE);
+  
+  ret = fChrono_TimeSpanMs(0, 0xFFFFFFFE);
   TEST_ASSERT_EQUAL_FLOAT((float)(0xFFFFFFFE), ret);
-	
-	ret = fChrono_TimeSpanMs(0xFFFFFFFE, 0);
+  
+  ret = fChrono_TimeSpanMs(0xFFFFFFFE, 0);
   TEST_ASSERT_EQUAL_FLOAT((float)(0x1), ret);
-	
-	ret = fChrono_TimeSpanMs(0x10000000, 0xFFFFFFFE);
+  
+  ret = fChrono_TimeSpanMs(0x10000000, 0xFFFFFFFE);
   TEST_ASSERT_EQUAL_FLOAT((float)(0xEFFFFFFE), ret);
-	
-	ret = fChrono_TimeSpanMs(0x10000000, 0x80000000);
+  
+  ret = fChrono_TimeSpanMs(0x10000000, 0x80000000);
   TEST_ASSERT_EQUAL_FLOAT((float)(0x70000000), ret);
-	
-	ret = fChrono_TimeSpanMs(0xFFFFFFFE, 0x10000000);
+  
+  ret = fChrono_TimeSpanMs(0xFFFFFFFE, 0x10000000);
   TEST_ASSERT_EQUAL_FLOAT((float)(0xFFFFFFFF - 0xFFFFFFFE + 0x10000000), ret);
 
 }
@@ -473,31 +473,31 @@ static void Chrono_TimeSpanMsIsCalledWhenChronoIsInit_ReturnTimeLength(void) {
  */
 static void Chrono_TimeSpanUsIsCalledWhenChronoIsInit_ReturnTimeLength(void) {
 
-	float ret = 0.0f;
+  float ret = 0.0f;
   fChrono_Init(0xFFFFFFFF, 1000, &tickVal);
-	
-	ret = fChrono_TimeSpanS(0, 0);
+  
+  ret = fChrono_TimeSpanS(0, 0);
   TEST_ASSERT_EQUAL_FLOAT(0, ret);
-	
-	ret = fChrono_TimeSpanUs(0x10000000, 0x10000000);
+  
+  ret = fChrono_TimeSpanUs(0x10000000, 0x10000000);
   TEST_ASSERT_EQUAL_FLOAT(0, ret);
-	
-	ret = fChrono_TimeSpanUs(0xFFFFFFFE, 0xFFFFFFFE);
+  
+  ret = fChrono_TimeSpanUs(0xFFFFFFFE, 0xFFFFFFFE);
   TEST_ASSERT_EQUAL_FLOAT(0, ret);
-	
-	ret = fChrono_TimeSpanUs(0, 0xFFFFFFFE);
+  
+  ret = fChrono_TimeSpanUs(0, 0xFFFFFFFE);
   TEST_ASSERT_EQUAL_FLOAT((float)(0xFFFFFFFE), ret);
-	
-	ret = fChrono_TimeSpanUs(0xFFFFFFFE, 0);
+  
+  ret = fChrono_TimeSpanUs(0xFFFFFFFE, 0);
   TEST_ASSERT_EQUAL_FLOAT((float)(0x1), ret);
-	
-	ret = fChrono_TimeSpanUs(0x10000000, 0xFFFFFFFE);
+  
+  ret = fChrono_TimeSpanUs(0x10000000, 0xFFFFFFFE);
   TEST_ASSERT_EQUAL_FLOAT((float)(0xEFFFFFFE), ret);
-	
-	ret = fChrono_TimeSpanUs(0x10000000, 0x80000000);
+  
+  ret = fChrono_TimeSpanUs(0x10000000, 0x80000000);
   TEST_ASSERT_EQUAL_FLOAT((float)(0x70000000), ret);
-	
-	ret = fChrono_TimeSpanUs(0xFFFFFFFE, 0x10000000);
+  
+  ret = fChrono_TimeSpanUs(0xFFFFFFFE, 0x10000000);
   TEST_ASSERT_EQUAL_FLOAT((float)(0xFFFFFFFF - 0xFFFFFFFE + 0x10000000), ret);
 
 }
@@ -512,8 +512,8 @@ static void Chrono_ElapsedSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
 
   sChrono testChrono;
   fChrono_Start(&testChrono);
-	
-	uint32_t elapsed = fChrono_ElapsedS(&testChrono);
+  
+  uint32_t elapsed = fChrono_ElapsedS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, elapsed);
 
 }
@@ -523,8 +523,8 @@ static void Chrono_ElapsedSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * 
  */
 static void Chrono_ElapsedSIsCalledWhenChronoIsInit_ReturnElapsed(void) {
-	
-	uint32_t elapsed = 0;
+  
+  uint32_t elapsed = 0;
 
   fChrono_Init(0xFFFFFFFF, 1000000000, &tickVal);
 
@@ -532,25 +532,25 @@ static void Chrono_ElapsedSIsCalledWhenChronoIsInit_ReturnElapsed(void) {
 
   tickVal = 0;
   fChrono_Start(&testChrono);
-	elapsed = fChrono_ElapsedS(&testChrono);
+  elapsed = fChrono_ElapsedS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, elapsed);
 
   tickVal = 0;
   fChrono_Start(&testChrono);
   tickVal = 1000;
-	elapsed = fChrono_ElapsedS(&testChrono);
+  elapsed = fChrono_ElapsedS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(1000, elapsed);
-	
-	tickVal = 0;
+  
+  tickVal = 0;
   fChrono_Start(&testChrono);
   tickVal = 0xFFFFFFFF;
-	elapsed = fChrono_ElapsedS(&testChrono);
+  elapsed = fChrono_ElapsedS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0xFFFFFFFF, elapsed);
 
   tickVal = 1000;
   fChrono_Start(&testChrono);
   tickVal = 500;
-	elapsed = fChrono_ElapsedS(&testChrono);
+  elapsed = fChrono_ElapsedS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32((0xFFFFFE0B), elapsed);
 
 }
@@ -565,8 +565,8 @@ static void Chrono_ElapsedMsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
 
   sChrono testChrono;
   fChrono_Start(&testChrono);
-	
-	uint32_t elapsed = fChrono_ElapsedMs(&testChrono);
+  
+  uint32_t elapsed = fChrono_ElapsedMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, elapsed);
 
 }
@@ -585,25 +585,25 @@ static void Chrono_ElapsedMsIsCalledWhenChronoIsInit_ReturnElapsed(void) {
 
   tickVal = 0;
   fChrono_Start(&testChrono);
-	elapsed = fChrono_ElapsedMs(&testChrono);
+  elapsed = fChrono_ElapsedMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, elapsed);
 
   tickVal = 0;
   fChrono_Start(&testChrono);
   tickVal = 1000;
-	elapsed = fChrono_ElapsedMs(&testChrono);
+  elapsed = fChrono_ElapsedMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(1000, elapsed);
-	
-	tickVal = 0;
+  
+  tickVal = 0;
   fChrono_Start(&testChrono);
   tickVal = 0xFFFFFFFF;
-	elapsed = fChrono_ElapsedMs(&testChrono);
+  elapsed = fChrono_ElapsedMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0xFFFFFFFF, elapsed);
 
   tickVal = 1000;
   fChrono_Start(&testChrono);
   tickVal = 500;
-	elapsed = fChrono_ElapsedMs(&testChrono);
+  elapsed = fChrono_ElapsedMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32((0xFFFFFE0B), elapsed);
 
 }
@@ -618,8 +618,8 @@ static void Chrono_ElapsedUsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
 
   sChrono testChrono;
   fChrono_Start(&testChrono);
-	
-	uint32_t elapsed = fChrono_ElapsedUs(&testChrono);
+  
+  uint32_t elapsed = fChrono_ElapsedUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, elapsed);
 
 }
@@ -638,25 +638,25 @@ static void Chrono_ElapsedUsIsCalledWhenChronoIsInit_ReturnElapsed(void) {
 
   tickVal = 0;
   fChrono_Start(&testChrono);
-	elapsed = fChrono_ElapsedUs(&testChrono);
+  elapsed = fChrono_ElapsedUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, elapsed);
 
   tickVal = 0;
   fChrono_Start(&testChrono);
   tickVal = 1000;
-	elapsed = fChrono_ElapsedUs(&testChrono);
+  elapsed = fChrono_ElapsedUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(1000, elapsed);
-	
-	tickVal = 0;
+  
+  tickVal = 0;
   fChrono_Start(&testChrono);
   tickVal = 0xFFFFFFFF;
-	elapsed = fChrono_ElapsedUs(&testChrono);
+  elapsed = fChrono_ElapsedUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0xFFFFFFFF, elapsed);
 
   tickVal = 1000;
   fChrono_Start(&testChrono);
   tickVal = 500;
-	elapsed = fChrono_ElapsedUs(&testChrono);
+  elapsed = fChrono_ElapsedUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32((0xFFFFFE0B), elapsed);
 
 }
@@ -671,8 +671,8 @@ static void Chrono_LeftSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
 
   sChrono testChrono;
   fChrono_StartTimeoutS(&testChrono, 1000);
-	
-	uint32_t left = fChrono_LeftS(&testChrono);
+  
+  uint32_t left = fChrono_LeftS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
 }
@@ -688,7 +688,7 @@ static void Chrono_LeftSIsCalledWhenNotInRun_ReturnZero(void) {
   sChrono testChrono;
   fChrono_Stop(&testChrono);
   
-	uint32_t left = fChrono_LeftS(&testChrono);
+  uint32_t left = fChrono_LeftS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
 }
@@ -698,43 +698,43 @@ static void Chrono_LeftSIsCalledWhenNotInRun_ReturnZero(void) {
  * 
  */
 static void Chrono_LeftSIsCalledWhenChronoIsInit_ReturnLeft(void) {
-	
-	uint32_t left = 0;
+  
+  uint32_t left = 0;
   fChrono_Init(0xFFFFFFFF, 1000000000, &tickVal);
 
   sChrono testChrono;
 
   tickVal = 0;
   fChrono_StartTimeoutS(&testChrono, 1000);
-	left = fChrono_LeftS(&testChrono);
+  left = fChrono_LeftS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(1000, left);
 
   tickVal = 500;
-	left = fChrono_LeftS(&testChrono);
+  left = fChrono_LeftS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(500, left);
 
   tickVal = 999;
-	left = fChrono_LeftS(&testChrono);
+  left = fChrono_LeftS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(1, left);
 
   tickVal = 1000;
-	left = fChrono_LeftS(&testChrono);
+  left = fChrono_LeftS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
   tickVal = 1001;
-	left = fChrono_LeftS(&testChrono);
+  left = fChrono_LeftS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
   tickVal = 5000;
-	left = fChrono_LeftS(&testChrono);
+  left = fChrono_LeftS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
-	
-	tickVal = 0;
-	left = fChrono_LeftS(&testChrono);
+  
+  tickVal = 0;
+  left = fChrono_LeftS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
-	
-	tickVal = 500;
-	left = fChrono_LeftS(&testChrono);
+  
+  tickVal = 500;
+  left = fChrono_LeftS(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
 }
@@ -749,8 +749,8 @@ static void Chrono_LeftMsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
 
   sChrono testChrono;
   fChrono_StartTimeoutMs(&testChrono, 1000);
-	
-	uint32_t left = fChrono_LeftMs(&testChrono);
+  
+  uint32_t left = fChrono_LeftMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
 }
@@ -765,8 +765,8 @@ static void Chrono_LeftMsIsCalledWhenNotInRun_ReturnZero(void) {
 
   sChrono testChrono;
   fChrono_Stop(&testChrono);
-	
-	uint32_t left = fChrono_LeftMs(&testChrono);
+  
+  uint32_t left = fChrono_LeftMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
 }
@@ -784,35 +784,35 @@ static void Chrono_LeftMsIsCalledWhenChronoIsInit_ReturnLeft(void) {
 
   tickVal = 0;
   fChrono_StartTimeoutMs(&testChrono, 1000);
-	left = fChrono_LeftMs(&testChrono);
+  left = fChrono_LeftMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(1000, left);
 
   tickVal = 500;
-	left = fChrono_LeftMs(&testChrono);
+  left = fChrono_LeftMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(500, left);
 
   tickVal = 999;
-	left = fChrono_LeftMs(&testChrono);
+  left = fChrono_LeftMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(1, left);
 
   tickVal = 1000;
-	left = fChrono_LeftMs(&testChrono);
+  left = fChrono_LeftMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
   tickVal = 1001;
-	left = fChrono_LeftMs(&testChrono);
+  left = fChrono_LeftMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
   tickVal = 5000;
-	left = fChrono_LeftMs(&testChrono);
+  left = fChrono_LeftMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
-	
-	tickVal = 0;
-	left = fChrono_LeftMs(&testChrono);
+  
+  tickVal = 0;
+  left = fChrono_LeftMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
-	
-	tickVal = 500;
-	left = fChrono_LeftMs(&testChrono);
+  
+  tickVal = 500;
+  left = fChrono_LeftMs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 }
 
@@ -826,8 +826,8 @@ static void Chrono_LeftUsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
 
   sChrono testChrono;
   fChrono_StartTimeoutUs(&testChrono, 1000);
-	
-	uint32_t left = fChrono_LeftUs(&testChrono);
+  
+  uint32_t left = fChrono_LeftUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
 }
@@ -842,8 +842,8 @@ static void Chrono_LeftUsIsCalledWhenNotInRun_ReturnZero(void) {
 
   sChrono testChrono;
   fChrono_Stop(&testChrono);
-	
-	uint32_t left = fChrono_LeftUs(&testChrono);
+  
+  uint32_t left = fChrono_LeftUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
 }
@@ -861,35 +861,35 @@ static void Chrono_LeftUsIsCalledWhenChronoIsInit_ReturnLeft(void) {
 
   tickVal = 0;
   fChrono_StartTimeoutUs(&testChrono, 1000);
-	left = fChrono_LeftUs(&testChrono);
+  left = fChrono_LeftUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(1000, left);
 
   tickVal = 500;
-	left = fChrono_LeftUs(&testChrono);
+  left = fChrono_LeftUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(500, left);
 
   tickVal = 999;
-	left = fChrono_LeftUs(&testChrono);
+  left = fChrono_LeftUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(1, left);
 
   tickVal = 1000;
-	left = fChrono_LeftUs(&testChrono);
+  left = fChrono_LeftUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
   tickVal = 1001;
-	left = fChrono_LeftUs(&testChrono);
+  left = fChrono_LeftUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
   tickVal = 5000;
-	left = fChrono_LeftUs(&testChrono);
+  left = fChrono_LeftUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
-	
-	tickVal = 0;
-	left = fChrono_LeftUs(&testChrono);
+  
+  tickVal = 0;
+  left = fChrono_LeftUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
-	
-	tickVal = 500;
-	left = fChrono_LeftUs(&testChrono);
+  
+  tickVal = 500;
+  left = fChrono_LeftUs(&testChrono);
   TEST_ASSERT_EQUAL_UINT32(0, left);
 
 }
@@ -904,8 +904,8 @@ static void Chrono_IsTimedoutSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
 
   sChrono testChrono;
   fChrono_StartTimeoutS(&testChrono, 1000);
-	
-	bool isTimeout = fChrono_IsTimeout(&testChrono);
+  
+  bool isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
 
 }
@@ -919,11 +919,11 @@ static void Chrono_IsTimedoutSIsCalledWhenNotInRun_ReturnZero(void) {
   fChrono_Init(0xFFFFFFFF, 1000000000, &tickVal);
 
   sChrono testChrono;
-	fChrono_Stop(&testChrono);
-	
-	bool isTimeout = fChrono_IsTimeout(&testChrono);
+  fChrono_Stop(&testChrono);
+  
+  bool isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
-	
+  
 }
 
 /**
@@ -931,44 +931,44 @@ static void Chrono_IsTimedoutSIsCalledWhenNotInRun_ReturnZero(void) {
  * 
  */
 static void Chrono_IsTimedoutSIsCalledWhenChronoIsInit_ReturnTimeoutStatus(void) {
-	
-	bool isTimeout = false;
+  
+  bool isTimeout = false;
   fChrono_Init(0xFFFFFFFF, 1000000000, &tickVal);
 
   sChrono testChrono;
   tickVal = 0;
 
   fChrono_StartTimeoutS(&testChrono, 1000);
-	
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
 
   tickVal = 500;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
 
   tickVal = 999;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
 
   tickVal = 1000;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
 
   tickVal = 1001;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
 
   tickVal = 5000;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
-	
-	tickVal = 0;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  
+  tickVal = 0;
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
-	
-	tickVal = 500;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  
+  tickVal = 500;
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
 
 }
@@ -983,8 +983,8 @@ static void Chrono_IsTimedoutMsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
 
   sChrono testChrono;
   fChrono_StartTimeoutMs(&testChrono, 1000);
-	
-	bool isTimeout = fChrono_IsTimeout(&testChrono);
+  
+  bool isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
 
 }
@@ -998,11 +998,11 @@ static void Chrono_IsTimedoutMsIsCalledWhenNotInRun_ReturnZero(void) {
   fChrono_Init(0xFFFFFFFF, 1000000, &tickVal);
 
   sChrono testChrono;
-	fChrono_Stop(&testChrono);
-	
-	bool isTimeout = fChrono_IsTimeout(&testChrono);
+  fChrono_Stop(&testChrono);
+  
+  bool isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
-	
+  
 }
 
 /**
@@ -1018,36 +1018,36 @@ static void Chrono_IsTimedoutMsIsCalledWhenChronoIsInit_ReturnTimeoutStatus(void
   tickVal = 0;
 
   fChrono_StartTimeoutMs(&testChrono, 1000);
-	
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
 
   tickVal = 500;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
 
   tickVal = 999;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
 
   tickVal = 1000;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
 
   tickVal = 1001;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
 
   tickVal = 5000;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
-	
-	tickVal = 0;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  
+  tickVal = 0;
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
-	
-	tickVal = 500;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  
+  tickVal = 500;
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
   
 }
@@ -1062,8 +1062,8 @@ static void Chrono_IsTimedoutUsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
 
   sChrono testChrono;
   fChrono_StartTimeoutUs(&testChrono, 1000);
-	
-	bool isTimeout = fChrono_IsTimeout(&testChrono);
+  
+  bool isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
 
 }
@@ -1077,11 +1077,11 @@ static void Chrono_IsTimedoutUsIsCalledWhenNotInRun_ReturnZero(void) {
   fChrono_Init(0xFFFFFFFF, 1000, &tickVal);
 
   sChrono testChrono;
-	fChrono_Stop(&testChrono);
-	
-	bool isTimeout = fChrono_IsTimeout(&testChrono);
+  fChrono_Stop(&testChrono);
+  
+  bool isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
-	
+  
 }
 
 /**
@@ -1097,36 +1097,36 @@ static void Chrono_IsTimedoutUsIsCalledWhenChronoIsInit_ReturnTimeoutStatus(void
   tickVal = 0;
 
   fChrono_StartTimeoutUs(&testChrono, 1000);
-	
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
 
   tickVal = 500;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
 
   tickVal = 999;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(false, isTimeout);
 
   tickVal = 1000;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
 
   tickVal = 1001;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
 
   tickVal = 5000;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
-	
-	tickVal = 0;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  
+  tickVal = 0;
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
-	
-	tickVal = 500;
-	isTimeout = fChrono_IsTimeout(&testChrono);
+  
+  tickVal = 500;
+  isTimeout = fChrono_IsTimeout(&testChrono);
   TEST_ASSERT_EQUAL(true, isTimeout);
   
 }
@@ -1143,8 +1143,8 @@ static void Chrono_IntervalSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
   tickVal = 0;
 
   fChrono_Start(&testChrono);
-	
-	float interval = fChrono_IntervalS(&testChrono);
+  
+  float interval = fChrono_IntervalS(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(0, interval);
 
 }
@@ -1159,9 +1159,9 @@ static void Chrono_IntervalSIsCalledWhenChronoIsNotRun_ReturnZero(void) {
 
   sChrono testChrono;
   tickVal = 0;
-	fChrono_Stop(&testChrono);
+  fChrono_Stop(&testChrono);
 
-	float interval = fChrono_IntervalS(&testChrono);
+  float interval = fChrono_IntervalS(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(0, interval);
 
 }
@@ -1171,32 +1171,32 @@ static void Chrono_IntervalSIsCalledWhenChronoIsNotRun_ReturnZero(void) {
  * 
  */
 static void Chrono_IntervalSIsCalledWhenChronoIsInit_ReturnInterval(void) {
-	
-	float interval = 0.0f;
+  
+  float interval = 0.0f;
   fChrono_Init(0xFFFFFFFF, 1000000000, &tickVal);
 
   sChrono testChrono;
   tickVal = 0;
 
   fChrono_Start(&testChrono);
-	interval = fChrono_IntervalS(&testChrono);
+  interval = fChrono_IntervalS(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(0, interval);
 
   tickVal = 1000;
-	interval = fChrono_IntervalS(&testChrono);
+  interval = fChrono_IntervalS(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(1000, interval);
 
   tickVal = 10000;
-	interval = fChrono_IntervalS(&testChrono);
+  interval = fChrono_IntervalS(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(10000, interval);
 
   tickVal = 20000;
   fChrono_Start(&testChrono);
-	interval = fChrono_IntervalS(&testChrono);
+  interval = fChrono_IntervalS(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(0, interval);
 
   tickVal = 21000;
-	interval = fChrono_IntervalS(&testChrono);
+  interval = fChrono_IntervalS(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(1000, interval);
 
 }
@@ -1213,8 +1213,8 @@ static void Chrono_IntervalMsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
   tickVal = 0;
 
   fChrono_Start(&testChrono);
-	
-	float interval = fChrono_IntervalMs(&testChrono);
+  
+  float interval = fChrono_IntervalMs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(0, interval);
 
 }
@@ -1229,9 +1229,9 @@ static void Chrono_IntervalMsIsCalledWhenChronoIsNotRun_ReturnZero(void) {
 
   sChrono testChrono;
   tickVal = 0;
-	fChrono_Stop(&testChrono);
+  fChrono_Stop(&testChrono);
 
-	float interval = fChrono_IntervalMs(&testChrono);
+  float interval = fChrono_IntervalMs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(0, interval);
 
 }
@@ -1241,32 +1241,32 @@ static void Chrono_IntervalMsIsCalledWhenChronoIsNotRun_ReturnZero(void) {
  * 
  */
 static void Chrono_IntervalMsIsCalledWhenChronoIsInit_ReturnInterval(void) {
-	
-	float interval = 0.0f;
+  
+  float interval = 0.0f;
   fChrono_Init(0xFFFFFFFF, 1000000, &tickVal);
 
   sChrono testChrono;
   tickVal = 0;
 
   fChrono_Start(&testChrono);
-	interval = fChrono_IntervalMs(&testChrono);
+  interval = fChrono_IntervalMs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(0, interval);
 
   tickVal = 1000;
-	interval = fChrono_IntervalMs(&testChrono);
+  interval = fChrono_IntervalMs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(1000, interval);
 
   tickVal = 10000;
-	interval = fChrono_IntervalMs(&testChrono);
+  interval = fChrono_IntervalMs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(10000, interval);
 
   tickVal = 20000;
   fChrono_Start(&testChrono);
-	interval = fChrono_IntervalMs(&testChrono);
+  interval = fChrono_IntervalMs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(0, interval);
 
   tickVal = 21000;
-	interval = fChrono_IntervalMs(&testChrono);
+  interval = fChrono_IntervalMs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(1000, interval);
 
 }
@@ -1283,8 +1283,8 @@ static void Chrono_IntervalUsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
   tickVal = 0;
 
   fChrono_Start(&testChrono);
-	
-	float interval = fChrono_IntervalUs(&testChrono);
+  
+  float interval = fChrono_IntervalUs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(0, interval);
 
 }
@@ -1299,9 +1299,9 @@ static void Chrono_IntervalUsIsCalledWhenChronoIsNotRun_ReturnZero(void) {
 
   sChrono testChrono;
   tickVal = 0;
-	fChrono_Stop(&testChrono);
+  fChrono_Stop(&testChrono);
 
-	float interval = fChrono_IntervalUs(&testChrono);
+  float interval = fChrono_IntervalUs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(0, interval);
 
 }
@@ -1311,32 +1311,32 @@ static void Chrono_IntervalUsIsCalledWhenChronoIsNotRun_ReturnZero(void) {
  * 
  */
 static void Chrono_IntervalUsIsCalledWhenChronoIsInit_ReturnInterval(void) {
-	
-	float interval = 0.0f;
+  
+  float interval = 0.0f;
   fChrono_Init(0xFFFFFFFF, 1000, &tickVal);
 
   sChrono testChrono;
   tickVal = 0;
 
   fChrono_Start(&testChrono);
-	interval = fChrono_IntervalUs(&testChrono);
+  interval = fChrono_IntervalUs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(0, interval);
 
   tickVal = 1000;
-	interval = fChrono_IntervalUs(&testChrono);
+  interval = fChrono_IntervalUs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(1000, interval);
 
   tickVal = 10000;
-	interval = fChrono_IntervalUs(&testChrono);
+  interval = fChrono_IntervalUs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(10000, interval);
 
   tickVal = 20000;
   fChrono_Start(&testChrono);
-	interval = fChrono_IntervalUs(&testChrono);
+  interval = fChrono_IntervalUs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(0, interval);
 
   tickVal = 21000;
-	interval = fChrono_IntervalUs(&testChrono);
+  interval = fChrono_IntervalUs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(1000, interval);
 
 }

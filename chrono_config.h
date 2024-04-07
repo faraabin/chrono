@@ -1,20 +1,20 @@
 /**
-	******************************************************************************
-	* @file           : chrono_config.h
-	* @brief          : Chrono module configuration file.
-	******************************************************************************
-	* @attention
-	*
-	* Copyright (c) 2024 FaraabinCo.
-	* All rights reserved.
-	*
+  ******************************************************************************
+  * @file           : chrono_config.h
+  * @brief          : Chrono module configuration file.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2024 FaraabinCo.
+  * All rights reserved.
+  *
   * This software is licensed under terms that can be found in the LICENSE file
   * in the root directory of this software component.
-	*
-	* https://faraabinco.ir/
-	* https://github.com/FaraabinCo
-	*
-	*/
+  *
+  * https://faraabinco.ir/
+  * https://github.com/FaraabinCo
+  *
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __chrono_config_H
@@ -32,12 +32,12 @@ extern "C" {
 
 /**
   * @brief Select either reading current tick from an address in memory or by calling a function.
-	*
-	* @note In cases that a timer is used to generate tick and reading its counter register is possible to get current tick,
+  *
+  * @note In cases that a timer is used to generate tick and reading its counter register is possible to get current tick,
   *       set CHRONO_TICK_TYPE to TICK_TYPE_VARIABLE.
-	*
-	* @note In cases that user wants to generate the tick and reading its value is not possible by dereferencing the tick address,
-	*       value of current tick can be read via calling a function.
+  *
+  * @note In cases that user wants to generate the tick and reading its value is not possible by dereferencing the tick address,
+  *       value of current tick can be read via calling a function.
   */
 #define CHRONO_TICK_TYPE  TICK_TYPE_VARIABLE
 

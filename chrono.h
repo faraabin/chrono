@@ -1,19 +1,19 @@
 /**
-	******************************************************************************
-	* @file           : chrono.h
-	* @brief          : Chrono module header file.
-	******************************************************************************
-	* @attention
-	*
-	* Copyright (c) 2024 FaraabinCo.
-	* All rights reserved.
-	*
+  ******************************************************************************
+  * @file           : chrono.h
+  * @brief          : Chrono module header file.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2024 FaraabinCo.
+  * All rights reserved.
+  *
   * This software is licensed under terms that can be found in the LICENSE file
   * in the root directory of this software component.
-	*
-	* https://faraabinco.ir/
-	* https://github.com/FaraabinCo
-	*
+  *
+  * https://faraabinco.ir/
+  * https://github.com/FaraabinCo
+  *
   ******************************************************************************
   @verbatim
   
@@ -22,7 +22,7 @@
 
   @endverbatim
   ******************************************************************************
-	*/
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __chrono_H
@@ -59,8 +59,8 @@ typedef struct {
 
   tick_t _timeout;      /*!< Holds the timeout length.
                              This parameter is private and is set by the chrono API. Users must not change its value. */
-	
-	bool _isTimeout;			/*!< Holds the timeout state of the chrono object.
+  
+  bool _isTimeout;      /*!< Holds the timeout state of the chrono object.
                              This parameter is private and is set by the chrono API. Users must not change its value. */
 }sChrono;
 
@@ -93,7 +93,7 @@ typedef struct {
 
 #else
 
-	#error "CHRONO_TICK_TYPE must be defined"
+  #error "CHRONO_TICK_TYPE must be defined"
 
 #endif
 /** @} */ //End of INIT_FUNCTION

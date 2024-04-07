@@ -1,20 +1,20 @@
 /**
-	******************************************************************************
-	* @file           : chrono.c
-	* @brief          : Chrono module.
-	******************************************************************************
-	* @attention
-	*
-	* Copyright (c) 2024 FaraabinCo.
-	* All rights reserved.
-	*
+  ******************************************************************************
+  * @file           : chrono.c
+  * @brief          : Chrono module.
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2024 FaraabinCo.
+  * All rights reserved.
+  *
   * This software is licensed under terms that can be found in the LICENSE file
   * in the root directory of this software component.
-	*
-	* https://faraabinco.ir/
-	* https://github.com/FaraabinCo
   *
-	******************************************************************************
+  * https://faraabinco.ir/
+  * https://github.com/FaraabinCo
+  *
+  ******************************************************************************
   @mainpage
   
   # Features
@@ -328,24 +328,24 @@ static tick_t(*GetTickValue)(void) = NULL;
  * @retval initStatus: returns 0 if successful and 1 if it fails.
  */
 uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, volatile tick_t *tickValue) {
-	
-	Init = false;
-	
-	if(tickValue == NULL) {
-		return 1;
-	}
-	
-	TickTopValue = tickTopValue;
-	pTickValue = tickValue;
-	
+  
+  Init = false;
+  
+  if(tickValue == NULL) {
+    return 1;
+  }
+  
+  TickTopValue = tickTopValue;
+  pTickValue = tickValue;
+  
   TickToNsCoef = (float)tickToNsCoef;
   TickToUsCoef = TickToNsCoef / 1000.0f;
   TickToMsCoef = TickToUsCoef / 1000.0f;
   TickToSecCoef = TickToMsCoef / 1000.0f;
-	
-	ContinuousTickMs = 0;
-	Init = true;
-	fChrono_Start(&ChronoTickMs);
+  
+  ContinuousTickMs = 0;
+  Init = true;
+  fChrono_Start(&ChronoTickMs);
 
   return 0;
 }
@@ -369,24 +369,24 @@ uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, volatile tick_t
  */
 uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, tick_t(*fpTickValue)(void)) {
 
-	Init = false;
+  Init = false;
 
-	if(fpTickValue == NULL) {
-		return 1;
-	}
+  if(fpTickValue == NULL) {
+    return 1;
+  }
 
-	TickTopValue = tickTopValue;
-	GetTickValue = fpTickValue;
-	
+  TickTopValue = tickTopValue;
+  GetTickValue = fpTickValue;
+  
   TickToNsCoef = (float)tickToNsCoef;
   TickToUsCoef = TickToNsCoef / 1000.0f;
   TickToMsCoef = TickToUsCoef / 1000.0f;
   TickToSecCoef = TickToMsCoef / 1000.0f;
 
-	ContinuousTickMs = 0;
-	Init = true;
-	fChrono_Start(&ChronoTickMs);
-	
+  ContinuousTickMs = 0;
+  Init = true;
+  fChrono_Start(&ChronoTickMs);
+  
   return 0;
 }
 #endif
@@ -411,21 +411,21 @@ uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, tick_t(*fpTickV
 tick_t fChrono_GetTick(void) {
 
   CHECK_INIT_RET_(0);
-	
+  
 #if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
 
-	return *pTickValue;
+  return *pTickValue;
 
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
 
-	return GetTickValue();
+  return GetTickValue();
 
 #else
-	
-	return 0;
-	
+  
+  return 0;
+  
 #endif
-	
+  
 }
 
 /**
@@ -437,12 +437,12 @@ tick_t fChrono_GetTick(void) {
  * @retval continuousTickTime: Time length since calling fChrono_Init() in milliseconds
  */
 uint64_t fChrono_GetContinuousTickMs(void) {
-	
-	ContinuousTickMs += (timeMs_t)fChrono_ElapsedMs(&ChronoTickMs);
-	
-	fChrono_Start(&ChronoTickMs);
-	
-	return (uint64_t)ContinuousTickMs;
+  
+  ContinuousTickMs += (timeMs_t)fChrono_ElapsedMs(&ChronoTickMs);
+  
+  fChrono_Start(&ChronoTickMs);
+  
+  return (uint64_t)ContinuousTickMs;
 }
 
 /**
@@ -453,9 +453,9 @@ uint64_t fChrono_GetContinuousTickMs(void) {
  * @retval topValue: Tick top value
  */
 tick_t fChrono_GetTickTopValue(void) {
-	
-	CHECK_INIT_RET_(0);
-	
+  
+  CHECK_INIT_RET_(0);
+  
   return TickTopValue;
 }
 
@@ -471,9 +471,9 @@ tick_t fChrono_GetTickTopValue(void) {
  * @retval tickToNsCoef: Tick-to-nanoseconds coefficient
  */
 uint32_t fChrono_GetTickToNsCoef(void) {
-	
-	CHECK_INIT_RET_(0);
-	
+  
+  CHECK_INIT_RET_(0);
+  
   return TickToNsCoef;
 }
 
@@ -483,9 +483,9 @@ uint32_t fChrono_GetTickToNsCoef(void) {
  * @retval maxTime: Maximum measurable time interval (seconds)
  */
 timeS_t fChrono_GetMaxMeasurableTimeS(void) {
-	
-	CHECK_INIT_RET_(0);
-	
+  
+  CHECK_INIT_RET_(0);
+  
   return (timeS_t)TickTopValue * TickToSecCoef;
 }
 
@@ -495,9 +495,9 @@ timeS_t fChrono_GetMaxMeasurableTimeS(void) {
  * @retval maxTime: Maximum measurable time interval (milliseocnds)
  */
 timeMs_t fChrono_GetMaxMeasurableTimeMs(void) {
-	
-	CHECK_INIT_RET_(0);
-	
+  
+  CHECK_INIT_RET_(0);
+  
   return (timeMs_t)TickTopValue * TickToMsCoef;
 }
 
@@ -507,9 +507,9 @@ timeMs_t fChrono_GetMaxMeasurableTimeMs(void) {
  * @retval maxTime: Maximum measurable time interval (microseocnds)
  */
 timeUs_t fChrono_GetMaxMeasurableTimeUs(void) {
-	
-	CHECK_INIT_RET_(0);
-	
+  
+  CHECK_INIT_RET_(0);
+  
   return (timeUs_t)TickTopValue * TickToUsCoef;
 }
 
@@ -521,11 +521,11 @@ timeUs_t fChrono_GetMaxMeasurableTimeUs(void) {
  * @retval timeSpan: Time length between two time stamps (seconds)
  */
 timeS_t fChrono_TimeSpanS(tick_t startTick, tick_t endTick) {
-	
-	CHECK_INIT_RET_(0);
-	
-	return (timeS_t)(ELAPSED_(endTick, startTick)) * TickToSecCoef;
-	
+  
+  CHECK_INIT_RET_(0);
+  
+  return (timeS_t)(ELAPSED_(endTick, startTick)) * TickToSecCoef;
+  
 }
 
 /**
@@ -536,11 +536,11 @@ timeS_t fChrono_TimeSpanS(tick_t startTick, tick_t endTick) {
  * @retval timeSpan: Time length between two time stamps (milliseconds)
  */
 timeMs_t fChrono_TimeSpanMs(tick_t startTick, tick_t endTick) {
-	
-	CHECK_INIT_RET_(0);
-	
-	return (timeMs_t)(ELAPSED_(endTick, startTick)) * TickToMsCoef;
-	
+  
+  CHECK_INIT_RET_(0);
+  
+  return (timeMs_t)(ELAPSED_(endTick, startTick)) * TickToMsCoef;
+  
 }
 
 /**
@@ -551,11 +551,11 @@ timeMs_t fChrono_TimeSpanMs(tick_t startTick, tick_t endTick) {
  * @retval timeSpan: Time length between two time stamps (microseconds)
  */
 timeUs_t fChrono_TimeSpanUs(tick_t startTick, tick_t endTick) {
-	
-	CHECK_INIT_RET_(0);
-	
-	return (timeUs_t)(ELAPSED_(endTick, startTick)) * TickToUsCoef;
-	
+  
+  CHECK_INIT_RET_(0);
+  
+  return (timeUs_t)(ELAPSED_(endTick, startTick)) * TickToUsCoef;
+  
 }
 
 /**
@@ -568,12 +568,12 @@ timeUs_t fChrono_TimeSpanUs(tick_t startTick, tick_t endTick) {
 void fChrono_DelayS(timeS_t delayS) {
 
   CHECK_INIT_();
-	
-	sChrono chrono;
-	
-	fChrono_Start(&chrono);
-	
-	while(fChrono_ElapsedS(&chrono) < delayS) {};
+  
+  sChrono chrono;
+  
+  fChrono_Start(&chrono);
+  
+  while(fChrono_ElapsedS(&chrono) < delayS) {};
 }
 
 /**
@@ -588,10 +588,10 @@ void fChrono_DelayMs(timeMs_t delayMs) {
   CHECK_INIT_();
   
   sChrono chrono;
-	
-	fChrono_Start(&chrono);
-	
-	while(fChrono_ElapsedMs(&chrono) < delayMs) {};
+  
+  fChrono_Start(&chrono);
+  
+  while(fChrono_ElapsedMs(&chrono) < delayMs) {};
 }
 
 /**
@@ -606,10 +606,10 @@ void fChrono_DelayUs(timeUs_t delayUs) {
   CHECK_INIT_();
   
   sChrono chrono;
-	
-	fChrono_Start(&chrono);
-	
-	while(fChrono_ElapsedUs(&chrono) < delayUs) {};
+  
+  fChrono_Start(&chrono);
+  
+  while(fChrono_ElapsedUs(&chrono) < delayUs) {};
 }
 
 /** @} */ //End of FUNCTIONAL_API
@@ -631,7 +631,7 @@ void fChrono_DelayUs(timeUs_t delayUs) {
 void fChrono_Start(sChrono * const me) {
 
   CHECK_INIT_();
-	
+  
   me->_startTime = fChrono_GetTick();
   me->_run = true;
 }
@@ -644,9 +644,9 @@ void fChrono_Start(sChrono * const me) {
  * @param me Pointer to the chrono object
  */
 void fChrono_Stop(sChrono * const me) {
-	
+  
   me->_run = false;
-	me->_isTimeout = false;
+  me->_isTimeout = false;
 }
 
 /**
@@ -659,7 +659,7 @@ void fChrono_Stop(sChrono * const me) {
  */
 timeS_t fChrono_ElapsedS(sChrono * const me) {
   
-	CHECK_INIT_RET_(0);
+  CHECK_INIT_RET_(0);
   CHECK_RUN_(0);
   
   tick_t startTime = me->_startTime;
@@ -677,7 +677,7 @@ timeS_t fChrono_ElapsedS(sChrono * const me) {
  */
 timeMs_t fChrono_ElapsedMs(sChrono * const me) {
   
-	CHECK_INIT_RET_(0);
+  CHECK_INIT_RET_(0);
   CHECK_RUN_(0);
   
   tick_t startTime = me->_startTime;
@@ -695,7 +695,7 @@ timeMs_t fChrono_ElapsedMs(sChrono * const me) {
  */
 timeUs_t fChrono_ElapsedUs(sChrono * const me) {
   
-	CHECK_INIT_RET_(0);
+  CHECK_INIT_RET_(0);
   CHECK_RUN_(0);
   
   tick_t startTime = me->_startTime;
@@ -716,22 +716,22 @@ timeUs_t fChrono_ElapsedUs(sChrono * const me) {
  */
 timeS_t fChrono_LeftS(sChrono * const me) {
   
-	CHECK_INIT_RET_(0);
+  CHECK_INIT_RET_(0);
   CHECK_RUN_(0);
   
   tick_t startTime = me->_startTime;
-	
-	if(me->_isTimeout) {
-		return 0;
-	}
-		
-	timeS_t elapsed = (timeS_t)((timeS_t)(ELAPSED_(fChrono_GetTick(), startTime)) * TickToSecCoef);
-	if(elapsed >= (me->_timeout * TickToSecCoef)) {
-		me->_isTimeout = true;
-		return 0;
-	} else {
-		return ((me->_timeout * TickToSecCoef) - elapsed);
-	}
+  
+  if(me->_isTimeout) {
+    return 0;
+  }
+    
+  timeS_t elapsed = (timeS_t)((timeS_t)(ELAPSED_(fChrono_GetTick(), startTime)) * TickToSecCoef);
+  if(elapsed >= (me->_timeout * TickToSecCoef)) {
+    me->_isTimeout = true;
+    return 0;
+  } else {
+    return ((me->_timeout * TickToSecCoef) - elapsed);
+  }
 }
 
 /**
@@ -747,22 +747,22 @@ timeS_t fChrono_LeftS(sChrono * const me) {
  */
 timeMs_t fChrono_LeftMs(sChrono * const me) {
   
-	CHECK_INIT_RET_(0);
+  CHECK_INIT_RET_(0);
   CHECK_RUN_(0);
   
   tick_t startTime = me->_startTime;
-	
-	if(me->_isTimeout) {
-		return 0;
-	}
-		
-	timeMs_t elapsed = (timeMs_t)((timeMs_t)(ELAPSED_(fChrono_GetTick(), startTime)) * TickToMsCoef);
-	if(elapsed >= (me->_timeout * TickToMsCoef)) {
-		me->_isTimeout = true;
-		return 0;
-	} else {
-		return ((me->_timeout * TickToMsCoef) - elapsed);
-	}
+  
+  if(me->_isTimeout) {
+    return 0;
+  }
+    
+  timeMs_t elapsed = (timeMs_t)((timeMs_t)(ELAPSED_(fChrono_GetTick(), startTime)) * TickToMsCoef);
+  if(elapsed >= (me->_timeout * TickToMsCoef)) {
+    me->_isTimeout = true;
+    return 0;
+  } else {
+    return ((me->_timeout * TickToMsCoef) - elapsed);
+  }
 }
 
 /**
@@ -777,23 +777,23 @@ timeMs_t fChrono_LeftMs(sChrono * const me) {
  * @retval timeLeft: Time length until timeout (microseconds)
  */
 timeUs_t fChrono_LeftUs(sChrono * const me) {
-	
-	CHECK_INIT_RET_(0);
+  
+  CHECK_INIT_RET_(0);
   CHECK_RUN_(0);
   
   tick_t startTime = me->_startTime;
-	
-	if(me->_isTimeout) {
-		return 0;
-	}
-		
-	timeUs_t elapsed = (timeUs_t)((timeUs_t)(ELAPSED_(fChrono_GetTick(), startTime)) * TickToUsCoef);
-	if(elapsed >= (me->_timeout * TickToUsCoef)) {
-		me->_isTimeout = true;
-		return 0;
-	} else {
-		return ((me->_timeout * TickToUsCoef) - elapsed);
-	}
+  
+  if(me->_isTimeout) {
+    return 0;
+  }
+    
+  timeUs_t elapsed = (timeUs_t)((timeUs_t)(ELAPSED_(fChrono_GetTick(), startTime)) * TickToUsCoef);
+  if(elapsed >= (me->_timeout * TickToUsCoef)) {
+    me->_isTimeout = true;
+    return 0;
+  } else {
+    return ((me->_timeout * TickToUsCoef) - elapsed);
+  }
 }
 
 /**
@@ -803,11 +803,11 @@ timeUs_t fChrono_LeftUs(sChrono * const me) {
  * @param timeout Time length until the chrono object times out (seconds)
  */
 void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout) {
-	
-	me->_timeout = timeout / (timeS_t)TickToSecCoef;
-	me->_isTimeout = false;
-	
-	fChrono_Start(me);
+  
+  me->_timeout = timeout / (timeS_t)TickToSecCoef;
+  me->_isTimeout = false;
+  
+  fChrono_Start(me);
 }
 
 /**
@@ -817,11 +817,11 @@ void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout) {
  * @param timeout Time length until the chrono object times out (milliseconds)
  */
 void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
-	
-	me->_timeout = timeout / (timeMs_t)TickToMsCoef;
-	me->_isTimeout = false;
-	
-	fChrono_Start(me);
+  
+  me->_timeout = timeout / (timeMs_t)TickToMsCoef;
+  me->_isTimeout = false;
+  
+  fChrono_Start(me);
 }
 
 /**
@@ -831,11 +831,11 @@ void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
  * @param timeout Time length until the chrono object times out (microseconds)
  */
 void fChrono_StartTimeoutUs(sChrono * const me, timeUs_t timeout) {
-	
-	me->_timeout = timeout / (timeUs_t)TickToUsCoef;
-	me->_isTimeout = false;
-	
-	fChrono_Start(me);
+  
+  me->_timeout = timeout / (timeUs_t)TickToUsCoef;
+  me->_isTimeout = false;
+  
+  fChrono_Start(me);
 }
 
 /**
@@ -851,10 +851,10 @@ bool fChrono_IsTimeout(sChrono * const me) {
   CHECK_RUN_(false);
   
   tick_t startTime = me->_startTime;
-	
-	if(me->_isTimeout) {
-		return true;
-	}
+  
+  if(me->_isTimeout) {
+    return true;
+  }
 
   if(ELAPSED_(fChrono_GetTick(), startTime) >= me->_timeout) {
     me->_isTimeout = true;
