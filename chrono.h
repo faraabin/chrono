@@ -41,6 +41,14 @@ extern "C" {
 
 /* Exported defines ----------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
+#define tick_()		fChrono_GetTick()
+#define micros_()	fChrono_GetContinuousTickUs()
+#define millis_()	fChrono_GetContinuousTickMs()
+#define seconds_()	fChrono_GetContinuousTickS()
+#define delayMicroseconds_(delay_)	fChrono_DelayUs(delay_)
+#define delayMilliseconds_(delay_)	fChrono_DelayMs(delay_)
+#define delaySeconds_(delay_)	fChrono_DelayS(delay_)
+
 /* Exported types ------------------------------------------------------------*/
 /**
   * @brief Definition of the Chrono object.
@@ -112,11 +120,13 @@ typedef struct {
 tick_t fChrono_GetTick(void);
 
 /**
- * @brief Returns the cumulative sum of tick values converted to milliseconds since calling fChrono_Init().
+ * @brief Returns the cumulative sum of tick values converted to micro, milli & seconds since calling fChrono_Init().
  * 
- * @retval cumulativeTime: Time length since calling fChrono_Init() in milliseconds
+ * @retval cumulativeTime: Time length since calling fChrono_Init() in micro, milli & seconds
  */
+uint64_t fChrono_GetContinuousTickUs(void);
 uint64_t fChrono_GetContinuousTickMs(void);
+uint64_t fChrono_GetContinuousTickS(void);
 
 /**
  * @brief Get Tick top value.

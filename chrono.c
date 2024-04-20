@@ -253,10 +253,30 @@ static float TickToSecCoef = 1.0f;
 static tick_t TickTopValue = 0xFFFFFFFF;
 
 /**
- * @brief **chrono** object that holds the tick value since initializing the module using fChrono_Init().
+ * @brief **chrono** object that holds the tick value in us since initializing the module using fChrono_Init().
+ * 
+ */
+static sChrono ChronoTickUs;
+
+/**
+ * @brief **chrono** object that holds the tick value in ms since initializing the module using fChrono_Init().
  * 
  */
 static sChrono ChronoTickMs;
+
+/**
+ * @brief **chrono** object that holds the tick value in second since initializing the module using fChrono_Init().
+ * 
+ */
+static sChrono ChronoTickS;
+
+/**
+ * @brief Time length in microseconds since initializing the chrono module.
+ * 
+ * @note To get this value user must call fChrono_GetContinuousTickUs(). 
+ * 
+ */
+static uint64_t ContinuousTickUs;
 
 /**
  * @brief Time length in milliseconds since initializing the chrono module.
@@ -265,6 +285,14 @@ static sChrono ChronoTickMs;
  * 
  */
 static uint64_t ContinuousTickMs;
+
+/**
+ * @brief Time length in seconds since initializing the chrono module.
+ * 
+ * @note To get this value user must call fChrono_GetContinuousTickS(). 
+ * 
+ */
+static uint64_t ContinuousTickS;
 
 /** @defgroup CHRONO_TICK_POINTER Tick pointer for getting current tick value.
  *  @{
@@ -343,9 +371,15 @@ uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, volatile tick_t
   TickToMsCoef = TickToUsCoef / 1000.0f;
   TickToSecCoef = TickToMsCoef / 1000.0f;
   
-  ContinuousTickMs = 0;
+  ContinuousTickUs = 0;
+	ContinuousTickMs = 0;
+	ContinuousTickS = 0;
+	
   Init = true;
-  fChrono_Start(&ChronoTickMs);
+  
+	fChrono_Start(&ChronoTickUs);
+	fChrono_Start(&ChronoTickMs);
+	fChrono_Start(&ChronoTickS);
 
   return 0;
 }
@@ -429,6 +463,23 @@ tick_t fChrono_GetTick(void) {
 }
 
 /**
+ * @brief Returns the continuous tick value converted to microseconds since calling fChrono_Init().
+ * 
+ * @attention Always remember to call this function before tick generator overflows. For example if tick generator reaches its topValue in 71 minutes,
+ *            make sure fChrono_GetContinuousTickUs() is called once in this interval.
+ *
+ * @retval continuousTickTime: Time length since calling fChrono_Init() in milliseconds
+ */
+uint64_t fChrono_GetContinuousTickUs(void) {
+  
+  ContinuousTickUs += (timeUs_t)fChrono_ElapsedUs(&ChronoTickUs);
+  
+  fChrono_Start(&ChronoTickUs);
+  
+  return (uint64_t)ContinuousTickUs;
+}
+
+/**
  * @brief Returns the continuous tick value converted to milliseconds since calling fChrono_Init().
  * 
  * @attention Always remember to call this function before tick generator overflows. For example if tick generator reaches its topValue in 71 minutes,
@@ -443,6 +494,23 @@ uint64_t fChrono_GetContinuousTickMs(void) {
   fChrono_Start(&ChronoTickMs);
   
   return (uint64_t)ContinuousTickMs;
+}
+
+/**
+ * @brief Returns the continuous tick value converted to seconds since calling fChrono_Init().
+ * 
+ * @attention Always remember to call this function before tick generator overflows. For example if tick generator reaches its topValue in 71 minutes,
+ *            make sure fChrono_GetContinuousTickS() is called once in this interval.
+ *
+ * @retval continuousTickTime: Time length since calling fChrono_Init() in milliseconds
+ */
+uint64_t fChrono_GetContinuousTickS(void) {
+  
+  ContinuousTickS += (timeMs_t)fChrono_ElapsedS(&ChronoTickS);
+  
+  fChrono_Start(&ChronoTickS);
+  
+  return (uint64_t)ContinuousTickS;
 }
 
 /**
