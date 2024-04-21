@@ -31,6 +31,7 @@
     This address is passed to fChrono_Init() as a pointer to a variable of type tick_t.
     - Alternatively, select TICK_TYPE_FUNCTION if you prefer to obtain the current tick by calling a function.
     In this case, you must provide a function that returns the current tick as tick_t. The address of this function is passed to fChrono_Init().
+  
   2- In chrono_config.h file, specify type of the variables that chrono module uses for time measuremenst. These types are:
     - tick_t: Type of the tick value. Depending on your application, this type can be uint16_t, uint32_t, etc.
     - timeS_t: Type of the variable that is used to measure time lengths in seconds.
@@ -41,6 +42,7 @@
     - Maximum measurable time length and its accuracy in long time measurements.
   If you have a 16-bit MCU its better to configure chrono with a 16-bit time tick, but keep in mind that maximum measurable time is limited compared to a 32-bit tick.
   Also, a variable of type double has better accuracy for time measurements than a float one.
+
   3- Initialize the chrono module by calling fChrono_Init(). You need to provide the following parameters:
     - tickTopValue: The maximum tick value that the tick generator can count.
     - tickToNsCoef: A multiplier for converting each tick to its corresponding time length in nanoseconds.
@@ -51,12 +53,14 @@
   
   ## Using functions
   After initializing the module, there are two kinds of methods available for users.
+
   1- Functions that Require a Chrono Object (sChrono) as Input:
     - The following methods need an instantiated sChrono object:
       - fChrono_Start(), fChrono_Stop(), fChrono_ElapsedS(), fChrono_ElapsedMs(), fChrono_ElapsedUs(), fChrono_LeftS(),
         fChrono_LeftMs(), fChrono_LeftUs(), fChrono_StartTimeoutS(), fChrono_StartTimeoutMs(), fChrono_StartTimeoutUs(),
-        fChrono_IsTimeoutS(), fChrono_IsTimeoutMs(), fChrono_IsTimeoutUs(), fChrono_IntervalS(), fChrono_IntervalMs() and fChrono_IntervalUs().
+        fChrono_IsTimeout(), fChrono_IntervalS(), fChrono_IntervalMs() and fChrono_IntervalUs().
     - These methods are primarily used for creating time stamps and measuring time intervals. They require a variable of type sChrono to perform their tasks.
+  
   2- Functions that Do Not Require a Chrono Object:
     - The following functions do not need a sChrono object:
       - fChrono_GetTick(), fChrono_GetContinuousTickMs(), fChrono_GetTickTopValue(), fChrono_GetTickToNsCoef(), fChrono_GetMaxMeasurableTimeMs(),
@@ -73,29 +77,29 @@
     - fChrono_ElapsedMs()
     - fChrono_ElapsedUs()
   - These functions measure the time length between the line of code where fChrono_Start() was called and the line of code where these measurement functions are called. They return the time length in their corresponding units.
-  - Whenever a stop is needed for time measurement, the user can call sChrono_Stop() on the chrono object. This action resets all measurement results and puts the chrono in stop mode.
+  - Whenever a stop is needed for time measurement, the user can call fChrono_Stop() on the chrono object. This action resets all measurement results and puts the chrono in stop mode.
 
   ### Timeout
   To utilize the timeout functionality, follow these steps:
   - Create a variable of type sChrono.
   - Start this chrono object in timeout mode using the fChrono_StartTimeoutS(), fChrono_StartTimeoutMs() and fChrono_StartTimeoutUs() functions.
-  - Query whether the chrono is timed out or not using fChrono_IsTimeoutS(), fChrono_IsTimeoutMs(), or fChrono_IsTimeoutUs().
+  - Query whether the chrono is timed out or not using fChrono_IsTimeout().
   - To stop the chrono object, call fChrono_Stop(). This action puts the object in the stop state, and checking its timeout state will return false.
-  - To determine the remaining time until the chrono times out, use fChrono_LeftS(), fChrono_LeftMS(), or fChrono_LeftUS().
+  - To determine the remaining time until the chrono times out, use fChrono_LeftS(), fChrono_LeftMs(), or fChrono_LeftUs().
 
   ### Generating time delay
   For creating time delays, there is no need to instantiate a chrono object. Simply call one of the following functions:
   - fChrono_DelayS()
-  - fChrono_DelayMS()
+  - fChrono_DelayMs()
   - fChrono_DelayUs()
 
   ### Measuring time intervals
   To measure time intervals:
   - Create a variable of type sChrono.
   - Start this chrono object using the fChrono_Start() function. This action puts the object in the run state and creates a time tag in your code.
-  - In the part of the code where time interval measurement is needed, simply call fChrono_IntervalS(), fChrono_IntervalMs or fChrono_IntervalUs(). These functions return the time interval between two consecutive calls.
+  - In the part of the code where time interval measurement is needed, simply call fChrono_IntervalS(), fChrono_IntervalMs() or fChrono_IntervalUs(). These functions return the time interval between two consecutive calls.
     - The first time you measure the interval, it returns the time length between fChrono_Start() and the first call to fChrono_IntervalS(), fChrono_IntervalMs or fChrono_IntervalUs().
-    - Subsequent calls measure the time between consecutive invocations of the fChrono_IntervalS(), fChrono_IntervalMs or fChrono_IntervalUs().
+    - Subsequent calls measure the time between consecutive invocations of the fChrono_IntervalS(), fChrono_IntervalMs() or fChrono_IntervalUs().
 
   ### Getting current tick from tick generator
   To obtain the current tick from the tick generator:
@@ -253,19 +257,19 @@ static float TickToSecCoef = 1.0f;
 static tick_t TickTopValue = 0xFFFFFFFF;
 
 /**
- * @brief **chrono** object that holds the tick value in us since initializing the module using fChrono_Init().
+ * @brief **chrono** object that holds the tick value in microseconds since initializing the module using fChrono_Init().
  * 
  */
 static sChrono ChronoTickUs;
 
 /**
- * @brief **chrono** object that holds the tick value in ms since initializing the module using fChrono_Init().
+ * @brief **chrono** object that holds the tick value in milliseconds since initializing the module using fChrono_Init().
  * 
  */
 static sChrono ChronoTickMs;
 
 /**
- * @brief **chrono** object that holds the tick value in second since initializing the module using fChrono_Init().
+ * @brief **chrono** object that holds the tick value in seconds since initializing the module using fChrono_Init().
  * 
  */
 static sChrono ChronoTickS;

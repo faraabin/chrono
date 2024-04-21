@@ -5,7 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Chrono: chrono_config.h File Reference</title>
+<title>Chrono: C:/Users/ASUS/Desktop/fw_nucleo32_l4_under_construction/src/library/utility/chrono/chrono_config.h File Reference</title>
+<link rel="icon" href="logo.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,10 +27,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="left_resize.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0</span>
+   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0.1</span>
    </div>
+   <div id="projectbrief">Chrono is a C-library for time measurement in embedded software. It can be used in any embedded system, independent of MCU architecture or brand.</div>
   </td>
  </tr>
  </tbody>
@@ -93,16 +95,28 @@ $(function(){initNavTree('chrono__config_8h.html',''); initResizable(); });
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a>  </div>
-  <div class="headertitle"><div class="title">chrono_config.h File Reference</div></div>
+  <div class="headertitle"><div class="title">C:/Users/ASUS/Desktop/fw_nucleo32_l4_under_construction/src/library/utility/chrono/chrono_config.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>: Chrono module configuration file.  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+</div>
 <p><a href="chrono__config_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:af3af7ab3a36bb21aa66317abcbe03d79" id="r_af3af7ab3a36bb21aa66317abcbe03d79"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3af7ab3a36bb21aa66317abcbe03d79">TICK_TYPE_VARIABLE</a>&#160;&#160;&#160;(1)</td></tr>
+<tr class="separator:af3af7ab3a36bb21aa66317abcbe03d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa20606ef68859b9bbc1724930536b8cf" id="r_aa20606ef68859b9bbc1724930536b8cf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa20606ef68859b9bbc1724930536b8cf">TICK_TYPE_FUNCTION</a>&#160;&#160;&#160;(2)</td></tr>
+<tr class="separator:aa20606ef68859b9bbc1724930536b8cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a392daaf5441d324d6080a1b63f7aec4c" id="r_a392daaf5441d324d6080a1b63f7aec4c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a392daaf5441d324d6080a1b63f7aec4c">CHRONO_TICK_TYPE</a>&#160;&#160;&#160;<a class="el" href="#af3af7ab3a36bb21aa66317abcbe03d79">TICK_TYPE_VARIABLE</a></td></tr>
+<tr class="memdesc:a392daaf5441d324d6080a1b63f7aec4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select either reading current tick from an address in memory or by calling a function.  <br /></td></tr>
+<tr class="separator:a392daaf5441d324d6080a1b63f7aec4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a451a7d205dfb766727eba25c6e61c687" id="r_a451a7d205dfb766727eba25c6e61c687"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a451a7d205dfb766727eba25c6e61c687">tick_t</a></td></tr>
@@ -121,9 +135,55 @@ Typedefs</h2></td></tr>
 <p>Copyright (c) 2024 FaraabinCo. All rights reserved.</p>
 <p>This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component.</p>
 <p><a href="https://faraabinco.ir/">https://faraabinco.ir/</a> <a href="https://github.com/FaraabinCo">https://github.com/FaraabinCo</a> </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a392daaf5441d324d6080a1b63f7aec4c" name="a392daaf5441d324d6080a1b63f7aec4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a392daaf5441d324d6080a1b63f7aec4c">&#9670;&#160;</a></span>CHRONO_TICK_TYPE</h2>
 
-<p class="definition">Definition in file <a class="el" href="chrono__config_8h_source.html">chrono_config.h</a>.</p>
-</div><h2 class="groupheader">Typedef Documentation</h2>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHRONO_TICK_TYPE&#160;&#160;&#160;<a class="el" href="#af3af7ab3a36bb21aa66317abcbe03d79">TICK_TYPE_VARIABLE</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Select either reading current tick from an address in memory or by calling a function. </p>
+<dl class="section note"><dt>Note</dt><dd>In cases that a timer is used to generate tick and reading its counter register is possible to get current tick, set CHRONO_TICK_TYPE to TICK_TYPE_VARIABLE.</dd>
+<dd>
+In cases that user wants to generate the tick and reading its value is not possible by dereferencing the tick address, value of current tick can be read via calling a function. </dd></dl>
+
+</div>
+</div>
+<a id="aa20606ef68859b9bbc1724930536b8cf" name="aa20606ef68859b9bbc1724930536b8cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa20606ef68859b9bbc1724930536b8cf">&#9670;&#160;</a></span>TICK_TYPE_FUNCTION</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TICK_TYPE_FUNCTION&#160;&#160;&#160;(2)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af3af7ab3a36bb21aa66317abcbe03d79" name="af3af7ab3a36bb21aa66317abcbe03d79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3af7ab3a36bb21aa66317abcbe03d79">&#9670;&#160;</a></span>TICK_TYPE_VARIABLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TICK_TYPE_VARIABLE&#160;&#160;&#160;(1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
 <a id="a451a7d205dfb766727eba25c6e61c687" name="a451a7d205dfb766727eba25c6e61c687"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a451a7d205dfb766727eba25c6e61c687">&#9670;&#160;</a></span>tick_t</h2>
 
@@ -139,8 +199,6 @@ Typedefs</h2></td></tr>
 <p>User typedef for measurements in chrono module. </p>
 <dl class="section note"><dt>Note</dt><dd>Modify these types based on your application. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="chrono__config_8h_source.html#l00050">50</a> of file <a class="el" href="chrono__config_8h_source.html">chrono_config.h</a>.</p>
-
 </div>
 </div>
 <a id="a747cb12f03b286881a150fdda13ae0fa" name="a747cb12f03b286881a150fdda13ae0fa"></a>
@@ -154,8 +212,6 @@ Typedefs</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="chrono__config_8h_source.html#l00052">52</a> of file <a class="el" href="chrono__config_8h_source.html">chrono_config.h</a>.</p>
 
 </div>
 </div>
@@ -171,8 +227,6 @@ Typedefs</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="chrono__config_8h_source.html#l00051">51</a> of file <a class="el" href="chrono__config_8h_source.html">chrono_config.h</a>.</p>
-
 </div>
 </div>
 <a id="afaf2e55459cb2e82e7e7000354c9fc0c" name="afaf2e55459cb2e82e7e7000354c9fc0c"></a>
@@ -186,8 +240,6 @@ Typedefs</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="chrono__config_8h_source.html#l00053">53</a> of file <a class="el" href="chrono__config_8h_source.html">chrono_config.h</a>.</p>
 
 </div>
 </div>

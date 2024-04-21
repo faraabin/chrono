@@ -8,6 +8,8 @@ var group___f_u_n_c_t_i_o_n_a_l___a_p_i =
     [ "fChrono_DelayS", "group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gac4b6550167e7b22bf296fb9e66a35157", null ],
     [ "fChrono_DelayUs", "group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga71f794624e83e3eebc5437914027d225", null ],
     [ "fChrono_GetContinuousTickMs", "group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gaa5984a81837625bc4183788d900d3684", null ],
+    [ "fChrono_GetContinuousTickS", "group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gaef0ca9fcf426a5c1be655c8b4de41ad3", null ],
+    [ "fChrono_GetContinuousTickUs", "group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga3237597e835f1c92f03f335c364b7048", null ],
     [ "fChrono_GetMaxMeasurableTimeMs", "group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga0ddd2d4a5e0b3bdbf10f52dd732e0b12", null ],
     [ "fChrono_GetMaxMeasurableTimeS", "group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga45014dd6cca36276f94e82f3f5638593", null ],
     [ "fChrono_GetMaxMeasurableTimeUs", "group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga63e30306f8cf1875e7b7f13b0e18b8a4", null ],

@@ -6,6 +6,7 @@
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Chrono: Initialization functions</title>
+<link rel="icon" href="logo.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,10 +27,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="left_resize.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0</span>
+   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0.1</span>
    </div>
+   <div id="projectbrief">Chrono is a C-library for time measurement in embedded software. It can be used in any embedded system, independent of MCU architecture or brand.</div>
   </td>
  </tr>
  </tbody>
@@ -103,62 +105,11 @@ Functions</h2></td></tr>
 <tr class="memitem:ga99e3b10b0b5bb751dc77e7a4be3ae03f" id="r_ga99e3b10b0b5bb751dc77e7a4be3ae03f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga99e3b10b0b5bb751dc77e7a4be3ae03f">fChrono_Init</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> tickTopValue, uint32_t tickToNsCoef, volatile <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> *tickValue)</td></tr>
 <tr class="memdesc:ga99e3b10b0b5bb751dc77e7a4be3ae03f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes chrono module in VARIABLE mode based on specified parameters.  <br /></td></tr>
 <tr class="separator:ga99e3b10b0b5bb751dc77e7a4be3ae03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga96a8e8e42d7127c06a08a6eeaace3eb8" id="r_ga96a8e8e42d7127c06a08a6eeaace3eb8"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga96a8e8e42d7127c06a08a6eeaace3eb8">fChrono_Init</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> tickTopValue, uint32_t tickToNsCoef, <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>(*fpTickValue)(void))</td></tr>
-<tr class="memdesc:ga96a8e8e42d7127c06a08a6eeaace3eb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes chrono module in FUNCTION mode based on specified parameters.  <br /></td></tr>
-<tr class="separator:ga96a8e8e42d7127c06a08a6eeaace3eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga96a8e8e42d7127c06a08a6eeaace3eb8" name="ga96a8e8e42d7127c06a08a6eeaace3eb8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga96a8e8e42d7127c06a08a6eeaace3eb8">&#9670;&#160;</a></span>fChrono_Init() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t fChrono_Init </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a></td>          <td class="paramname"><span class="paramname"><em>tickTopValue</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>tickToNsCoef</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>(*)(void)</td>          <td class="paramname"><span class="paramname"><em>fpTickValue</em></span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initializes chrono module in FUNCTION mode based on specified parameters. </p>
-<dl class="section attention"><dt>Attention</dt><dd>This function must be called before using any other function in this library.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This function is only available when CHRONO_TICK_TYPE is TICK_TYPE_FUNCTION.</dd>
-<dd>
-When configuring the chrono module in this manner, the module always invokes a function that returns the current tick as tick_t. The user provides a pointer to this function as an input argument when calling <a class="el" href="#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>. This approach allows the chrono module to dynamically fetch the current tick value from the user-defined function, ensuring accurate and efficient timekeeping. Whether you're using a timer or a custom tick generator, this flexibility enables precise time measurements in your embedded system.</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tickTopValue</td><td>The maximum number of counts that the tick generator can count (starting from zero). </td></tr>
-    <tr><td class="paramname">tickToNsCoef</td><td>Coefficient for converting one tick to nanoseconds. Other multipliers (tick to milliseconds and tick to seconds) are calculated based on this coefficient. </td></tr>
-    <tr><td class="paramname">fpTickValue</td><td>Pointer to the function that returns tick value. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="retval"><dt>Return values</dt><dd>
-  <table class="retval">
-    <tr><td class="paramname">initStatus</td><td>returns 0 if successful and 1 if it fails. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p class="definition">Definition at line <a class="el" href="chrono_8c_source.html#l00370">370</a> of file <a class="el" href="chrono_8c_source.html">chrono.c</a>.</p>
-
-</div>
-</div>
 <a id="ga99e3b10b0b5bb751dc77e7a4be3ae03f" name="ga99e3b10b0b5bb751dc77e7a4be3ae03f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga99e3b10b0b5bb751dc77e7a4be3ae03f">&#9670;&#160;</a></span>fChrono_Init() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ga99e3b10b0b5bb751dc77e7a4be3ae03f">&#9670;&#160;</a></span>fChrono_Init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -216,8 +167,6 @@ When configuring the chrono module with the TICK_TYPE_VARIABLE, the module fetch
   </table>
   </dd>
 </dl>
-
-<p class="definition">Definition at line <a class="el" href="chrono_8c_source.html#l00330">330</a> of file <a class="el" href="chrono_8c_source.html">chrono.c</a>.</p>
 
 </div>
 </div>

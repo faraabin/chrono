@@ -6,6 +6,7 @@
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Chrono: Tick pointer for getting current tick value.</title>
+<link rel="icon" href="logo.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,10 +27,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="left_resize.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0</span>
+   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0.1</span>
    </div>
+   <div id="projectbrief">Chrono is a C-library for time measurement in embedded software. It can be used in any embedded system, independent of MCU architecture or brand.</div>
   </td>
  </tr>
  </tbody>
@@ -103,42 +105,9 @@ Variables</h2></td></tr>
 <tr class="memitem:gacb08bd0d324cc3fec9d91dcc364989cb" id="r_gacb08bd0d324cc3fec9d91dcc364989cb"><td class="memItemLeft" align="right" valign="top">static volatile <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gacb08bd0d324cc3fec9d91dcc364989cb">pTickValue</a></td></tr>
 <tr class="memdesc:gacb08bd0d324cc3fec9d91dcc364989cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to an unsigned integer that hold current value of the tick.  <br /></td></tr>
 <tr class="separator:gacb08bd0d324cc3fec9d91dcc364989cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0b71efe521985631485e855eb3cf8cd5" id="r_ga0b71efe521985631485e855eb3cf8cd5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga0b71efe521985631485e855eb3cf8cd5">GetTickValue</a> )(void) = NULL</td></tr>
-<tr class="memdesc:ga0b71efe521985631485e855eb3cf8cd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer to a function that returns current value of the tick.  <br /></td></tr>
-<tr class="separator:ga0b71efe521985631485e855eb3cf8cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="ga0b71efe521985631485e855eb3cf8cd5" name="ga0b71efe521985631485e855eb3cf8cd5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0b71efe521985631485e855eb3cf8cd5">&#9670;&#160;</a></span>GetTickValue</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>(* GetTickValue) (void) </td>
-          <td>(</td>
-          <td class="paramtype">void</td>          <td class="paramname"><span class="paramname"></span></td><td>)</td>
-          <td> = NULL</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Function pointer to a function that returns current value of the tick. </p>
-<dl class="section note"><dt>Note</dt><dd>This function pointer is only available when CHRONO_TICK_TYPE is TICK_TYPE_FUNCTION. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="chrono_8c_source.html#l00290">290</a> of file <a class="el" href="chrono_8c_source.html">chrono.c</a>.</p>
-
-</div>
-</div>
 <a id="gacb08bd0d324cc3fec9d91dcc364989cb" name="gacb08bd0d324cc3fec9d91dcc364989cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gacb08bd0d324cc3fec9d91dcc364989cb">&#9670;&#160;</a></span>pTickValue</h2>
 
@@ -161,8 +130,6 @@ Variables</h2></td></tr>
 
 <p>Pointer to an unsigned integer that hold current value of the tick. </p>
 <dl class="section note"><dt>Note</dt><dd>This variable is only available when CHRONO_TICK_TYPE is TICK_TYPE_32BIT_VARIABLE. </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="chrono_8c_source.html#l00280">280</a> of file <a class="el" href="chrono_8c_source.html">chrono.c</a>.</p>
 
 </div>
 </div>

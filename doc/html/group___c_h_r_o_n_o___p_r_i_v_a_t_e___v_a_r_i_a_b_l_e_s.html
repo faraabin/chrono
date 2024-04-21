@@ -6,6 +6,7 @@
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Chrono: Private variables in chrono module.</title>
+<link rel="icon" href="logo.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,10 +27,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="left_resize.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0</span>
+   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0.1</span>
    </div>
+   <div id="projectbrief">Chrono is a C-library for time measurement in embedded software. It can be used in any embedded system, independent of MCU architecture or brand.</div>
   </td>
  </tr>
  </tbody>
@@ -114,12 +116,24 @@ Variables</h2></td></tr>
 <tr class="memitem:gae36079f94fb974027f0c371d85b62044" id="r_gae36079f94fb974027f0c371d85b62044"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gae36079f94fb974027f0c371d85b62044">TickTopValue</a> = 0xFFFFFFFF</td></tr>
 <tr class="memdesc:gae36079f94fb974027f0c371d85b62044"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tick top value. This private value is set by calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
 <tr class="separator:gae36079f94fb974027f0c371d85b62044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2fc12bbe6c303717cb949eb609b69bed" id="r_ga2fc12bbe6c303717cb949eb609b69bed"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structs_chrono.html">sChrono</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga2fc12bbe6c303717cb949eb609b69bed">ChronoTickUs</a></td></tr>
+<tr class="memdesc:ga2fc12bbe6c303717cb949eb609b69bed"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>chrono</b> object that holds the tick value in microseconds since initializing the module using <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
+<tr class="separator:ga2fc12bbe6c303717cb949eb609b69bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga96953e4698c4c0faa530faa2cde9a93a" id="r_ga96953e4698c4c0faa530faa2cde9a93a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structs_chrono.html">sChrono</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga96953e4698c4c0faa530faa2cde9a93a">ChronoTickMs</a></td></tr>
-<tr class="memdesc:ga96953e4698c4c0faa530faa2cde9a93a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>chrono</b> object that holds the tick value since initializing the module using <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
+<tr class="memdesc:ga96953e4698c4c0faa530faa2cde9a93a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>chrono</b> object that holds the tick value in milliseconds since initializing the module using <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
 <tr class="separator:ga96953e4698c4c0faa530faa2cde9a93a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1892c0593ff79cd3966fb56c77aeee3f" id="r_ga1892c0593ff79cd3966fb56c77aeee3f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structs_chrono.html">sChrono</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga1892c0593ff79cd3966fb56c77aeee3f">ChronoTickS</a></td></tr>
+<tr class="memdesc:ga1892c0593ff79cd3966fb56c77aeee3f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>chrono</b> object that holds the tick value in seconds since initializing the module using <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
+<tr class="separator:ga1892c0593ff79cd3966fb56c77aeee3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1466279556f219467760753609c7afec" id="r_ga1466279556f219467760753609c7afec"><td class="memItemLeft" align="right" valign="top">static uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga1466279556f219467760753609c7afec">ContinuousTickUs</a></td></tr>
+<tr class="memdesc:ga1466279556f219467760753609c7afec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time length in microseconds since initializing the chrono module.  <br /></td></tr>
+<tr class="separator:ga1466279556f219467760753609c7afec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac6a074b4152adf210c7b686d9962c9e1" id="r_gac6a074b4152adf210c7b686d9962c9e1"><td class="memItemLeft" align="right" valign="top">static uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gac6a074b4152adf210c7b686d9962c9e1">ContinuousTickMs</a></td></tr>
 <tr class="memdesc:gac6a074b4152adf210c7b686d9962c9e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time length in milliseconds since initializing the chrono module.  <br /></td></tr>
 <tr class="separator:gac6a074b4152adf210c7b686d9962c9e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga280edd8456b87038b09887bfaa804a27" id="r_ga280edd8456b87038b09887bfaa804a27"><td class="memItemLeft" align="right" valign="top">static uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga280edd8456b87038b09887bfaa804a27">ContinuousTickS</a></td></tr>
+<tr class="memdesc:ga280edd8456b87038b09887bfaa804a27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time length in seconds since initializing the chrono module.  <br /></td></tr>
+<tr class="separator:ga280edd8456b87038b09887bfaa804a27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Variable Documentation</h2>
@@ -143,9 +157,55 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p><b>chrono</b> object that holds the tick value since initializing the module using <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>. </p>
+<p><b>chrono</b> object that holds the tick value in milliseconds since initializing the module using <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="chrono_8c_source.html#l00259">259</a> of file <a class="el" href="chrono_8c_source.html">chrono.c</a>.</p>
+</div>
+</div>
+<a id="ga1892c0593ff79cd3966fb56c77aeee3f" name="ga1892c0593ff79cd3966fb56c77aeee3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1892c0593ff79cd3966fb56c77aeee3f">&#9670;&#160;</a></span>ChronoTickS</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structs_chrono.html">sChrono</a> ChronoTickS</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><b>chrono</b> object that holds the tick value in seconds since initializing the module using <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>. </p>
+
+</div>
+</div>
+<a id="ga2fc12bbe6c303717cb949eb609b69bed" name="ga2fc12bbe6c303717cb949eb609b69bed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2fc12bbe6c303717cb949eb609b69bed">&#9670;&#160;</a></span>ChronoTickUs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structs_chrono.html">sChrono</a> ChronoTickUs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><b>chrono</b> object that holds the tick value in microseconds since initializing the module using <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>. </p>
 
 </div>
 </div>
@@ -172,7 +232,55 @@ Variables</h2></td></tr>
 <p>Time length in milliseconds since initializing the chrono module. </p>
 <dl class="section note"><dt>Note</dt><dd>To get this value user must call <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gaa5984a81837625bc4183788d900d3684" title="Returns the continuous tick value converted to milliseconds since calling fChrono_Init().">fChrono_GetContinuousTickMs()</a>. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="chrono_8c_source.html#l00267">267</a> of file <a class="el" href="chrono_8c_source.html">chrono.c</a>.</p>
+</div>
+</div>
+<a id="ga280edd8456b87038b09887bfaa804a27" name="ga280edd8456b87038b09887bfaa804a27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga280edd8456b87038b09887bfaa804a27">&#9670;&#160;</a></span>ContinuousTickS</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t ContinuousTickS</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Time length in seconds since initializing the chrono module. </p>
+<dl class="section note"><dt>Note</dt><dd>To get this value user must call <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gaef0ca9fcf426a5c1be655c8b4de41ad3" title="Returns the continuous tick value converted to seconds since calling fChrono_Init().">fChrono_GetContinuousTickS()</a>. </dd></dl>
+
+</div>
+</div>
+<a id="ga1466279556f219467760753609c7afec" name="ga1466279556f219467760753609c7afec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1466279556f219467760753609c7afec">&#9670;&#160;</a></span>ContinuousTickUs</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t ContinuousTickUs</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Time length in microseconds since initializing the chrono module. </p>
+<dl class="section note"><dt>Note</dt><dd>To get this value user must call <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga3237597e835f1c92f03f335c364b7048" title="Returns the continuous tick value converted to microseconds since calling fChrono_Init().">fChrono_GetContinuousTickUs()</a>. </dd></dl>
 
 </div>
 </div>
@@ -198,8 +306,6 @@ Variables</h2></td></tr>
 
 <p>Initialization state of the chrono module. </p>
 
-<p class="definition">Definition at line <a class="el" href="chrono_8c_source.html#l00218">218</a> of file <a class="el" href="chrono_8c_source.html">chrono.c</a>.</p>
-
 </div>
 </div>
 <a id="gae36079f94fb974027f0c371d85b62044" name="gae36079f94fb974027f0c371d85b62044"></a>
@@ -223,8 +329,6 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>The tick top value. This private value is set by calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="chrono_8c_source.html#l00253">253</a> of file <a class="el" href="chrono_8c_source.html">chrono.c</a>.</p>
 
 </div>
 </div>

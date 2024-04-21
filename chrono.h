@@ -41,13 +41,53 @@ extern "C" {
 
 /* Exported defines ----------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
+/** @defgroup TIME_MACROS Time macros
+ *  @{
+ */
+
+/**
+ * @brief Returns current tick value a the number of ticks, since the start of the tick generator.
+ * 
+ */
 #define tick_()		fChrono_GetTick()
+
+/**
+ * @brief Returns the number of microseconds passed since the initialization of the chrono module.
+ * 
+ */
 #define micros_()	fChrono_GetContinuousTickUs()
+
+/**
+ * @brief Returns the number of milliseconds passed since the initialization of the chrono module.
+ * 
+ */
 #define millis_()	fChrono_GetContinuousTickMs()
+
+/**
+ * @brief Returns the number of seconds passed since the initialization of the chrono module.
+ * 
+ */
 #define seconds_()	fChrono_GetContinuousTickS()
+
+/**
+ * @brief Generates a delay for the amount of time (in microseconds) specified as input parameter.
+ * 
+ */
 #define delayMicroseconds_(delay_)	fChrono_DelayUs(delay_)
+
+/**
+ * @brief Generates a delay for the amount of time (in milliseconds) specified as input parameter.
+ * 
+ */
 #define delayMilliseconds_(delay_)	fChrono_DelayMs(delay_)
+
+/**
+ * @brief Generates a delay for the amount of time (in second) specified as input parameter.
+ * 
+ */
 #define delaySeconds_(delay_)	fChrono_DelayS(delay_)
+
+/** @} */ //End of TIME_MACROS
 
 /* Exported types ------------------------------------------------------------*/
 /**
@@ -120,9 +160,9 @@ typedef struct {
 tick_t fChrono_GetTick(void);
 
 /**
- * @brief Returns the cumulative sum of tick values converted to micro, milli & seconds since calling fChrono_Init().
+ * @brief Returns the amount of time converted to microseconds, milliseconds & seconds since calling fChrono_Init().
  * 
- * @retval cumulativeTime: Time length since calling fChrono_Init() in micro, milli & seconds
+ * @retval timeLength: Time length since calling fChrono_Init() in microseconds, milliseconds & seconds
  */
 uint64_t fChrono_GetContinuousTickUs(void);
 uint64_t fChrono_GetContinuousTickMs(void);

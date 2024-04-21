@@ -5,7 +5,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Chrono: chrono.c File Reference</title>
+<title>Chrono: C:/Users/ASUS/Desktop/fw_nucleo32_l4_under_construction/src/library/utility/chrono/chrono.c File Reference</title>
+<link rel="icon" href="logo.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,10 +27,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
-  <td id="projectlogo"><img alt="Logo" src="left_resize.png"/></td>
+  <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0</span>
+   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0.1</span>
    </div>
+   <div id="projectbrief">Chrono is a C-library for time measurement in embedded software. It can be used in any embedded system, independent of MCU architecture or brand.</div>
   </td>
  </tr>
  </tbody>
@@ -93,31 +95,49 @@ $(function(){initNavTree('chrono_8c.html',''); initResizable(); });
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
-  <div class="headertitle"><div class="title">chrono.c File Reference</div></div>
+  <div class="headertitle"><div class="title">C:/Users/ASUS/Desktop/fw_nucleo32_l4_under_construction/src/library/utility/chrono/chrono.c File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>: Chrono module.  
 <a href="#details">More...</a></p>
-
-<p><a href="chrono_8c_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
+<div class="textblock"><code>#include &quot;<a class="el" href="chrono_8h_source.html">chrono.h</a>&quot;</code><br />
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:af71654c6d86d0daaf7d52f666d145f75" id="r_af71654c6d86d0daaf7d52f666d145f75"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af71654c6d86d0daaf7d52f666d145f75">ELAPSED_</a>(a,  b)&#160;&#160;&#160;(((a) &gt;= (b)) ? ((a) - (b)) : ((<a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#gae36079f94fb974027f0c371d85b62044">TickTopValue</a>) - ((b) - (a))))</td></tr>
+<tr class="memdesc:af71654c6d86d0daaf7d52f666d145f75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the time length between "a" and "b".  <br /></td></tr>
+<tr class="separator:af71654c6d86d0daaf7d52f666d145f75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf9da3d82844214e18e57b558fe7c89c" id="r_aaf9da3d82844214e18e57b558fe7c89c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf9da3d82844214e18e57b558fe7c89c">CHECK_RUN_</a>(ret)&#160;&#160;&#160;if(me-&gt;_run == false){return (ret);}</td></tr>
+<tr class="memdesc:aaf9da3d82844214e18e57b558fe7c89c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the chrono object is in the run state or not.  <br /></td></tr>
+<tr class="separator:aaf9da3d82844214e18e57b558fe7c89c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9197e648aff6eade068870aee34ad7ca" id="r_a9197e648aff6eade068870aee34ad7ca"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9197e648aff6eade068870aee34ad7ca">CHECK_INIT_RET_</a>(ret)&#160;&#160;&#160;if(<a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga190a54bf0c6980c9e88e20171ef8f300">Init</a> == false){return (ret);}</td></tr>
+<tr class="memdesc:a9197e648aff6eade068870aee34ad7ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the chrono module is initialized or not.  <br /></td></tr>
+<tr class="separator:a9197e648aff6eade068870aee34ad7ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06268baba499910017503433c85851de" id="r_a06268baba499910017503433c85851de"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a06268baba499910017503433c85851de">CHECK_INIT_</a>()&#160;&#160;&#160;if(<a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga190a54bf0c6980c9e88e20171ef8f300">Init</a> == false){return;}</td></tr>
+<tr class="memdesc:a06268baba499910017503433c85851de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the chrono module is initialized or not.  <br /></td></tr>
+<tr class="separator:a06268baba499910017503433c85851de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga99e3b10b0b5bb751dc77e7a4be3ae03f" id="r_ga99e3b10b0b5bb751dc77e7a4be3ae03f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f">fChrono_Init</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> tickTopValue, uint32_t tickToNsCoef, volatile <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> *tickValue)</td></tr>
 <tr class="memdesc:ga99e3b10b0b5bb751dc77e7a4be3ae03f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes chrono module in VARIABLE mode based on specified parameters.  <br /></td></tr>
 <tr class="separator:ga99e3b10b0b5bb751dc77e7a4be3ae03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga96a8e8e42d7127c06a08a6eeaace3eb8" id="r_ga96a8e8e42d7127c06a08a6eeaace3eb8"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga96a8e8e42d7127c06a08a6eeaace3eb8">fChrono_Init</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> tickTopValue, uint32_t tickToNsCoef, <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>(*fpTickValue)(void))</td></tr>
-<tr class="memdesc:ga96a8e8e42d7127c06a08a6eeaace3eb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes chrono module in FUNCTION mode based on specified parameters.  <br /></td></tr>
-<tr class="separator:ga96a8e8e42d7127c06a08a6eeaace3eb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga61b79bca1f6b452d9af60b356ddc01ec" id="r_ga61b79bca1f6b452d9af60b356ddc01ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga61b79bca1f6b452d9af60b356ddc01ec">fChrono_GetTick</a> (void)</td></tr>
 <tr class="memdesc:ga61b79bca1f6b452d9af60b356ddc01ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current tick.  <br /></td></tr>
 <tr class="separator:ga61b79bca1f6b452d9af60b356ddc01ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3237597e835f1c92f03f335c364b7048" id="r_ga3237597e835f1c92f03f335c364b7048"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga3237597e835f1c92f03f335c364b7048">fChrono_GetContinuousTickUs</a> (void)</td></tr>
+<tr class="memdesc:ga3237597e835f1c92f03f335c364b7048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the continuous tick value converted to microseconds since calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
+<tr class="separator:ga3237597e835f1c92f03f335c364b7048"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa5984a81837625bc4183788d900d3684" id="r_gaa5984a81837625bc4183788d900d3684"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gaa5984a81837625bc4183788d900d3684">fChrono_GetContinuousTickMs</a> (void)</td></tr>
 <tr class="memdesc:gaa5984a81837625bc4183788d900d3684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the continuous tick value converted to milliseconds since calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
 <tr class="separator:gaa5984a81837625bc4183788d900d3684"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaef0ca9fcf426a5c1be655c8b4de41ad3" id="r_gaef0ca9fcf426a5c1be655c8b4de41ad3"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gaef0ca9fcf426a5c1be655c8b4de41ad3">fChrono_GetContinuousTickS</a> (void)</td></tr>
+<tr class="memdesc:gaef0ca9fcf426a5c1be655c8b4de41ad3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the continuous tick value converted to seconds since calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
+<tr class="separator:gaef0ca9fcf426a5c1be655c8b4de41ad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad32b8aeb7641f4dea97f10a219e962d2" id="r_gad32b8aeb7641f4dea97f10a219e962d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gad32b8aeb7641f4dea97f10a219e962d2">fChrono_GetTickTopValue</a> (void)</td></tr>
 <tr class="memdesc:gad32b8aeb7641f4dea97f10a219e962d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Tick top value.  <br /></td></tr>
 <tr class="separator:gad32b8aeb7641f4dea97f10a219e962d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,18 +237,27 @@ Variables</h2></td></tr>
 <tr class="memitem:gae36079f94fb974027f0c371d85b62044" id="r_gae36079f94fb974027f0c371d85b62044"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#gae36079f94fb974027f0c371d85b62044">TickTopValue</a> = 0xFFFFFFFF</td></tr>
 <tr class="memdesc:gae36079f94fb974027f0c371d85b62044"><td class="mdescLeft">&#160;</td><td class="mdescRight">The tick top value. This private value is set by calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
 <tr class="separator:gae36079f94fb974027f0c371d85b62044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2fc12bbe6c303717cb949eb609b69bed" id="r_ga2fc12bbe6c303717cb949eb609b69bed"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structs_chrono.html">sChrono</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga2fc12bbe6c303717cb949eb609b69bed">ChronoTickUs</a></td></tr>
+<tr class="memdesc:ga2fc12bbe6c303717cb949eb609b69bed"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>chrono</b> object that holds the tick value in microseconds since initializing the module using <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
+<tr class="separator:ga2fc12bbe6c303717cb949eb609b69bed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga96953e4698c4c0faa530faa2cde9a93a" id="r_ga96953e4698c4c0faa530faa2cde9a93a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structs_chrono.html">sChrono</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga96953e4698c4c0faa530faa2cde9a93a">ChronoTickMs</a></td></tr>
-<tr class="memdesc:ga96953e4698c4c0faa530faa2cde9a93a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>chrono</b> object that holds the tick value since initializing the module using <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
+<tr class="memdesc:ga96953e4698c4c0faa530faa2cde9a93a"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>chrono</b> object that holds the tick value in milliseconds since initializing the module using <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
 <tr class="separator:ga96953e4698c4c0faa530faa2cde9a93a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1892c0593ff79cd3966fb56c77aeee3f" id="r_ga1892c0593ff79cd3966fb56c77aeee3f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structs_chrono.html">sChrono</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga1892c0593ff79cd3966fb56c77aeee3f">ChronoTickS</a></td></tr>
+<tr class="memdesc:ga1892c0593ff79cd3966fb56c77aeee3f"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>chrono</b> object that holds the tick value in seconds since initializing the module using <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
+<tr class="separator:ga1892c0593ff79cd3966fb56c77aeee3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1466279556f219467760753609c7afec" id="r_ga1466279556f219467760753609c7afec"><td class="memItemLeft" align="right" valign="top">static uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga1466279556f219467760753609c7afec">ContinuousTickUs</a></td></tr>
+<tr class="memdesc:ga1466279556f219467760753609c7afec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time length in microseconds since initializing the chrono module.  <br /></td></tr>
+<tr class="separator:ga1466279556f219467760753609c7afec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac6a074b4152adf210c7b686d9962c9e1" id="r_gac6a074b4152adf210c7b686d9962c9e1"><td class="memItemLeft" align="right" valign="top">static uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#gac6a074b4152adf210c7b686d9962c9e1">ContinuousTickMs</a></td></tr>
 <tr class="memdesc:gac6a074b4152adf210c7b686d9962c9e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time length in milliseconds since initializing the chrono module.  <br /></td></tr>
 <tr class="separator:gac6a074b4152adf210c7b686d9962c9e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga280edd8456b87038b09887bfaa804a27" id="r_ga280edd8456b87038b09887bfaa804a27"><td class="memItemLeft" align="right" valign="top">static uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga280edd8456b87038b09887bfaa804a27">ContinuousTickS</a></td></tr>
+<tr class="memdesc:ga280edd8456b87038b09887bfaa804a27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Time length in seconds since initializing the chrono module.  <br /></td></tr>
+<tr class="separator:ga280edd8456b87038b09887bfaa804a27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacb08bd0d324cc3fec9d91dcc364989cb" id="r_gacb08bd0d324cc3fec9d91dcc364989cb"><td class="memItemLeft" align="right" valign="top">static volatile <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_h_r_o_n_o___t_i_c_k___p_o_i_n_t_e_r.html#gacb08bd0d324cc3fec9d91dcc364989cb">pTickValue</a></td></tr>
 <tr class="memdesc:gacb08bd0d324cc3fec9d91dcc364989cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to an unsigned integer that hold current value of the tick.  <br /></td></tr>
 <tr class="separator:gacb08bd0d324cc3fec9d91dcc364989cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0b71efe521985631485e855eb3cf8cd5" id="r_ga0b71efe521985631485e855eb3cf8cd5"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_h_r_o_n_o___t_i_c_k___p_o_i_n_t_e_r.html#ga0b71efe521985631485e855eb3cf8cd5">GetTickValue</a> )(void) = NULL</td></tr>
-<tr class="memdesc:ga0b71efe521985631485e855eb3cf8cd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function pointer to a function that returns current value of the tick.  <br /></td></tr>
-<tr class="separator:ga0b71efe521985631485e855eb3cf8cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>: Chrono module. </p>
@@ -236,9 +265,92 @@ Variables</h2></td></tr>
 <p>Copyright (c) 2024 FaraabinCo. All rights reserved.</p>
 <p>This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component.</p>
 <p><a href="https://faraabinco.ir/">https://faraabinco.ir/</a> <a href="https://github.com/FaraabinCo">https://github.com/FaraabinCo</a> </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a06268baba499910017503433c85851de" name="a06268baba499910017503433c85851de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06268baba499910017503433c85851de">&#9670;&#160;</a></span>CHECK_INIT_</h2>
 
-<p class="definition">Definition in file <a class="el" href="chrono_8c_source.html">chrono.c</a>.</p>
-</div></div><!-- contents -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHECK_INIT_</td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"></span></td><td>)</td>
+          <td>&#160;&#160;&#160;if(<a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga190a54bf0c6980c9e88e20171ef8f300">Init</a> == false){return;}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks whether the chrono module is initialized or not. </p>
+<dl class="section note"><dt>Note</dt><dd>If the chrono object is not initialized, this macro forces the API to return. </dd></dl>
+
+</div>
+</div>
+<a id="a9197e648aff6eade068870aee34ad7ca" name="a9197e648aff6eade068870aee34ad7ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9197e648aff6eade068870aee34ad7ca">&#9670;&#160;</a></span>CHECK_INIT_RET_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHECK_INIT_RET_</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">ret</span></td><td>)</td>
+          <td>&#160;&#160;&#160;if(<a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga190a54bf0c6980c9e88e20171ef8f300">Init</a> == false){return (ret);}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks whether the chrono module is initialized or not. </p>
+<dl class="section note"><dt>Note</dt><dd>If the chrono object is not initialized, this macro forces the API to return the values specified by "ret". </dd></dl>
+
+</div>
+</div>
+<a id="aaf9da3d82844214e18e57b558fe7c89c" name="aaf9da3d82844214e18e57b558fe7c89c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf9da3d82844214e18e57b558fe7c89c">&#9670;&#160;</a></span>CHECK_RUN_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHECK_RUN_</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">ret</span></td><td>)</td>
+          <td>&#160;&#160;&#160;if(me-&gt;_run == false){return (ret);}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks whether the chrono object is in the run state or not. </p>
+<dl class="section note"><dt>Note</dt><dd>If the chrono object is not running, this macro forces the API to return the values specified by "ret". </dd></dl>
+
+</div>
+</div>
+<a id="af71654c6d86d0daaf7d52f666d145f75" name="af71654c6d86d0daaf7d52f666d145f75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af71654c6d86d0daaf7d52f666d145f75">&#9670;&#160;</a></span>ELAPSED_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ELAPSED_</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">a, </span></td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">b</span>&#160;)&#160;&#160;&#160;(((a) &gt;= (b)) ? ((a) - (b)) : ((<a class="el" href="group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#gae36079f94fb974027f0c371d85b62044">TickTopValue</a>) - ((b) - (a))))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the time length between "a" and "b". </p>
+<dl class="section note"><dt>Note</dt><dd>Chronologically, "a" must be a time tick after "b", but the value of "a" could be less than "b" (e.g., when tick overflows). </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
