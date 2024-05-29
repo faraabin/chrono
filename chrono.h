@@ -47,25 +47,28 @@ extern "C" {
 
 /**
  * @brief Returns current tick value a the number of ticks, since the start of the tick generator.
- * 
+ *       
  */
 #define tick_()		fChrono_GetTick()
 
 /**
  * @brief Returns the number of microseconds passed since the initialization of the chrono module.
- * 
+ * @note This macro is not re-entrant. if this condition may be happen, user should use critical section
+ *       for prevent it.
  */
 #define micros_()	fChrono_GetContinuousTickUs()
 
 /**
  * @brief Returns the number of milliseconds passed since the initialization of the chrono module.
- * 
+ * @note This macro is not re-entrant. if this condition may be happen, user should use critical section
+ *       for prevent it.
  */
 #define millis_()	fChrono_GetContinuousTickMs()
 
 /**
  * @brief Returns the number of seconds passed since the initialization of the chrono module.
- * 
+ * @note This macro is not re-entrant. if this condition may be happen, user should use critical section
+ *       for prevent it.
  */
 #define seconds_()	fChrono_GetContinuousTickS()
 
@@ -161,7 +164,8 @@ tick_t fChrono_GetTick(void);
 
 /**
  * @brief Returns the amount of time converted to microseconds, milliseconds & seconds since calling fChrono_Init().
- * 
+ * @note This functions are not re-entrant. if this condition may be happen, user should use critical section
+ *       for prevent it.
  * @retval timeLength: Time length since calling fChrono_Init() in microseconds, milliseconds & seconds
  */
 uint64_t fChrono_GetContinuousTickUs(void);
