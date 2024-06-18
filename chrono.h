@@ -139,7 +139,8 @@ typedef struct {
   uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, volatile tick_t *tickValue);
 
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
-
+  
+  typedef tick_t(*fpTick_t)(void);
   uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, tick_t(*fpTickValue)(void));
 
 #else
@@ -185,6 +186,25 @@ tick_t fChrono_GetTickTopValue(void);
  * @retval tickToNsCoef: Tick-to-nanoseconds coefficient
  */
 uint32_t fChrono_GetTickToNsCoef(void);
+
+/**
+ * @brief Returns the pointer to the tick generator.
+ * 
+ * @retval tickPointer: Pointer to the tick generator.
+ */
+#if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
+
+  volatile tick_t* fChrono_GetTickPointer(void);
+
+#elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
+
+  volatile fpTick_t fChrono_GetTickPointer(void);
+
+#else
+
+  #error "CHRONO_TICK_TYPE must be defined"
+
+#endif
 
 /**
  * @brief Returns the maximum measurable time interval that can be counted by the tick generator until it reaches its top value.

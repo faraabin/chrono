@@ -550,6 +550,35 @@ uint32_t fChrono_GetTickToNsCoef(void) {
 }
 
 /**
+ * @brief Returns the pointer to the tick generator.
+ * 
+ * @retval tickPointer: Pointer to the tick generator.
+ */
+#if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
+
+  volatile tick_t* fChrono_GetTickPointer(void) {
+    
+    CHECK_INIT_RET_(NULL);
+  
+    return pTickValue;
+  }
+
+#elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
+
+  volatile fpTick_t fChrono_GetTickPointer(void) {
+    
+    CHECK_INIT_RET_(NULL);
+    
+    return GetTickValue;
+  }
+
+#else
+
+  #error "CHRONO_TICK_TYPE must be defined"
+
+#endif
+
+/**
  * @brief Returns the maximum measurable time interval in seocnds that can be counted by the tick generator until it reaches its top value.
  * 
  * @retval maxTime: Maximum measurable time interval (seconds)

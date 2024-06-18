@@ -20,8 +20,10 @@
 /* Includes ------------------------------------------------------------------*/
 #include "chrono_test.h"
 
-#include "unity.h"
-#include "../chrono.h"
+#include "..\chrono.h"
+#include "..\ex\chrono_long.h"
+
+#include "unity_fixture.h"
 
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -30,58 +32,16 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 static volatile uint32_t tickVal;
+static uint32_t currentTickTop;
+static uint32_t tickToNs;
+static volatile tick_t *pTick;
+TEST_GROUP(chronoUnitTests);
+TEST_GROUP(chronoLongUnitTests);
 
 /* Private function prototypes -----------------------------------------------*/
-static void Chrono_InitChronoWithNullPointer_InitReturnFalse(void);
-static void Chrono_GetTickIsCalledWhileChronoIsNotInit_ReturnZero(void);
-static void Chrono_GetTickIsCalled_ReturnCurrentTick(void);
-static void Chrono_GetTickMsIsCalledWhileChronoIsNotInit_ReturnZero(void);
-static void Chrono_GetTickMsIsCalled_ReturnCumulativeTime(void);
-static void Chrono_GetTickTopValueIsCalledWhileChronoIsNotInit_ReturnZero(void);
-static void Chrono_GetTickTopValueIsCalledWhenChronoIsInit_ReturnExpectedValues(void);
-static void Chrono_GetTickToNsCoefIsCalledWhileChronoIsNotInit_ReturnZero(void);
-static void Chrono_GetTickToNsCoefIsCalledWhenChronoIsInit_ReturnExpectedValues(void);
-static void Chrono_GetTickMaxTimeMsIsCalledWhileChronoIsNotInit_ReturnZero(void);
-static void Chrono_GetTickMaxTimeMsIsCalledWhenChronoIsInit_ReturnExpectedValues(void);
-static void Chrono_TimeSpanSIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_TimeSpanSIsCalledWhenChronoIsInit_ReturnTimeLength(void);
-static void Chrono_TimeSpanMsIsCalledWhenChronoIsInit_ReturnTimeLength(void);
-static void Chrono_TimeSpanUsIsCalledWhenChronoIsInit_ReturnTimeLength(void);
-static void Chrono_ElapsedSIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_ElapsedSIsCalledWhenChronoIsInit_ReturnElapsed(void);
-static void Chrono_ElapsedMsIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_ElapsedMsIsCalledWhenChronoIsInit_ReturnElapsed(void);
-static void Chrono_ElapsedUsIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_ElapsedUsIsCalledWhenChronoIsInit_ReturnElapsed(void);
-static void Chrono_LeftSIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_LeftSIsCalledWhenNotInRun_ReturnZero(void);
-static void Chrono_LeftSIsCalledWhenChronoIsInit_ReturnLeft(void);
-static void Chrono_LeftMsIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_LeftMsIsCalledWhenNotInRun_ReturnZero(void);
-static void Chrono_LeftMsIsCalledWhenChronoIsInit_ReturnLeft(void);
-static void Chrono_LeftUsIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_LeftUsIsCalledWhenNotInRun_ReturnZero(void);
-static void Chrono_LeftUsIsCalledWhenChronoIsInit_ReturnLeft(void);
-static void Chrono_IsTimedoutSIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_IsTimedoutSIsCalledWhenNotInRun_ReturnZero(void);
-static void Chrono_IsTimedoutSIsCalledWhenChronoIsInit_ReturnTimeoutStatus(void);
-static void Chrono_IsTimedoutMsIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_IsTimedoutMsIsCalledWhenNotInRun_ReturnZero(void);
-static void Chrono_IsTimedoutMsIsCalledWhenChronoIsInit_ReturnTimeoutStatus(void);
-static void Chrono_IsTimedoutUsIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_IsTimedoutUsIsCalledWhenNotInRun_ReturnZero(void);
-static void Chrono_IsTimedoutUsIsCalledWhenChronoIsInit_ReturnTimeoutStatus(void);
-static void Chrono_IntervalSIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_IntervalSIsCalledWhenChronoIsNotRun_ReturnZero(void);
-static void Chrono_IntervalSIsCalledWhenChronoIsInit_ReturnInterval(void);
-static void Chrono_IntervalMsIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_IntervalMsIsCalledWhenChronoIsNotRun_ReturnZero(void);
-static void Chrono_IntervalMsIsCalledWhenChronoIsInit_ReturnInterval(void);
-static void Chrono_IntervalUsIsCalledWhenChronoIsNotInit_ReturnZero(void);
-static void Chrono_IntervalUsIsCalledWhenChronoIsNotRun_ReturnZero(void);
-static void Chrono_IntervalUsIsCalledWhenChronoIsInit_ReturnInterval(void);
-void setUp(void);
-void tearDown(void);
+static void RunTests(void);
+static void OneTimeSetup(void);
+static void OneTimeTearDown(void);
 
 /* Variables -----------------------------------------------------------------*/
 
@@ -96,59 +56,15 @@ void tearDown(void);
  * 
  * @return int 
  */
-int ChronoUnitTestsRun(void) {
-  UNITY_BEGIN();
-
-  RUN_TEST(Chrono_InitChronoWithNullPointer_InitReturnFalse);
-  RUN_TEST(Chrono_GetTickIsCalledWhileChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_GetTickIsCalled_ReturnCurrentTick);
-  RUN_TEST(Chrono_GetTickMsIsCalledWhileChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_GetTickMsIsCalled_ReturnCumulativeTime);
-  RUN_TEST(Chrono_GetTickTopValueIsCalledWhileChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_GetTickTopValueIsCalledWhenChronoIsInit_ReturnExpectedValues);
-  RUN_TEST(Chrono_GetTickToNsCoefIsCalledWhileChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_GetTickToNsCoefIsCalledWhenChronoIsInit_ReturnExpectedValues);
-  RUN_TEST(Chrono_GetTickMaxTimeMsIsCalledWhileChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_GetTickMaxTimeMsIsCalledWhenChronoIsInit_ReturnExpectedValues);
-  RUN_TEST(Chrono_TimeSpanSIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_TimeSpanSIsCalledWhenChronoIsInit_ReturnTimeLength);
-  RUN_TEST(Chrono_TimeSpanMsIsCalledWhenChronoIsInit_ReturnTimeLength);
-  RUN_TEST(Chrono_TimeSpanUsIsCalledWhenChronoIsInit_ReturnTimeLength);
-  RUN_TEST(Chrono_ElapsedSIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_ElapsedSIsCalledWhenChronoIsInit_ReturnElapsed);
-  RUN_TEST(Chrono_ElapsedMsIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_ElapsedMsIsCalledWhenChronoIsInit_ReturnElapsed);
-  RUN_TEST(Chrono_ElapsedUsIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_ElapsedUsIsCalledWhenChronoIsInit_ReturnElapsed);
-  RUN_TEST(Chrono_LeftSIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_LeftSIsCalledWhenNotInRun_ReturnZero);
-  RUN_TEST(Chrono_LeftSIsCalledWhenChronoIsInit_ReturnLeft);
-  RUN_TEST(Chrono_LeftMsIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_LeftMsIsCalledWhenNotInRun_ReturnZero);
-  RUN_TEST(Chrono_LeftMsIsCalledWhenChronoIsInit_ReturnLeft);
-  RUN_TEST(Chrono_LeftUsIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_LeftUsIsCalledWhenNotInRun_ReturnZero);
-  RUN_TEST(Chrono_LeftUsIsCalledWhenChronoIsInit_ReturnLeft);
-  RUN_TEST(Chrono_IsTimedoutSIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_IsTimedoutSIsCalledWhenNotInRun_ReturnZero);
-  RUN_TEST(Chrono_IsTimedoutSIsCalledWhenChronoIsInit_ReturnTimeoutStatus);
-  RUN_TEST(Chrono_IsTimedoutMsIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_IsTimedoutMsIsCalledWhenNotInRun_ReturnZero);
-  RUN_TEST(Chrono_IsTimedoutMsIsCalledWhenChronoIsInit_ReturnTimeoutStatus);
-  RUN_TEST(Chrono_IsTimedoutUsIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_IsTimedoutUsIsCalledWhenNotInRun_ReturnZero);
-  RUN_TEST(Chrono_IsTimedoutUsIsCalledWhenChronoIsInit_ReturnTimeoutStatus);
-  RUN_TEST(Chrono_IntervalSIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_IntervalSIsCalledWhenChronoIsNotRun_ReturnZero);
-  RUN_TEST(Chrono_IntervalSIsCalledWhenChronoIsInit_ReturnInterval);
-  RUN_TEST(Chrono_IntervalMsIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_IntervalMsIsCalledWhenChronoIsNotRun_ReturnZero);
-  RUN_TEST(Chrono_IntervalMsIsCalledWhenChronoIsInit_ReturnInterval);
-  RUN_TEST(Chrono_IntervalUsIsCalledWhenChronoIsNotInit_ReturnZero);
-  RUN_TEST(Chrono_IntervalUsIsCalledWhenChronoIsNotRun_ReturnZero);
-  RUN_TEST(Chrono_IntervalUsIsCalledWhenChronoIsInit_ReturnInterval);
-
-  return UNITY_END();
+int fChrono_UnitTests_Run(int argc, const char* argv[]) {
+  
+  OneTimeSetup();
+  
+  int ret = UnityMain(argc, argv, RunTests);
+  
+  OneTimeTearDown();
+  
+  return ret;
 }
 
 /*
@@ -158,10 +74,43 @@ int ChronoUnitTestsRun(void) {
 */
 
 /**
+ * @brief Run all tests in test group.
+ * 
+ */
+static void RunTests(void) {
+  
+  RUN_TEST_GROUP(chronoUnitTests);
+  RUN_TEST_GROUP(chronoLongUnitTests);
+  
+}
+
+/**
+ * @brief Unit test one time setup.
+ * 
+ */
+static void OneTimeSetup(void) {
+  
+  currentTickTop = fChrono_GetTickTopValue();
+  tickToNs = fChrono_GetTickToNsCoef();
+  pTick = fChrono_GetTickPointer();
+  
+}
+
+/**
+ * @brief Unit test one time teardown.
+ * 
+ */
+static void OneTimeTearDown(void) {
+
+  fChrono_Init(currentTickTop, tickToNs, pTick);
+  
+}
+
+/**
  * @brief Unit test setup.
  * 
  */
-void setUp(void) {
+TEST_SETUP(chronoUnitTests) {
   
 }
 
@@ -169,15 +118,31 @@ void setUp(void) {
  * @brief Unit test teardown.
  * 
  */
-void tearDown(void) {
+TEST_TEAR_DOWN(chronoUnitTests) {
+
+}
+
+/**
+ * @brief Unit test setup.
+ * 
+ */
+TEST_SETUP(chronoLongUnitTests) {
   
+}
+
+/**
+ * @brief Unit test teardown.
+ * 
+ */
+TEST_TEAR_DOWN(chronoLongUnitTests) {
+
 }
 
 /**
  * @brief fChrono_Init() must return 1 if user pass null pointer for tickValue.
  * 
  */
-static void Chrono_InitChronoWithNullPointer_InitReturnFalse(void) {
+TEST(chronoUnitTests, Chrono_InitChronoWithNullPointer_InitReturnFalse) {
   uint8_t ret = 0;
 
   ret = fChrono_Init(0, 0, NULL);
@@ -189,7 +154,7 @@ static void Chrono_InitChronoWithNullPointer_InitReturnFalse(void) {
  * @brief fChrono_GetTick() must return 0 when module is not initialized properly.
  * 
  */
-static void Chrono_GetTickIsCalledWhileChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_GetTickIsCalledWhileChronoIsNotInit_ReturnZero) {
   uint32_t ret = 0;
 
   fChrono_Init(0, 0, NULL);
@@ -203,7 +168,7 @@ static void Chrono_GetTickIsCalledWhileChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_GetTick() must return current tick
  * 
  */
-static void Chrono_GetTickIsCalled_ReturnCurrentTick(void) {
+TEST(chronoUnitTests, Chrono_GetTickIsCalled_ReturnCurrentTick) {
 
   fChrono_Init(0xFFFFFFFF, 1000, &tickVal);
   
@@ -224,7 +189,7 @@ static void Chrono_GetTickIsCalled_ReturnCurrentTick(void) {
  * @brief fChrono_GetContinuousTickMs() must return 0 when module is not initialized properly.
  * 
  */
-static void Chrono_GetTickMsIsCalledWhileChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_GetTickMsIsCalledWhileChronoIsNotInit_ReturnZero) {
   
   uint64_t ret = 0xFFFFFFFFFFFFFFFF;
 
@@ -239,27 +204,35 @@ static void Chrono_GetTickMsIsCalledWhileChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_GetContinuousTickMs() must return cumulative time length.
  * 
  */
-static void Chrono_GetTickMsIsCalled_ReturnCumulativeTime(void) {
+TEST(chronoUnitTests, Chrono_GetTickMsIsCalled_ReturnCumulativeTime) {
+  
   tickVal = 0;
-
-  fChrono_Init(0xFFFFFFFF, 1000, &tickVal);
-
-  TEST_ASSERT_EQUAL_UINT64(0, fChrono_GetContinuousTickMs());
+  
+  fChrono_Init(0xFFFFFFFF, 1000000, &tickVal);
+  
+  uint64_t contTick = 0;
+  contTick = fChrono_GetContinuousTickMs();
+  TEST_ASSERT_EQUAL_UINT64(0, contTick);
 
   tickVal = 1000;
-  TEST_ASSERT_EQUAL_UINT64(1000, fChrono_GetContinuousTickMs());
+  contTick = fChrono_GetContinuousTickMs();
+  TEST_ASSERT_EQUAL_UINT64(1000, contTick);
 
   tickVal = 0xFFFFFFFF;
-  TEST_ASSERT_EQUAL_UINT64(0xFFFFFFFF, fChrono_GetContinuousTickMs());
+  contTick = fChrono_GetContinuousTickMs();
+  TEST_ASSERT_EQUAL_UINT64(0xFFFFFFFF, contTick);
 
   tickVal = 1;
-  TEST_ASSERT_EQUAL_UINT64(0xFFFFFFFF + 1, fChrono_GetContinuousTickMs());
+  contTick = fChrono_GetContinuousTickMs();
+  TEST_ASSERT_EQUAL_UINT64((uint64_t)(0xFFFFFFFF) + 1, contTick);
 
   tickVal = 1000;
-  TEST_ASSERT_EQUAL_UINT64(0xFFFFFFFF + 1000, fChrono_GetContinuousTickMs());
+  contTick = fChrono_GetContinuousTickMs();
+  TEST_ASSERT_EQUAL_UINT64((uint64_t)(0xFFFFFFFF) + 1000, contTick);
 
   tickVal = 0xFFFFFFFF;
-  TEST_ASSERT_EQUAL_UINT64(0xFFFFFFFF * 2, fChrono_GetContinuousTickMs());
+  contTick = fChrono_GetContinuousTickMs();
+  TEST_ASSERT_EQUAL_UINT64((uint64_t)(0xFFFFFFFF) * 2, contTick);
 
 }
 
@@ -267,7 +240,7 @@ static void Chrono_GetTickMsIsCalled_ReturnCumulativeTime(void) {
  * @brief fChrono_GetTickTopValue() must return 0 when module is not initialized properly.
  * 
  */
-static void Chrono_GetTickTopValueIsCalledWhileChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_GetTickTopValueIsCalledWhileChronoIsNotInit_ReturnZero) {
 
   uint32_t topValues[] = {0, 0xFFFF0000, 0xFFFFFFFE, 0xFFFFFFFF, 0x10000000};
   uint32_t retValues[] = {0, 0, 0, 0, 0};
@@ -286,7 +259,7 @@ static void Chrono_GetTickTopValueIsCalledWhileChronoIsNotInit_ReturnZero(void) 
  * @brief fChrono_GetTickTopValue() must return top value that user passed to init function.
  * 
  */
-static void Chrono_GetTickTopValueIsCalledWhenChronoIsInit_ReturnExpectedValues(void) {
+TEST(chronoUnitTests, Chrono_GetTickTopValueIsCalledWhenChronoIsInit_ReturnExpectedValues) {
 
   uint32_t topValues[] = {0, 0xFFFF0000, 0xFFFFFFFE, 0xFFFFFFFF, 0x10000000};
   uint32_t retValues[] = {0, 0, 0, 0, 0};
@@ -305,7 +278,7 @@ static void Chrono_GetTickTopValueIsCalledWhenChronoIsInit_ReturnExpectedValues(
  * @brief fChrono_GetTickToNsCoef() must return 0 when module is not initialized properly.
  * 
  */
-static void Chrono_GetTickToNsCoefIsCalledWhileChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_GetTickToNsCoefIsCalledWhileChronoIsNotInit_ReturnZero) {
 
   uint32_t coefValues[] = {0, 1, 1000, 0xFFFFFFFF, 0x10000000};
   uint32_t retValues[] = {0, 0, 0, 0, 0};
@@ -325,7 +298,7 @@ static void Chrono_GetTickToNsCoefIsCalledWhileChronoIsNotInit_ReturnZero(void) 
  * @brief fChrono_GetTickToNsCoef() must return coefficient that user passed to init function.
  * 
  */
-static void Chrono_GetTickToNsCoefIsCalledWhenChronoIsInit_ReturnExpectedValues(void) {
+TEST(chronoUnitTests, Chrono_GetTickToNsCoefIsCalledWhenChronoIsInit_ReturnExpectedValues) {
 
   uint32_t coefValues[] = {0, 1, 1000, 0xFFFFFFFF, 0x10000000};
   uint32_t retValues[] = {0, 0, 0, 0, 0};
@@ -344,7 +317,7 @@ static void Chrono_GetTickToNsCoefIsCalledWhenChronoIsInit_ReturnExpectedValues(
  * @brief fChrono_GetMaxMeasurableTimeMs() must return 0 when module is not initialized properly.
  * 
  */
-static void Chrono_GetTickMaxTimeMsIsCalledWhileChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_GetTickMaxTimeMsIsCalledWhileChronoIsNotInit_ReturnZero) {
 
   uint32_t topValues[] = {0, 0xFFFF0000, 0xFFFFFFFE, 0xFFFFFFFF, 0x10000000};
   uint32_t coefValues[] = {0, 1, 1000, 0xFFFFFFFF, 0x10000000};
@@ -363,7 +336,7 @@ static void Chrono_GetTickMaxTimeMsIsCalledWhileChronoIsNotInit_ReturnZero(void)
  * @brief fChrono_GetMaxMeasurableTimeMs() must return maximum measurable time length.
  * 
  */
-static void Chrono_GetTickMaxTimeMsIsCalledWhenChronoIsInit_ReturnExpectedValues(void) {
+TEST(chronoUnitTests, Chrono_GetTickMaxTimeMsIsCalledWhenChronoIsInit_ReturnExpectedValues) {
 
   uint32_t topValues[] = {0, 0xFFFF0000, 0xFFFFFFFE, 0xFFFFFFFF, 0x10000000, 0xFFFFFFFF};
   uint32_t coefValues[] = {0, 1, 1000, 0xFFFFFFFF, 0x10000000, 0xFFFFFFFF};
@@ -385,7 +358,7 @@ static void Chrono_GetTickMaxTimeMsIsCalledWhenChronoIsInit_ReturnExpectedValues
  * @brief fChrono_TimeSpanS() must return zero when module is not initialized.
  * 
  */
-static void Chrono_TimeSpanSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_TimeSpanSIsCalledWhenChronoIsNotInit_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000, NULL);
 
@@ -401,7 +374,7 @@ static void Chrono_TimeSpanSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_TimeSpanS() must return maximum measurable time length.
  * 
  */
-static void Chrono_TimeSpanSIsCalledWhenChronoIsInit_ReturnTimeLength(void) {
+TEST(chronoUnitTests, Chrono_TimeSpanSIsCalledWhenChronoIsInit_ReturnTimeLength) {
 
   float ret = 0.0f;
   fChrono_Init(0xFFFFFFFF, 1000000000, &tickVal);
@@ -436,7 +409,7 @@ static void Chrono_TimeSpanSIsCalledWhenChronoIsInit_ReturnTimeLength(void) {
  * @brief fChrono_TimeSpanMs() must return maximum measurable time length.
  * 
  */
-static void Chrono_TimeSpanMsIsCalledWhenChronoIsInit_ReturnTimeLength(void) {
+TEST(chronoUnitTests, Chrono_TimeSpanMsIsCalledWhenChronoIsInit_ReturnTimeLength) {
 
   float ret = 0.0f;
   fChrono_Init(0xFFFFFFFF, 1000000, &tickVal);
@@ -471,7 +444,7 @@ static void Chrono_TimeSpanMsIsCalledWhenChronoIsInit_ReturnTimeLength(void) {
  * @brief fChrono_TimeSpanUs() must return maximum measurable time length.
  * 
  */
-static void Chrono_TimeSpanUsIsCalledWhenChronoIsInit_ReturnTimeLength(void) {
+TEST(chronoUnitTests, Chrono_TimeSpanUsIsCalledWhenChronoIsInit_ReturnTimeLength) {
 
   float ret = 0.0f;
   fChrono_Init(0xFFFFFFFF, 1000, &tickVal);
@@ -506,7 +479,7 @@ static void Chrono_TimeSpanUsIsCalledWhenChronoIsInit_ReturnTimeLength(void) {
  * @brief fChrono_ElapsedS() must return zero when module is not initialized.
  * 
  */
-static void Chrono_ElapsedSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_ElapsedSIsCalledWhenChronoIsNotInit_ReturnZero) {
   
   fChrono_Init(0xFFFFFFFF, 1000000000, NULL);
 
@@ -522,7 +495,7 @@ static void Chrono_ElapsedSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_ElapsedS() must return elapsed time.
  * 
  */
-static void Chrono_ElapsedSIsCalledWhenChronoIsInit_ReturnElapsed(void) {
+TEST(chronoUnitTests, Chrono_ElapsedSIsCalledWhenChronoIsInit_ReturnElapsed) {
   
   uint32_t elapsed = 0;
 
@@ -559,7 +532,7 @@ static void Chrono_ElapsedSIsCalledWhenChronoIsInit_ReturnElapsed(void) {
  * @brief fChrono_ElapsedMs() must return zero when module is not initialized.
  * 
  */
-static void Chrono_ElapsedMsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_ElapsedMsIsCalledWhenChronoIsNotInit_ReturnZero) {
   
   fChrono_Init(0xFFFFFFFF, 1000000, NULL);
 
@@ -575,7 +548,7 @@ static void Chrono_ElapsedMsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_ElapsedMs() must return elapsed time.
  * 
  */
-static void Chrono_ElapsedMsIsCalledWhenChronoIsInit_ReturnElapsed(void) {
+TEST(chronoUnitTests, Chrono_ElapsedMsIsCalledWhenChronoIsInit_ReturnElapsed) {
 
   uint32_t elapsed = 0;
 
@@ -612,7 +585,7 @@ static void Chrono_ElapsedMsIsCalledWhenChronoIsInit_ReturnElapsed(void) {
  * @brief fChrono_ElapsedUs() must return zero when module is not initialized.
  * 
  */
-static void Chrono_ElapsedUsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_ElapsedUsIsCalledWhenChronoIsNotInit_ReturnZero) {
   
   fChrono_Init(0xFFFFFFFF, 1000, NULL);
 
@@ -628,7 +601,7 @@ static void Chrono_ElapsedUsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_ElapsedUs() must return elapsed time.
  * 
  */
-static void Chrono_ElapsedUsIsCalledWhenChronoIsInit_ReturnElapsed(void) {
+TEST(chronoUnitTests, Chrono_ElapsedUsIsCalledWhenChronoIsInit_ReturnElapsed) {
 
   uint32_t elapsed = 0;
 
@@ -665,7 +638,7 @@ static void Chrono_ElapsedUsIsCalledWhenChronoIsInit_ReturnElapsed(void) {
  * @brief fChrono_LeftS() returns zero if module is not initialized.
  * 
  */
-static void Chrono_LeftSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_LeftSIsCalledWhenChronoIsNotInit_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000000000, NULL);
 
@@ -681,7 +654,7 @@ static void Chrono_LeftSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_LeftS() returns zero if module is not running.
  * 
  */
-static void Chrono_LeftSIsCalledWhenNotInRun_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_LeftSIsCalledWhenNotInRun_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000000000, NULL);
 
@@ -697,7 +670,7 @@ static void Chrono_LeftSIsCalledWhenNotInRun_ReturnZero(void) {
  * @brief fChrono_LeftS() returns time left until timeout.
  * 
  */
-static void Chrono_LeftSIsCalledWhenChronoIsInit_ReturnLeft(void) {
+TEST(chronoUnitTests, Chrono_LeftSIsCalledWhenChronoIsInit_ReturnLeft) {
   
   uint32_t left = 0;
   fChrono_Init(0xFFFFFFFF, 1000000000, &tickVal);
@@ -743,7 +716,7 @@ static void Chrono_LeftSIsCalledWhenChronoIsInit_ReturnLeft(void) {
  * @brief fChrono_LeftMs() returns zero if module is not initialized.
  * 
  */
-static void Chrono_LeftMsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_LeftMsIsCalledWhenChronoIsNotInit_ReturnZero) {
   
   fChrono_Init(0xFFFFFFFF, 1000000, NULL);
 
@@ -759,7 +732,7 @@ static void Chrono_LeftMsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_LeftMs() returns zero if module is not running.
  * 
  */
-static void Chrono_LeftMsIsCalledWhenNotInRun_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_LeftMsIsCalledWhenNotInRun_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000000, NULL);
 
@@ -775,7 +748,7 @@ static void Chrono_LeftMsIsCalledWhenNotInRun_ReturnZero(void) {
  * @brief fChrono_LeftMs() returns time left until timeout.
  * 
  */
-static void Chrono_LeftMsIsCalledWhenChronoIsInit_ReturnLeft(void) {
+TEST(chronoUnitTests, Chrono_LeftMsIsCalledWhenChronoIsInit_ReturnLeft) {
 
   uint32_t left = 0;
   fChrono_Init(0xFFFFFFFF, 1000000, &tickVal);
@@ -820,7 +793,7 @@ static void Chrono_LeftMsIsCalledWhenChronoIsInit_ReturnLeft(void) {
  * @brief fChrono_LeftUs() returns zero if module is not initialized.
  * 
  */
-static void Chrono_LeftUsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_LeftUsIsCalledWhenChronoIsNotInit_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000, NULL);
 
@@ -836,7 +809,7 @@ static void Chrono_LeftUsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_LeftS() returns zero if module is not running.
  * 
  */
-static void Chrono_LeftUsIsCalledWhenNotInRun_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_LeftUsIsCalledWhenNotInRun_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000, NULL);
 
@@ -852,7 +825,7 @@ static void Chrono_LeftUsIsCalledWhenNotInRun_ReturnZero(void) {
  * @brief fChrono_LeftUs() returns time left until timeout.
  * 
  */
-static void Chrono_LeftUsIsCalledWhenChronoIsInit_ReturnLeft(void) {
+TEST(chronoUnitTests, Chrono_LeftUsIsCalledWhenChronoIsInit_ReturnLeft) {
 
   uint32_t left = 0;
   fChrono_Init(0xFFFFFFFF, 1000, &tickVal);
@@ -898,7 +871,7 @@ static void Chrono_LeftUsIsCalledWhenChronoIsInit_ReturnLeft(void) {
  * @brief fChrono_IsTimeout() returns false when module is not initialized.
  * 
  */
-static void Chrono_IsTimedoutSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_IsTimedoutSIsCalledWhenChronoIsNotInit_ReturnZero) {
   
   fChrono_Init(0xFFFFFFFF, 1000000000, NULL);
 
@@ -914,7 +887,7 @@ static void Chrono_IsTimedoutSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_IsTimeoutS() returns false when module is not running.
  * 
  */
-static void Chrono_IsTimedoutSIsCalledWhenNotInRun_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_IsTimedoutSIsCalledWhenNotInRun_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000000000, &tickVal);
 
@@ -930,7 +903,7 @@ static void Chrono_IsTimedoutSIsCalledWhenNotInRun_ReturnZero(void) {
  * @brief fChrono_IsTimeoutS() returns timeout status.
  * 
  */
-static void Chrono_IsTimedoutSIsCalledWhenChronoIsInit_ReturnTimeoutStatus(void) {
+TEST(chronoUnitTests, Chrono_IsTimedoutSIsCalledWhenChronoIsInit_ReturnTimeoutStatus) {
   
   bool isTimeout = false;
   fChrono_Init(0xFFFFFFFF, 1000000000, &tickVal);
@@ -977,7 +950,7 @@ static void Chrono_IsTimedoutSIsCalledWhenChronoIsInit_ReturnTimeoutStatus(void)
  * @brief fChrono_IsTimeout() returns false when module is not initialized.
  * 
  */
-static void Chrono_IsTimedoutMsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_IsTimedoutMsIsCalledWhenChronoIsNotInit_ReturnZero) {
   
   fChrono_Init(0xFFFFFFFF, 1000000, NULL);
 
@@ -993,7 +966,7 @@ static void Chrono_IsTimedoutMsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_IsTimeout() returns false when module is not running.
  * 
  */
-static void Chrono_IsTimedoutMsIsCalledWhenNotInRun_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_IsTimedoutMsIsCalledWhenNotInRun_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000000, &tickVal);
 
@@ -1009,7 +982,7 @@ static void Chrono_IsTimedoutMsIsCalledWhenNotInRun_ReturnZero(void) {
  * @brief fChrono_IsTimeout() returns timeout status.
  * 
  */
-static void Chrono_IsTimedoutMsIsCalledWhenChronoIsInit_ReturnTimeoutStatus(void) {
+TEST(chronoUnitTests, Chrono_IsTimedoutMsIsCalledWhenChronoIsInit_ReturnTimeoutStatus) {
 
   bool isTimeout = false;
   fChrono_Init(0xFFFFFFFF, 1000000, &tickVal);
@@ -1056,7 +1029,7 @@ static void Chrono_IsTimedoutMsIsCalledWhenChronoIsInit_ReturnTimeoutStatus(void
  * @brief fChrono_IsTimeout() returns false when module is not initialized.
  * 
  */
-static void Chrono_IsTimedoutUsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_IsTimedoutUsIsCalledWhenChronoIsNotInit_ReturnZero) {
   
   fChrono_Init(0xFFFFFFFF, 1000, NULL);
 
@@ -1072,7 +1045,7 @@ static void Chrono_IsTimedoutUsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_IsTimeout() returns false when module is not running.
  * 
  */
-static void Chrono_IsTimedoutUsIsCalledWhenNotInRun_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_IsTimedoutUsIsCalledWhenNotInRun_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000, &tickVal);
 
@@ -1088,7 +1061,7 @@ static void Chrono_IsTimedoutUsIsCalledWhenNotInRun_ReturnZero(void) {
  * @brief fChrono_IsTimeout() returns timeout status.
  * 
  */
-static void Chrono_IsTimedoutUsIsCalledWhenChronoIsInit_ReturnTimeoutStatus(void) {
+TEST(chronoUnitTests, Chrono_IsTimedoutUsIsCalledWhenChronoIsInit_ReturnTimeoutStatus) {
 
   bool isTimeout = false;
   fChrono_Init(0xFFFFFFFF, 1000, &tickVal);
@@ -1135,7 +1108,7 @@ static void Chrono_IsTimedoutUsIsCalledWhenChronoIsInit_ReturnTimeoutStatus(void
  * @brief fChrono_fIntervalS() returns zero when module is not initialized.
  * 
  */
-static void Chrono_IntervalSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_IntervalSIsCalledWhenChronoIsNotInit_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000000000, NULL);
 
@@ -1153,7 +1126,7 @@ static void Chrono_IntervalSIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_fIntervalS() returns zero when module is not running.
  * 
  */
-static void Chrono_IntervalSIsCalledWhenChronoIsNotRun_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_IntervalSIsCalledWhenChronoIsNotRun_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000000000, &tickVal);
 
@@ -1170,7 +1143,7 @@ static void Chrono_IntervalSIsCalledWhenChronoIsNotRun_ReturnZero(void) {
  * @brief fChrono_fIntervalS() returns interval.
  * 
  */
-static void Chrono_IntervalSIsCalledWhenChronoIsInit_ReturnInterval(void) {
+TEST(chronoUnitTests, Chrono_IntervalSIsCalledWhenChronoIsInit_ReturnInterval) {
   
   float interval = 0.0f;
   fChrono_Init(0xFFFFFFFF, 1000000000, &tickVal);
@@ -1205,7 +1178,7 @@ static void Chrono_IntervalSIsCalledWhenChronoIsInit_ReturnInterval(void) {
  * @brief fChrono_IntervalMs() returns zero when module is not initialized.
  * 
  */
-static void Chrono_IntervalMsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_IntervalMsIsCalledWhenChronoIsNotInit_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000000, NULL);
 
@@ -1223,7 +1196,7 @@ static void Chrono_IntervalMsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_IntervalMs() returns zero when module is not running.
  * 
  */
-static void Chrono_IntervalMsIsCalledWhenChronoIsNotRun_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_IntervalMsIsCalledWhenChronoIsNotRun_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000000, &tickVal);
 
@@ -1240,7 +1213,7 @@ static void Chrono_IntervalMsIsCalledWhenChronoIsNotRun_ReturnZero(void) {
  * @brief fChrono_IntervalMs() returns interval.
  * 
  */
-static void Chrono_IntervalMsIsCalledWhenChronoIsInit_ReturnInterval(void) {
+TEST(chronoUnitTests, Chrono_IntervalMsIsCalledWhenChronoIsInit_ReturnInterval) {
   
   float interval = 0.0f;
   fChrono_Init(0xFFFFFFFF, 1000000, &tickVal);
@@ -1275,7 +1248,7 @@ static void Chrono_IntervalMsIsCalledWhenChronoIsInit_ReturnInterval(void) {
  * @brief fChrono_IntervalUs() returns zero when module is not initialized.
  * 
  */
-static void Chrono_IntervalUsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_IntervalUsIsCalledWhenChronoIsNotInit_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000, NULL);
 
@@ -1293,7 +1266,7 @@ static void Chrono_IntervalUsIsCalledWhenChronoIsNotInit_ReturnZero(void) {
  * @brief fChrono_IntervalUs() returns zero when module is not running.
  * 
  */
-static void Chrono_IntervalUsIsCalledWhenChronoIsNotRun_ReturnZero(void) {
+TEST(chronoUnitTests, Chrono_IntervalUsIsCalledWhenChronoIsNotRun_ReturnZero) {
 
   fChrono_Init(0xFFFFFFFF, 1000, &tickVal);
 
@@ -1310,7 +1283,7 @@ static void Chrono_IntervalUsIsCalledWhenChronoIsNotRun_ReturnZero(void) {
  * @brief fChrono_IntervalUs() returns interval.
  * 
  */
-static void Chrono_IntervalUsIsCalledWhenChronoIsInit_ReturnInterval(void) {
+TEST(chronoUnitTests, Chrono_IntervalUsIsCalledWhenChronoIsInit_ReturnInterval) {
   
   float interval = 0.0f;
   fChrono_Init(0xFFFFFFFF, 1000, &tickVal);
@@ -1338,6 +1311,344 @@ static void Chrono_IntervalUsIsCalledWhenChronoIsInit_ReturnInterval(void) {
   tickVal = 21000;
   interval = fChrono_IntervalUs(&testChrono);
   TEST_ASSERT_EQUAL_FLOAT(1000, interval);
+
+}
+
+/**
+ * @brief fChronoLong_ElapsedS() returns correct elapsed time when tick is overflowed multiple times.
+ * 
+ */
+TEST(chronoLongUnitTests, ChronoLong_ElapsedSIsCalledWhenTickIsOverflowedMultipleTimes_ReturnsCorrectElapsedTime) {
+
+  uint32_t elapsed = 0;
+  sChrono testChrono = {0x00};
+
+  fChrono_Init(0xFFFFFFFF, 1, &tickVal); // It takes 4.294967296 seconds to overflow the tick generator.
+
+  tickVal = 0;
+  fChronoLong_Start(&testChrono);
+  elapsed = fChronoLong_ElapsedS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(0, elapsed);
+
+  tickVal = 1100000000;
+  elapsed = fChronoLong_ElapsedS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(1, elapsed);
+  
+  tickVal = 2100000000;
+  elapsed = fChronoLong_ElapsedS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(2, elapsed);
+
+  tickVal = 3100000000;
+  elapsed = fChronoLong_ElapsedS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(3, elapsed);
+
+  tickVal = 4100000000;
+  elapsed = fChronoLong_ElapsedS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(4, elapsed);
+
+  tickVal = 0; // This is the first overflow. It equals 4.294967296 seconds.
+  elapsed = fChronoLong_ElapsedS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(4, elapsed);
+
+  tickVal = 806000000;
+  elapsed = fChronoLong_ElapsedS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(5, elapsed);
+
+  tickVal = 1806000001;
+  elapsed = fChronoLong_ElapsedS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(6, elapsed);
+
+  tickVal = 0; // This is the second overflow. It equals 8.589934591 seconds.
+  elapsed = fChronoLong_ElapsedS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(8, elapsed);
+
+  tickVal = 420000000;
+  elapsed = fChronoLong_ElapsedS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(9, elapsed);
+
+}
+
+/**
+ * @brief fChronoLong_ElapsedMs() returns correct elapsed time when tick is overflowed multiple times.
+ * 
+ */
+TEST(chronoLongUnitTests, ChronoLong_ElapsedMsIsCalledWhenTickIsOverflowedMultipleTimes_ReturnsCorrectElapsedTime) {
+
+  timeMs_t elapsed = 0;
+  sChrono testChrono = {0x00};
+
+  fChrono_Init(0xFFFFFFFF, 1, &tickVal); // It takes 4.294967296 seconds to overflow the tick generator.
+
+  tickVal = 0;
+  fChronoLong_Start(&testChrono);
+  elapsed = fChronoLong_ElapsedMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(0.0, elapsed);
+
+  tickVal = 1000000000;
+  elapsed = fChronoLong_ElapsedMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(999.0, elapsed);
+  
+  tickVal = 2000000000;
+  elapsed = fChronoLong_ElapsedMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(1998.0, elapsed);
+
+  tickVal = 3000000000;
+  elapsed = fChronoLong_ElapsedMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(2997.0, elapsed);
+
+  tickVal = 4000000000;
+  elapsed = fChronoLong_ElapsedMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(3996.0, elapsed);
+
+  tickVal = 0; // This is the first overflow. It equals 4.294967296 seconds.
+  elapsed = fChronoLong_ElapsedMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(4290.0, elapsed);
+
+  tickVal = 706000000;
+  elapsed = fChronoLong_ElapsedMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(4995.0, elapsed);
+
+  tickVal = 1706000000;
+  elapsed = fChronoLong_ElapsedMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(5994, elapsed);
+
+  tickVal = 0; // This is the second overflow. It equals 8.589934591 seconds.
+  elapsed = fChronoLong_ElapsedMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(8582.0, elapsed);
+
+  tickVal = 420000000;
+  elapsed = fChronoLong_ElapsedMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(9001.0, elapsed);
+
+}
+
+/**
+ * @brief fChronoLong_LeftS() returns correct left time when tick is overflowed multiple times.
+ * 
+ */
+TEST(chronoLongUnitTests, ChronoLong_LeftSIsCalledWhenTickIsOverflowedMultipleTimes_ReturnsCorrectElapsedTime) {
+
+  uint32_t left = 0;
+  sChrono testChrono = {0x00};
+
+  fChrono_Init(0xFFFFFFFF, 1, &tickVal); // It takes 4.294967296 seconds to overflow the tick generator.
+
+  tickVal = 0;
+  fChronoLong_StartTimeoutS(&testChrono, 10);
+  left = fChronoLong_LeftS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(10, left);
+
+  tickVal = 0xFFFFFFFF;
+  left = fChronoLong_LeftS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(5, left);
+
+  tickVal = 0; // This is the first overflow. It equals 4.294967296 seconds.
+  left = fChronoLong_LeftS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(5, left);
+  
+  tickVal = 0xFFFFFFFF;
+  fChronoLong_LeftS(&testChrono);
+
+  tickVal = 0; // This is the second overflow. It equals 8.589934591 seconds.
+  left = fChronoLong_LeftS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(1, left);
+  
+  tickVal = 0xFFFFFFFF;
+  fChronoLong_LeftS(&testChrono);
+
+  tickVal = 0; // This is the third overflow. It equals 12.884901888 seconds.
+  left = fChronoLong_LeftS(&testChrono);
+  TEST_ASSERT_EQUAL_UINT32(0, left);
+
+}
+
+/**
+ * @brief fChronoLong_LeftMs() returns correct left time when tick is overflowed multiple times.
+ * 
+ */
+TEST(chronoLongUnitTests, ChronoLong_LeftMsIsCalledWhenTickIsOverflowedMultipleTimes_ReturnsCorrectElapsedTime) {
+
+  timeMs_t left = 0;
+  sChrono testChrono = {0x00};
+
+  fChrono_Init(0xFFFFFFFF, 1, &tickVal); // It takes 4.294967296 seconds to overflow the tick generator.
+
+  tickVal = 0;
+  fChronoLong_StartTimeoutMs(&testChrono, 10000);
+  left = fChronoLong_LeftMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(10000.0, left);
+
+  tickVal = 0xFFFFFFFF;
+  left = fChronoLong_LeftMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(5706, left);
+
+  tickVal = 0; // This is the first overflow. It equals 4.294967296 seconds.
+  left = fChronoLong_LeftMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(5706, left);
+  
+  tickVal = 0xFFFFFFFF;
+  fChronoLong_LeftS(&testChrono);
+
+  tickVal = 0; // This is the second overflow. It equals 8.589934591 seconds.
+  left = fChronoLong_LeftMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(1412, left);
+  
+  tickVal = 0xFFFFFFFF;
+  fChronoLong_LeftS(&testChrono);
+
+  tickVal = 0; // This is the third overflow. It equals 12.884901888 seconds.
+  left = fChronoLong_LeftMs(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(0, left);
+
+}
+
+/**
+ * @brief fChronoLong_IsTimeout() returns correct result for a verly long timout. (Second)
+ * 
+ */
+TEST(chronoLongUnitTests, ChronoLong_TimeoutSWithVeryLongDuration_IsTimeoutReturnCorrectly) {
+
+  bool isTimeout = false;
+  sChrono testChrono = {0x00};
+
+  fChrono_Init(0xFFFFFFFF, 1, &tickVal); // It takes 4.294967296 seconds to overflow the tick generator.
+
+  tickVal = 0;
+  fChronoLong_StartTimeoutS(&testChrono, 10);
+  isTimeout = fChronoLong_IsTimeout(&testChrono);
+  TEST_ASSERT_FALSE(isTimeout);
+  
+  tickVal = 0xFFFFFFFF;
+  fChronoLong_IsTimeout(&testChrono);
+
+  tickVal = 0; // This is the first overflow. It equals 4.294967296 seconds.
+  isTimeout = fChronoLong_IsTimeout(&testChrono);
+  TEST_ASSERT_FALSE(isTimeout);
+  
+  tickVal = 0xFFFFFFFF;
+  fChronoLong_IsTimeout(&testChrono);
+  
+  tickVal = 0; // This is the second overflow. It equals 8.589934591 seconds.
+  isTimeout = fChronoLong_IsTimeout(&testChrono);
+  TEST_ASSERT_FALSE(isTimeout);
+  
+  tickVal = 0xFFFFFFFF;
+  fChronoLong_IsTimeout(&testChrono);
+  
+  tickVal = 0; // This is the third overflow. It equals 12.884901888 seconds.
+  isTimeout = fChronoLong_IsTimeout(&testChrono);
+  TEST_ASSERT_TRUE(isTimeout);
+
+}
+
+/**
+ * @brief fChronoLong_IsTimeout() returns correct result for a verly long timout. (Millisecond)
+ * 
+ */
+TEST(chronoLongUnitTests, ChronoLong_TimeoutMsWithVeryLongDuration_IsTimeoutReturnCorrectly) {
+
+  bool isTimeout = false;
+  sChrono testChrono = {0x00};
+
+  fChrono_Init(0xFFFFFFFF, 1, &tickVal); // It takes 4.294967296 seconds to overflow the tick generator.
+
+  tickVal = 0;
+  fChronoLong_StartTimeoutMs(&testChrono, 10000);
+  isTimeout = fChronoLong_IsTimeout(&testChrono);
+  TEST_ASSERT_FALSE(isTimeout);
+  
+  tickVal = 0xFFFFFFFF;
+  fChronoLong_IsTimeout(&testChrono);
+
+  tickVal = 0; // This is the first overflow. It equals 4.294967296 seconds.
+  isTimeout = fChronoLong_IsTimeout(&testChrono);
+  TEST_ASSERT_FALSE(isTimeout);
+  
+  tickVal = 0xFFFFFFFF;
+  fChronoLong_IsTimeout(&testChrono);
+
+  tickVal = 0; // This is the second overflow. It equals 8.589934591 seconds.
+  isTimeout = fChronoLong_IsTimeout(&testChrono);
+  TEST_ASSERT_FALSE(isTimeout);
+  
+  tickVal = 0xFFFFFFFF;
+  fChronoLong_IsTimeout(&testChrono);
+
+  tickVal = 0; // This is the third overflow. It equals 12.884901888 seconds.
+  isTimeout = fChronoLong_IsTimeout(&testChrono);
+  TEST_ASSERT_TRUE(isTimeout);
+
+}
+
+/**
+ * @brief Chrono test group runner.
+ * 
+ */
+TEST_GROUP_RUNNER(chronoUnitTests) {
+
+  RUN_TEST_CASE(chronoUnitTests, Chrono_InitChronoWithNullPointer_InitReturnFalse);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickIsCalledWhileChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickIsCalled_ReturnCurrentTick);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickMsIsCalledWhileChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickMsIsCalled_ReturnCumulativeTime);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickTopValueIsCalledWhileChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickTopValueIsCalledWhenChronoIsInit_ReturnExpectedValues);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickToNsCoefIsCalledWhileChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickToNsCoefIsCalledWhenChronoIsInit_ReturnExpectedValues);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickMaxTimeMsIsCalledWhileChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickMaxTimeMsIsCalledWhenChronoIsInit_ReturnExpectedValues);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_TimeSpanSIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_TimeSpanSIsCalledWhenChronoIsInit_ReturnTimeLength);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_TimeSpanMsIsCalledWhenChronoIsInit_ReturnTimeLength);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_TimeSpanUsIsCalledWhenChronoIsInit_ReturnTimeLength);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_ElapsedSIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_ElapsedSIsCalledWhenChronoIsInit_ReturnElapsed);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_ElapsedMsIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_ElapsedMsIsCalledWhenChronoIsInit_ReturnElapsed);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_ElapsedUsIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_ElapsedUsIsCalledWhenChronoIsInit_ReturnElapsed);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_LeftSIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_LeftSIsCalledWhenNotInRun_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_LeftSIsCalledWhenChronoIsInit_ReturnLeft);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_LeftMsIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_LeftMsIsCalledWhenNotInRun_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_LeftMsIsCalledWhenChronoIsInit_ReturnLeft);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_LeftUsIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_LeftUsIsCalledWhenNotInRun_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_LeftUsIsCalledWhenChronoIsInit_ReturnLeft);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IsTimedoutSIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IsTimedoutSIsCalledWhenNotInRun_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IsTimedoutSIsCalledWhenChronoIsInit_ReturnTimeoutStatus);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IsTimedoutMsIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IsTimedoutMsIsCalledWhenNotInRun_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IsTimedoutMsIsCalledWhenChronoIsInit_ReturnTimeoutStatus);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IsTimedoutUsIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IsTimedoutUsIsCalledWhenNotInRun_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IsTimedoutUsIsCalledWhenChronoIsInit_ReturnTimeoutStatus);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IntervalSIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IntervalSIsCalledWhenChronoIsNotRun_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IntervalSIsCalledWhenChronoIsInit_ReturnInterval);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IntervalMsIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IntervalMsIsCalledWhenChronoIsNotRun_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IntervalMsIsCalledWhenChronoIsInit_ReturnInterval);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IntervalUsIsCalledWhenChronoIsNotInit_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IntervalUsIsCalledWhenChronoIsNotRun_ReturnZero);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_IntervalUsIsCalledWhenChronoIsInit_ReturnInterval);
+
+}
+
+/**
+ * @brief Chrono long test group runner.
+ * 
+ */
+TEST_GROUP_RUNNER(chronoLongUnitTests) {
+
+  RUN_TEST_CASE(chronoLongUnitTests, ChronoLong_ElapsedSIsCalledWhenTickIsOverflowedMultipleTimes_ReturnsCorrectElapsedTime);
+  RUN_TEST_CASE(chronoLongUnitTests, ChronoLong_ElapsedMsIsCalledWhenTickIsOverflowedMultipleTimes_ReturnsCorrectElapsedTime);
+  RUN_TEST_CASE(chronoLongUnitTests, ChronoLong_LeftSIsCalledWhenTickIsOverflowedMultipleTimes_ReturnsCorrectElapsedTime);
+  RUN_TEST_CASE(chronoLongUnitTests, ChronoLong_LeftMsIsCalledWhenTickIsOverflowedMultipleTimes_ReturnsCorrectElapsedTime);
+  RUN_TEST_CASE(chronoLongUnitTests, ChronoLong_TimeoutSWithVeryLongDuration_IsTimeoutReturnCorrectly);
+  RUN_TEST_CASE(chronoLongUnitTests, ChronoLong_TimeoutMsWithVeryLongDuration_IsTimeoutReturnCorrectly);
 
 }
 

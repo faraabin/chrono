@@ -33,7 +33,7 @@ extern "C" {
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported functions prototypes ---------------------------------------------*/
-int ChronoUnitTestsRun(void);
+int fChrono_UnitTests_Run(int argc, const char* argv[]);
 
 /* Exported variables --------------------------------------------------------*/
 
