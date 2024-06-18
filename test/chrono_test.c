@@ -341,14 +341,13 @@ TEST(chronoUnitTests, Chrono_GetTickMaxTimeMsIsCalledWhenChronoIsInit_ReturnExpe
   uint32_t topValues[] = {0, 0xFFFF0000, 0xFFFFFFFE, 0xFFFFFFFF, 0x10000000, 0xFFFFFFFF};
   uint32_t coefValues[] = {0, 1, 1000, 0xFFFFFFFF, 0x10000000, 0xFFFFFFFF};
   uint64_t retValues[] = {0, 0, 0, 0, 0, 0};
-  uint64_t expectedValues[] = {0, 0, 0, 0, 0, 0};
+  uint64_t expectedValues[] = {0, 0x10c6, 0x418937, 0x10c6f79fef39, 0x10c6f7a000, 0x10c6f79fef39};
 
   for(int i = 0; i < ArraySize_(topValues); i++) {
 
     fChrono_Init(topValues[i], coefValues[i], &tickVal);
   
     retValues[i] = fChrono_GetMaxMeasurableTimeMs();
-    expectedValues[i] = (uint64_t)(topValues[i] * ((float)coefValues[i] / 1000000.0f));
   }
   
   TEST_ASSERT_EQUAL_UINT64_ARRAY(expectedValues, retValues, ArraySize_(retValues));
@@ -1161,7 +1160,7 @@ TEST(chronoUnitTests, Chrono_IntervalSIsCalledWhenChronoIsInit_ReturnInterval) {
 
   tickVal = 10000;
   interval = fChrono_IntervalS(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(10000, interval);
+  TEST_ASSERT_EQUAL_FLOAT(9000, interval);
 
   tickVal = 20000;
   fChrono_Start(&testChrono);
@@ -1231,7 +1230,7 @@ TEST(chronoUnitTests, Chrono_IntervalMsIsCalledWhenChronoIsInit_ReturnInterval) 
 
   tickVal = 10000;
   interval = fChrono_IntervalMs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(10000, interval);
+  TEST_ASSERT_EQUAL_FLOAT(9000, interval);
 
   tickVal = 20000;
   fChrono_Start(&testChrono);
@@ -1301,7 +1300,7 @@ TEST(chronoUnitTests, Chrono_IntervalUsIsCalledWhenChronoIsInit_ReturnInterval) 
 
   tickVal = 10000;
   interval = fChrono_IntervalUs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(10000, interval);
+  TEST_ASSERT_EQUAL_FLOAT(9000, interval);
 
   tickVal = 20000;
   fChrono_Start(&testChrono);

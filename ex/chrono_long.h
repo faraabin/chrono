@@ -67,8 +67,8 @@ void fChronoLong_Stop(sChrono * const me);
  *  @{
  */
 
-timeS_t fChronoLong_ElapsedS(sChrono * const me);
-timeMs_t fChronoLong_ElapsedMs(sChrono * const me);
+timeS_t fChronoLong_ElapsedS(sChrono const * const me);
+timeMs_t fChronoLong_ElapsedMs(sChrono const * const me);
 
 /** @} */ //End of ELAPSED
 
@@ -90,7 +90,7 @@ timeMs_t fChronoLong_LeftMs(sChrono * const me);
 
 void fChronoLong_StartTimeoutS(sChrono * const me, timeS_t timeout);
 void fChronoLong_StartTimeoutMs(sChrono * const me, timeMs_t timeout);
-bool fChronoLong_IsTimeout(sChrono * const me);
+bool8_t fChronoLong_IsTimeout(sChrono * const me);
 
 /** @} */ //End of TIMEOUT
 

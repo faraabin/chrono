@@ -38,7 +38,7 @@
  * @note If the chrono object is not running, this macro forces the API to return the values specified by "ret".
  * 
  */
-#define CHECK_RUN_(ret)   if(me->_run == false){return (ret);}
+#define CHECK_RUN_(ret)   if(!me->_run){return (ret);}
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
@@ -68,10 +68,10 @@
 void fChronoLong_Start(sChrono * const me) {
 
   CHRONO_LONG_CRITICAL_SECTION_ENTER_;
-  me->_startTime = millis_();
+  me->_startTick = (tick_t)millis_();
   CHRONO_LONG_CRITICAL_SECTION_EXIT_;
 
-  me->_run = true;
+  me->_run = TRUE;
 }
 
 /**
@@ -83,8 +83,8 @@ void fChronoLong_Start(sChrono * const me) {
  */
 void fChronoLong_Stop(sChrono * const me) {
   
-  me->_run = false;
-  me->_isTimeout = false;
+  me->_run = FALSE;
+  me->_isTimeout = FALSE;
 }
 
 /**
@@ -95,17 +95,17 @@ void fChronoLong_Stop(sChrono * const me) {
  * @param me Pointer to the chrono object
  * @retval elapsed: Elapsed time since starting the chrono object (seconds)
  */
-timeS_t fChronoLong_ElapsedS(sChrono * const me) {
+timeS_t fChronoLong_ElapsedS(sChrono const * const me) {
   
-  CHECK_RUN_(0);
+  CHECK_RUN_(0);  /* MISRA 2012 Rule 15.5 deviation */
   
-  tick_t startTime = me->_startTime;
+  tick_t startTick = me->_startTick;
   
   CHRONO_LONG_CRITICAL_SECTION_ENTER_;
-  uint32_t millis = millis_();
+  uint64_t millis = millis_();
   CHRONO_LONG_CRITICAL_SECTION_EXIT_;
 
-  return (timeS_t)((timeS_t)(ELAPSED_(millis, startTime)) * 0.001);
+  return (timeS_t)((timeS_t)(ELAPSED_(millis, startTick)) * 0.001);
 }
 
 /**
@@ -116,17 +116,17 @@ timeS_t fChronoLong_ElapsedS(sChrono * const me) {
  * @param me Pointer to the chrono object
  * @retval elapsed: Elapsed time since starting the chrono object (milliseconds)
  */
-timeMs_t fChronoLong_ElapsedMs(sChrono * const me) {
+timeMs_t fChronoLong_ElapsedMs(sChrono const * const me) {
   
-  CHECK_RUN_(0);
+  CHECK_RUN_(0);  /* MISRA 2012 Rule 15.5 deviation */
   
-  tick_t startTime = me->_startTime;
+  tick_t startTick = me->_startTick;
 
   CHRONO_LONG_CRITICAL_SECTION_ENTER_;
-  uint32_t millis = millis_();
+  uint64_t millis = millis_();
   CHRONO_LONG_CRITICAL_SECTION_EXIT_;
   
-  return (timeMs_t)((timeMs_t)(ELAPSED_(millis, startTime)));
+  return (timeMs_t)((timeMs_t)(ELAPSED_(millis, startTick)));
 }
 
 /**
@@ -142,21 +142,21 @@ timeMs_t fChronoLong_ElapsedMs(sChrono * const me) {
  */
 timeS_t fChronoLong_LeftS(sChrono * const me) {
   
-  CHECK_RUN_(0);
+  CHECK_RUN_(0);  /* MISRA 2012 Rule 15.5 deviation */
   
-  tick_t startTime = me->_startTime;
+  tick_t startTick = me->_startTick;
   
   if(me->_isTimeout) {
     return 0;
   }
 
   CHRONO_LONG_CRITICAL_SECTION_ENTER_;
-  uint32_t millis = millis_();
+  uint64_t millis = millis_();
   CHRONO_LONG_CRITICAL_SECTION_EXIT_;
     
-  timeS_t elapsed = (timeS_t)((timeS_t)(ELAPSED_(millis, startTime)) * 0.001);
+  timeS_t elapsed = (timeS_t)((timeS_t)(ELAPSED_(millis, startTick)) * 0.001);
   if(elapsed >= (me->_timeout * 0.001)) {
-    me->_isTimeout = true;
+    me->_isTimeout = TRUE;
     return 0;
   } else {
     return ((me->_timeout * 0.001) - elapsed);
@@ -176,21 +176,21 @@ timeS_t fChronoLong_LeftS(sChrono * const me) {
  */
 timeMs_t fChronoLong_LeftMs(sChrono * const me) {
   
-  CHECK_RUN_(0);
+  CHECK_RUN_(0);  /* MISRA 2012 Rule 15.5 deviation */
   
-  tick_t startTime = me->_startTime;
+  tick_t startTick = me->_startTick;
   
   if(me->_isTimeout) {
     return 0;
   }
 
   CHRONO_LONG_CRITICAL_SECTION_ENTER_;
-  uint32_t millis = millis_();
+  uint64_t millis = millis_();
   CHRONO_LONG_CRITICAL_SECTION_EXIT_;
     
-  timeMs_t elapsed = (timeMs_t)((timeMs_t)(ELAPSED_(millis, startTime)));
+  timeMs_t elapsed = (timeMs_t)((timeMs_t)(ELAPSED_(millis, startTick)));
   if(elapsed >= (me->_timeout)) {
-    me->_isTimeout = true;
+    me->_isTimeout = TRUE;
     return 0;
   } else {
     return ((me->_timeout) - elapsed);
@@ -205,8 +205,8 @@ timeMs_t fChronoLong_LeftMs(sChrono * const me) {
  */
 void fChronoLong_StartTimeoutS(sChrono * const me, timeS_t timeout) {
   
-  me->_timeout = timeout / (timeS_t)0.001;
-  me->_isTimeout = false;
+  me->_timeout = (tick_t)(timeout / (timeS_t)0.001);
+  me->_isTimeout = FALSE;
   
   fChronoLong_Start(me);
 }
@@ -219,8 +219,8 @@ void fChronoLong_StartTimeoutS(sChrono * const me, timeS_t timeout) {
  */
 void fChronoLong_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
   
-  me->_timeout = timeout / (timeMs_t)1;
-  me->_isTimeout = false;
+  me->_timeout = (tick_t)(timeout / (timeMs_t)1);
+  me->_isTimeout = FALSE;
   
   fChronoLong_Start(me);
 }
@@ -231,29 +231,29 @@ void fChronoLong_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
  * @note Before using this function, ensure that fChronoLong_StartTimeoutS() or fChronoLong_StartTimeoutMs() has been called to start the measurement.
  * 
  * @param me Pointer to the chrono object
- * @retval isTimeout: true if the chrono is timed out, otherwise returns false
+ * @retval isTimeout: TRUE if the chrono is timed out, otherwise returns FALSE
  */
-bool fChronoLong_IsTimeout(sChrono * const me) {
+bool8_t fChronoLong_IsTimeout(sChrono * const me) {
   
-  CHECK_RUN_(false);
+  CHECK_RUN_(FALSE);  /* MISRA 2012 Rule 15.5 deviation */
   
-  tick_t startTime = me->_startTime;
+  tick_t startTick = me->_startTick;
   
   if(me->_isTimeout) {
-    return true;
+    return TRUE;
   }
 
   CHRONO_LONG_CRITICAL_SECTION_ENTER_;
-  uint32_t millis = millis_();
+  uint64_t millis = millis_();
   CHRONO_LONG_CRITICAL_SECTION_EXIT_;
 
-  if(ELAPSED_(millis, startTime) >= me->_timeout) {
-    me->_isTimeout = true;
+  if(ELAPSED_(millis, startTick) >= me->_timeout) {
+    me->_isTimeout = TRUE;
   } else {
-    return false;
+    return FALSE;
   }
 
-  return true;
+  return TRUE;
 }
 
 /** @} */ //End of OBJECTIVE_API

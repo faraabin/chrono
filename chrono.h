@@ -94,6 +94,25 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /**
+  * @brief Definition of float32_t, float64_t and bool8_t for misra compliance.
+  * 
+  */
+#ifndef float32_t
+typedef float float32_t;
+#endif
+
+#ifndef float64_t
+typedef double float64_t;
+#endif
+
+#ifndef bool8_t
+typedef bool bool8_t;
+
+#define FALSE ((bool8_t)0)
+#define TRUE  ((bool8_t)1)
+#endif
+
+/**
   * @brief Definition of the Chrono object.
   * 
   * @note Users of the OBJECTIVE_API need to create a variable of type sChrono in their application.
@@ -101,17 +120,17 @@ extern "C" {
   */
 typedef struct {
   
-  bool _run;            /*!< Holds the RUN state of the chrono object.
+  bool8_t _run;            /*!< Holds the RUN state of the chrono object.
                              When this parameter is false, the chrono is in stop mode, and time measurement functions will return 0.
                              This parameter is private and is set by the chrono API. Users must not change its value. */
 
-  tick_t _startTime;    /*!< Holds the start time of the chrono.
+  tick_t _startTick;    /*!< Holds the start time of the chrono.
                              This parameter is private and is set by the chrono API. Users must not change its value. */
 
   tick_t _timeout;      /*!< Holds the timeout length.
                              This parameter is private and is set by the chrono API. Users must not change its value. */
   
-  bool _isTimeout;      /*!< Holds the timeout state of the chrono object.
+  bool8_t _isTimeout;      /*!< Holds the timeout state of the chrono object.
                              This parameter is private and is set by the chrono API. Users must not change its value. */
 }sChrono;
 
@@ -185,7 +204,7 @@ tick_t fChrono_GetTickTopValue(void);
  * 
  * @retval tickToNsCoef: Tick-to-nanoseconds coefficient
  */
-uint32_t fChrono_GetTickToNsCoef(void);
+float32_t fChrono_GetTickToNsCoef(void);
 
 /**
  * @brief Returns the pointer to the tick generator.
@@ -271,9 +290,9 @@ void fChrono_Stop(sChrono * const me);
  *  @{
  */
 
-timeS_t fChrono_ElapsedS(sChrono * const me);
-timeMs_t fChrono_ElapsedMs(sChrono * const me);
-timeUs_t fChrono_ElapsedUs(sChrono * const me);
+timeS_t fChrono_ElapsedS(sChrono const * const me);
+timeMs_t fChrono_ElapsedMs(sChrono const * const me);
+timeUs_t fChrono_ElapsedUs(sChrono const * const me);
 
 /** @} */ //End of ELAPSED
 
@@ -297,7 +316,7 @@ timeUs_t fChrono_LeftUs(sChrono * const me);
 void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout);
 void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout);
 void fChrono_StartTimeoutUs(sChrono * const me, timeUs_t timeout);
-bool fChrono_IsTimeout(sChrono * const me);
+bool8_t fChrono_IsTimeout(sChrono * const me);
 
 /** @} */ //End of TIMEOUT
 
