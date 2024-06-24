@@ -17,8 +17,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __chrono_config_H
-#define __chrono_config_H
+#ifndef CHRONO_CONFIG_H
+#define CHRONO_CONFIG_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -56,6 +56,6 @@ typedef double timeUs_t;
 }
 #endif
 
-#endif /* __CHRONO_CONFIG_H */
+#endif /* CHRONO_CONFIG_H */
 
 /************************ © COPYRIGHT FaraabinCo *****END OF FILE****/

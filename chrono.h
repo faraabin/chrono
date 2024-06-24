@@ -25,8 +25,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __chrono_H
-#define __chrono_H
+#ifndef CHRONO_H
+#define CHRONO_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -94,7 +94,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /**
-  * @brief Definition of float32_t, float64_t and bool8_t for misra compliance.
+  * @brief Definition of float32_t, float64_t and bool_t for misra compliance.
   * 
   */
 #ifndef float32_t
@@ -105,11 +105,11 @@ typedef float float32_t;
 typedef double float64_t;
 #endif
 
-#ifndef bool8_t
-typedef bool bool8_t;
+#ifndef bool_t
+typedef bool bool_t;
 
-#define FALSE ((bool8_t)0)
-#define TRUE  ((bool8_t)1)
+#define FALSE ((bool_t)0)
+#define TRUE  ((bool_t)1)
 #endif
 
 /**
@@ -120,7 +120,7 @@ typedef bool bool8_t;
   */
 typedef struct {
   
-  bool8_t _run;            /*!< Holds the RUN state of the chrono object.
+  bool_t _run;            /*!< Holds the RUN state of the chrono object.
                              When this parameter is false, the chrono is in stop mode, and time measurement functions will return 0.
                              This parameter is private and is set by the chrono API. Users must not change its value. */
 
@@ -130,7 +130,7 @@ typedef struct {
   tick_t _timeout;      /*!< Holds the timeout length.
                              This parameter is private and is set by the chrono API. Users must not change its value. */
   
-  bool8_t _isTimeout;      /*!< Holds the timeout state of the chrono object.
+  bool_t _isTimeout;      /*!< Holds the timeout state of the chrono object.
                              This parameter is private and is set by the chrono API. Users must not change its value. */
 }sChrono;
 
@@ -316,7 +316,7 @@ timeUs_t fChrono_LeftUs(sChrono * const me);
 void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout);
 void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout);
 void fChrono_StartTimeoutUs(sChrono * const me, timeUs_t timeout);
-bool8_t fChrono_IsTimeout(sChrono * const me);
+bool_t fChrono_IsTimeout(sChrono * const me);
 
 /** @} */ //End of TIMEOUT
 
@@ -340,6 +340,6 @@ timeUs_t fChrono_IntervalUs(sChrono * const me);
 }
 #endif
 
-#endif /* __CHRONO_H */
+#endif /* CHRONO_H */
 
 /************************ Copyright (c) 2024 FaraabinCo *****END OF FILE****/

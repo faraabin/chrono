@@ -233,7 +233,7 @@ void fChronoLong_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
  * @param me Pointer to the chrono object
  * @retval isTimeout: TRUE if the chrono is timed out, otherwise returns FALSE
  */
-bool8_t fChronoLong_IsTimeout(sChrono * const me) {
+bool_t fChronoLong_IsTimeout(sChrono * const me) {
   
   CHECK_RUN_(FALSE);  /* MISRA 2012 Rule 15.5 deviation */
   

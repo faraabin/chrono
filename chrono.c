@@ -219,7 +219,7 @@
  * @brief Initialization state of the chrono module.
  * 
  */
-static bool8_t Init = FALSE;
+static bool_t Init = FALSE;
 
 /** @defgroup CHRONO_PVT_COEFS Private chrono coefficients
   * @ingroup CHRONO_PRIVATE_VARIABLES
@@ -254,7 +254,7 @@ static float32_t TickToSecCoef = 1.0f;
  * @brief The tick top value. This private value is set by calling fChrono_Init().
  * 
  */
-static tick_t TickTopValue = 0xFFFFFFFF;
+static tick_t TickTopValue;
 
 /**
  * @brief **chrono** object that holds the tick value in microseconds since initializing the module using fChrono_Init().
@@ -375,9 +375,9 @@ uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, volatile tick_t
   TickToMsCoef = TickToUsCoef / 1000.0f;
   TickToSecCoef = TickToMsCoef / 1000.0f;
   
-  ContinuousTickUs = 0;
-	ContinuousTickMs = 0;
-	ContinuousTickS = 0;
+  ContinuousTickUs = 0U;
+	ContinuousTickMs = 0U;
+	ContinuousTickS = 0U;
 	
   Init = TRUE;
   
@@ -410,7 +410,7 @@ uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, tick_t(*fpTickV
   Init = FALSE;
 
   if(fpTickValue == NULL) {
-    return 1;
+    return 1; /* MISRA 2012 Rule 15.5 deviation */
   }
 
   TickTopValue = tickTopValue;
@@ -448,7 +448,7 @@ uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, tick_t(*fpTickV
  */
 tick_t fChrono_GetTick(void) {
 
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((tick_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
 #if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
 
@@ -460,7 +460,7 @@ tick_t fChrono_GetTick(void) {
 
 #else
   
-  return 0;
+  return (tick_t)0;
   
 #endif
   
@@ -526,7 +526,7 @@ uint64_t fChrono_GetContinuousTickS(void) {
  */
 tick_t fChrono_GetTickTopValue(void) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((tick_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
   return TickTopValue;
 }
@@ -544,7 +544,7 @@ tick_t fChrono_GetTickTopValue(void) {
  */
 float32_t fChrono_GetTickToNsCoef(void) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((float32_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
   return TickToNsCoef;
 }
@@ -585,7 +585,7 @@ float32_t fChrono_GetTickToNsCoef(void) {
  */
 timeS_t fChrono_GetMaxMeasurableTimeS(void) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeS_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
   return (timeS_t)TickTopValue * TickToSecCoef;
 }
@@ -597,7 +597,7 @@ timeS_t fChrono_GetMaxMeasurableTimeS(void) {
  */
 timeMs_t fChrono_GetMaxMeasurableTimeMs(void) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeMs_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
   return (timeMs_t)TickTopValue * TickToMsCoef;
 }
@@ -609,7 +609,7 @@ timeMs_t fChrono_GetMaxMeasurableTimeMs(void) {
  */
 timeUs_t fChrono_GetMaxMeasurableTimeUs(void) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeUs_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
   return (timeUs_t)TickTopValue * TickToUsCoef;
 }
@@ -623,10 +623,9 @@ timeUs_t fChrono_GetMaxMeasurableTimeUs(void) {
  */
 timeS_t fChrono_TimeSpanS(tick_t startTick, tick_t endTick) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeS_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
   return (timeS_t)(ELAPSED_(endTick, startTick)) * TickToSecCoef;
-  
 }
 
 /**
@@ -638,7 +637,7 @@ timeS_t fChrono_TimeSpanS(tick_t startTick, tick_t endTick) {
  */
 timeMs_t fChrono_TimeSpanMs(tick_t startTick, tick_t endTick) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeMs_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
   return (timeMs_t)(ELAPSED_(endTick, startTick)) * TickToMsCoef;
   
@@ -653,7 +652,7 @@ timeMs_t fChrono_TimeSpanMs(tick_t startTick, tick_t endTick) {
  */
 timeUs_t fChrono_TimeSpanUs(tick_t startTick, tick_t endTick) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeUs_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
   return (timeUs_t)(ELAPSED_(endTick, startTick)) * TickToUsCoef;
   
@@ -760,8 +759,8 @@ void fChrono_Stop(sChrono * const me) {
  */
 timeS_t fChrono_ElapsedS(sChrono const * const me) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
-  CHECK_RUN_(0);      /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeS_t)0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((timeS_t)0);      /* MISRA 2012 Rule 15.5 deviation */
   
   tick_t startTick = me->_startTick;
   tick_t currentTick = fChrono_GetTick();
@@ -779,8 +778,8 @@ timeS_t fChrono_ElapsedS(sChrono const * const me) {
  */
 timeMs_t fChrono_ElapsedMs(sChrono const * const me) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
-  CHECK_RUN_(0);      /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeMs_t)0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((timeMs_t)0);      /* MISRA 2012 Rule 15.5 deviation */
   
   tick_t startTick = me->_startTick;
   tick_t currentTick = fChrono_GetTick();
@@ -798,8 +797,8 @@ timeMs_t fChrono_ElapsedMs(sChrono const * const me) {
  */
 timeUs_t fChrono_ElapsedUs(sChrono const * const me) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
-  CHECK_RUN_(0);      /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeUs_t)0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((timeUs_t)0);      /* MISRA 2012 Rule 15.5 deviation */
   
   tick_t startTick = me->_startTick;
   tick_t currentTick = fChrono_GetTick();
@@ -820,20 +819,20 @@ timeUs_t fChrono_ElapsedUs(sChrono const * const me) {
  */
 timeS_t fChrono_LeftS(sChrono * const me) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
-  CHECK_RUN_(0);      /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeS_t)0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((timeS_t)0);      /* MISRA 2012 Rule 15.5 deviation */
   
   tick_t startTick = me->_startTick;
   
   if(me->_isTimeout) {
-    return 0;
+    return (timeS_t)0;
   }
   
   tick_t currentTick = fChrono_GetTick();
   timeS_t elapsed = (timeS_t)((timeS_t)(ELAPSED_(currentTick, startTick)) * TickToSecCoef);
   if(elapsed >= (me->_timeout * TickToSecCoef)) {
     me->_isTimeout = TRUE;
-    return 0;
+    return (timeS_t)0;
   } else {
     return ((me->_timeout * TickToSecCoef) - elapsed);
   }
@@ -852,20 +851,20 @@ timeS_t fChrono_LeftS(sChrono * const me) {
  */
 timeMs_t fChrono_LeftMs(sChrono * const me) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
-  CHECK_RUN_(0);      /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeMs_t)0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((timeMs_t)0);      /* MISRA 2012 Rule 15.5 deviation */
   
   tick_t startTick = me->_startTick;
   
   if(me->_isTimeout) {
-    return 0;
+    return (timeMs_t)0;
   }
   
   tick_t currentTick = fChrono_GetTick();
   timeMs_t elapsed = (timeMs_t)((timeMs_t)(ELAPSED_(currentTick, startTick)) * TickToMsCoef);
   if(elapsed >= (me->_timeout * TickToMsCoef)) {
     me->_isTimeout = TRUE;
-    return 0;
+    return (timeMs_t)0;
   } else {
     return ((me->_timeout * TickToMsCoef) - elapsed);
   }
@@ -884,20 +883,20 @@ timeMs_t fChrono_LeftMs(sChrono * const me) {
  */
 timeUs_t fChrono_LeftUs(sChrono * const me) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
-  CHECK_RUN_(0);      /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeUs_t)0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((timeUs_t)0);      /* MISRA 2012 Rule 15.5 deviation */
   
   tick_t startTick = me->_startTick;
   
   if(me->_isTimeout) {
-    return 0;
+    return (timeUs_t)0;
   }
   
   tick_t currentTick = fChrono_GetTick();
   timeUs_t elapsed = (timeUs_t)((timeUs_t)(ELAPSED_(currentTick, startTick)) * TickToUsCoef);
   if(elapsed >= (me->_timeout * TickToUsCoef)) {
     me->_isTimeout = TRUE;
-    return 0;
+    return (timeUs_t)0;
   } else {
     return ((me->_timeout * TickToUsCoef) - elapsed);
   }
@@ -953,7 +952,7 @@ void fChrono_StartTimeoutUs(sChrono * const me, timeUs_t timeout) {
  * @param me Pointer to the chrono object
  * @retval isTimeout: TRUE if the chrono is timed out, otherwise returns FALSE
  */
-bool8_t fChrono_IsTimeout(sChrono * const me) {
+bool_t fChrono_IsTimeout(sChrono * const me) {
   
   CHECK_INIT_RET_(FALSE); /* MISRA 2012 Rule 15.5 deviation */
   CHECK_RUN_(FALSE);      /* MISRA 2012 Rule 15.5 deviation */
@@ -990,8 +989,8 @@ bool8_t fChrono_IsTimeout(sChrono * const me) {
  */
 timeS_t fChrono_IntervalS(sChrono * const me) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
-  CHECK_RUN_(0);      /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeS_t)0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((timeS_t)0);      /* MISRA 2012 Rule 15.5 deviation */
   
   tick_t currentTick = fChrono_GetTick();
   tick_t startTick = me->_startTick;
@@ -1016,8 +1015,8 @@ timeS_t fChrono_IntervalS(sChrono * const me) {
  */
 timeMs_t fChrono_IntervalMs(sChrono * const me) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
-  CHECK_RUN_(0);      /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeMs_t)0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((timeMs_t)0);      /* MISRA 2012 Rule 15.5 deviation */
   
   tick_t currentTick = fChrono_GetTick();
   tick_t startTick = me->_startTick;
@@ -1042,8 +1041,8 @@ timeMs_t fChrono_IntervalMs(sChrono * const me) {
  */
 timeUs_t fChrono_IntervalUs(sChrono * const me) {
   
-  CHECK_INIT_RET_(0); /* MISRA 2012 Rule 15.5 deviation */
-  CHECK_RUN_(0);      /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((timeUs_t)0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((timeUs_t)0);      /* MISRA 2012 Rule 15.5 deviation */
   
   tick_t currentTick = fChrono_GetTick();
   tick_t startTick = me->_startTick;

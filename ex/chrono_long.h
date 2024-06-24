@@ -25,8 +25,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __chrono_long_H
-#define __chrono_long_H
+#ifndef CHRONO_LONG_H
+#define CHRONO_LONG_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -90,7 +90,7 @@ timeMs_t fChronoLong_LeftMs(sChrono * const me);
 
 void fChronoLong_StartTimeoutS(sChrono * const me, timeS_t timeout);
 void fChronoLong_StartTimeoutMs(sChrono * const me, timeMs_t timeout);
-bool8_t fChronoLong_IsTimeout(sChrono * const me);
+bool_t fChronoLong_IsTimeout(sChrono * const me);
 
 /** @} */ //End of TIMEOUT
 
@@ -102,6 +102,6 @@ bool8_t fChronoLong_IsTimeout(sChrono * const me);
 }
 #endif
 
-#endif /* __CHRONO_LONG_H */
+#endif /* CHRONO_LONG_H */
 
 /************************ Copyright (c) 2024 FaraabinCo *****END OF FILE****/
