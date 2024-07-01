@@ -7,7 +7,8 @@ guidelines, with the deviations listed below.
 
 - This rule states that the character sequences /* an d // shall not be used within a comment.
   In the comment section of the chrono.c file, there are some explanations and code snippets for users
-  to get started. This rule is violated to be able to generate a user manual within the file.
+  to get started. This intentional breach of the rule enables the in-file generation of a user manual for
+  ease of reference.
 
 #### Rule 15.5
 
