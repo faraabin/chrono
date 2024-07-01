@@ -13,7 +13,6 @@ guidelines, with the deviations listed below.
 #### Rule 15.5
 
 - This rule states that a function should have no more than one *return* statement.
-  In this library functions return in the middle of the body whenever proper conditions for
-  executing the code are not satisfied. This deviation from the standard rule is sanctioned in
-  our coding style to enhance readability.
+  In this library functions are permitted to return prematurely if the conditions necessary for code execution
+  are not met. This deviation from the standard rule is sanctioned in our coding style to enhance readability.
 
