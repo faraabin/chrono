@@ -659,6 +659,21 @@ timeUs_t fChrono_TimeSpanUs(tick_t startTick, tick_t endTick) {
 }
 
 /**
+ * @brief Returns the time length in ticks between two time ticks.
+ * 
+ * @param startTick Start tick
+ * @param endTick End tick
+ * @retval timeSpan: Time length between two time stamps (ticks)
+ */
+tick_t fChrono_TimeSpanTick(tick_t startTick, tick_t endTick) {
+  
+  CHECK_INIT_RET_((tick_t)0); /* MISRA 2012 Rule 15.5 deviation */
+  
+  return (tick_t)(ELAPSED_(endTick, startTick));
+  
+}
+
+/**
  * @brief Generates a delay in seconds.
  * 
  * @note Call this function, and it will terminate when the elapsed time is greater than the input argument.

@@ -252,6 +252,7 @@ timeUs_t fChrono_GetMaxMeasurableTimeUs(void);
 timeS_t fChrono_TimeSpanS(tick_t startTick, tick_t endTick);
 timeMs_t fChrono_TimeSpanMs(tick_t startTick, tick_t endTick);
 timeUs_t fChrono_TimeSpanUs(tick_t startTick, tick_t endTick);
+tick_t fChrono_TimeSpanTick(tick_t startTick, tick_t endTick);
 
 /** @} */ //End of TIME_SPAN
 
