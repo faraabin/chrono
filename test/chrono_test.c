@@ -145,9 +145,33 @@ TEST_TEAR_DOWN(chronoLongUnitTests) {
 TEST(chronoUnitTests, Chrono_InitChronoWithNullPointer_InitReturnFalse) {
   uint8_t ret = 0;
 
-  ret = fChrono_Init(0, 0, NULL);
+  ret = fChrono_Init(1000, 1000, NULL);
 
-  TEST_ASSERT_EQUAL(1, ret);
+  TEST_ASSERT_EQUAL(CHRONO_ERROR_TICK_PTR_ERROR, ret);
+}
+
+/**
+ * @brief fChrono_Init() must return 1 if user pass zero as tickTopValue.
+ * 
+ */
+TEST(chronoUnitTests, Chrono_InitChronoWithZeroTickTopValue_InitReturnFalse) {
+  uint8_t ret = 0;
+
+  ret = fChrono_Init(0, 1000, &tickVal);
+
+  TEST_ASSERT_EQUAL(CHRONO_ERROR_TICK_TOP_ZERO, ret);
+}
+
+/**
+ * @brief fChrono_Init() must return 1 if user pass zero as tickToNsCoef.
+ * 
+ */
+TEST(chronoUnitTests, Chrono_InitChronoWithZeroTickToNsCoef_InitReturnFalse) {
+  uint8_t ret = 0;
+
+  ret = fChrono_Init(1000, 0, &tickVal);
+
+  TEST_ASSERT_EQUAL(CHRONO_ERROR_TICK_TO_NS_ZERO, ret);
 }
 
 /**
@@ -266,7 +290,7 @@ TEST(chronoUnitTests, Chrono_GetTickTopValueIsCalledWhenChronoIsInit_ReturnExpec
 
   for(int i = 0; i < ArraySize_(topValues); i++) {
 
-    fChrono_Init(topValues[i], 0, &tickVal);
+    fChrono_Init(topValues[i], 1000, &tickVal);
   
     retValues[i] = fChrono_GetTickTopValue();
   }
@@ -305,7 +329,7 @@ TEST(chronoUnitTests, Chrono_GetTickToNsCoefIsCalledWhenChronoIsInit_ReturnExpec
 
   for(int i = 0; i < ArraySize_(coefValues); i++) {
 
-    fChrono_Init(0, coefValues[i], &tickVal);
+    fChrono_Init(1000, coefValues[i], &tickVal);
   
     retValues[i] = fChrono_GetTickToNsCoef();
   }
@@ -338,10 +362,10 @@ TEST(chronoUnitTests, Chrono_GetTickMaxTimeMsIsCalledWhileChronoIsNotInit_Return
  */
 TEST(chronoUnitTests, Chrono_GetTickMaxTimeMsIsCalledWhenChronoIsInit_ReturnExpectedValues) {
 
-  uint32_t topValues[] = {0, 0xFFFF0000, 0xFFFFFFFE, 0xFFFFFFFF, 0x10000000, 0xFFFFFFFF};
-  uint32_t coefValues[] = {0, 1, 1000, 0xFFFFFFFF, 0x10000000, 0xFFFFFFFF};
+  uint32_t topValues[] = {1, 0xFFFF0000, 0xFFFFFFFE, 0xFFFFFFFF, 0x10000000, 0xFFFFFFFF};
+  uint32_t coefValues[] = {1, 1, 1000, 0xFFFFFFFF, 0x10000000, 0xFFFFFFFF};
   uint64_t retValues[] = {0, 0, 0, 0, 0, 0};
-  uint64_t expectedValues[] = {0, 0x10c6, 0x418937, 0x10c6f79fef39, 0x10c6f7a000, 0x10c6f79fef39};
+  uint64_t expectedValues[] = {0, 0x10c6, 0x418937, 0, 0, 0};
 
   for(int i = 0; i < ArraySize_(topValues); i++) {
 
@@ -1320,10 +1344,11 @@ TEST(chronoUnitTests, Chrono_IntervalUsIsCalledWhenChronoIsInit_ReturnInterval) 
 TEST(chronoLongUnitTests, ChronoLong_ElapsedSIsCalledWhenTickIsOverflowedMultipleTimes_ReturnsCorrectElapsedTime) {
 
   uint32_t elapsed = 0;
-  sChrono testChrono = {0x00};
+  sChronoLong testChrono = {0x00};
+  tickVal = 0;
 
   fChrono_Init(0xFFFFFFFF, 1, &tickVal); // It takes 4.294967296 seconds to overflow the tick generator.
-
+  
   tickVal = 0;
   fChronoLong_Start(&testChrono);
   elapsed = fChronoLong_ElapsedS(&testChrono);
@@ -1374,50 +1399,50 @@ TEST(chronoLongUnitTests, ChronoLong_ElapsedSIsCalledWhenTickIsOverflowedMultipl
 TEST(chronoLongUnitTests, ChronoLong_ElapsedMsIsCalledWhenTickIsOverflowedMultipleTimes_ReturnsCorrectElapsedTime) {
 
   timeMs_t elapsed = 0;
-  sChrono testChrono = {0x00};
+  sChronoLong testChrono = {0x00};
 
   fChrono_Init(0xFFFFFFFF, 1, &tickVal); // It takes 4.294967296 seconds to overflow the tick generator.
 
   tickVal = 0;
   fChronoLong_Start(&testChrono);
   elapsed = fChronoLong_ElapsedMs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(0.0, elapsed);
+  TEST_ASSERT_EQUAL_UINT32(0, elapsed);
 
   tickVal = 1000000000;
   elapsed = fChronoLong_ElapsedMs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(999.0, elapsed);
+  TEST_ASSERT_EQUAL_UINT32(1000, elapsed);
   
   tickVal = 2000000000;
   elapsed = fChronoLong_ElapsedMs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(1998.0, elapsed);
+  TEST_ASSERT_EQUAL_UINT32(2000, elapsed);
 
   tickVal = 3000000000;
   elapsed = fChronoLong_ElapsedMs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(2997.0, elapsed);
+  TEST_ASSERT_EQUAL_UINT32(3000, elapsed);
 
   tickVal = 4000000000;
   elapsed = fChronoLong_ElapsedMs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(3996.0, elapsed);
+  TEST_ASSERT_EQUAL_UINT32(4000, elapsed);
 
   tickVal = 0; // This is the first overflow. It equals 4.294967296 seconds.
   elapsed = fChronoLong_ElapsedMs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(4290.0, elapsed);
+  TEST_ASSERT_EQUAL_UINT32(4294, elapsed);
 
   tickVal = 706000000;
   elapsed = fChronoLong_ElapsedMs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(4995.0, elapsed);
+  TEST_ASSERT_EQUAL_UINT32(5000, elapsed);
 
   tickVal = 1706000000;
   elapsed = fChronoLong_ElapsedMs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(5994, elapsed);
+  TEST_ASSERT_EQUAL_UINT32(6000, elapsed);
 
   tickVal = 0; // This is the second overflow. It equals 8.589934591 seconds.
   elapsed = fChronoLong_ElapsedMs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(8582.0, elapsed);
+  TEST_ASSERT_EQUAL_UINT32(8588, elapsed);
 
   tickVal = 420000000;
   elapsed = fChronoLong_ElapsedMs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(9001.0, elapsed);
+  TEST_ASSERT_EQUAL_UINT32(9008, elapsed);
 
 }
 
@@ -1428,7 +1453,7 @@ TEST(chronoLongUnitTests, ChronoLong_ElapsedMsIsCalledWhenTickIsOverflowedMultip
 TEST(chronoLongUnitTests, ChronoLong_LeftSIsCalledWhenTickIsOverflowedMultipleTimes_ReturnsCorrectElapsedTime) {
 
   uint32_t left = 0;
-  sChrono testChrono = {0x00};
+  sChronoLong testChrono = {0x00};
 
   fChrono_Init(0xFFFFFFFF, 1, &tickVal); // It takes 4.294967296 seconds to overflow the tick generator.
 
@@ -1439,18 +1464,18 @@ TEST(chronoLongUnitTests, ChronoLong_LeftSIsCalledWhenTickIsOverflowedMultipleTi
 
   tickVal = 0xFFFFFFFF;
   left = fChronoLong_LeftS(&testChrono);
-  TEST_ASSERT_EQUAL_UINT32(5, left);
+  TEST_ASSERT_EQUAL_UINT32(6, left);
 
   tickVal = 0; // This is the first overflow. It equals 4.294967296 seconds.
   left = fChronoLong_LeftS(&testChrono);
-  TEST_ASSERT_EQUAL_UINT32(5, left);
+  TEST_ASSERT_EQUAL_UINT32(6, left);
   
   tickVal = 0xFFFFFFFF;
   fChronoLong_LeftS(&testChrono);
 
   tickVal = 0; // This is the second overflow. It equals 8.589934591 seconds.
   left = fChronoLong_LeftS(&testChrono);
-  TEST_ASSERT_EQUAL_UINT32(1, left);
+  TEST_ASSERT_EQUAL_UINT32(2, left);
   
   tickVal = 0xFFFFFFFF;
   fChronoLong_LeftS(&testChrono);
@@ -1468,14 +1493,14 @@ TEST(chronoLongUnitTests, ChronoLong_LeftSIsCalledWhenTickIsOverflowedMultipleTi
 TEST(chronoLongUnitTests, ChronoLong_LeftMsIsCalledWhenTickIsOverflowedMultipleTimes_ReturnsCorrectElapsedTime) {
 
   timeMs_t left = 0;
-  sChrono testChrono = {0x00};
+  sChronoLong testChrono = {0x00};
 
   fChrono_Init(0xFFFFFFFF, 1, &tickVal); // It takes 4.294967296 seconds to overflow the tick generator.
 
   tickVal = 0;
   fChronoLong_StartTimeoutMs(&testChrono, 10000);
   left = fChronoLong_LeftMs(&testChrono);
-  TEST_ASSERT_EQUAL_FLOAT(10000.0, left);
+  TEST_ASSERT_EQUAL_FLOAT(10000, left);
 
   tickVal = 0xFFFFFFFF;
   left = fChronoLong_LeftMs(&testChrono);
@@ -1508,7 +1533,7 @@ TEST(chronoLongUnitTests, ChronoLong_LeftMsIsCalledWhenTickIsOverflowedMultipleT
 TEST(chronoLongUnitTests, ChronoLong_TimeoutSWithVeryLongDuration_IsTimeoutReturnCorrectly) {
 
   bool isTimeout = false;
-  sChrono testChrono = {0x00};
+  sChronoLong testChrono = {0x00};
 
   fChrono_Init(0xFFFFFFFF, 1, &tickVal); // It takes 4.294967296 seconds to overflow the tick generator.
 
@@ -1547,7 +1572,7 @@ TEST(chronoLongUnitTests, ChronoLong_TimeoutSWithVeryLongDuration_IsTimeoutRetur
 TEST(chronoLongUnitTests, ChronoLong_TimeoutMsWithVeryLongDuration_IsTimeoutReturnCorrectly) {
 
   bool isTimeout = false;
-  sChrono testChrono = {0x00};
+  sChronoLong testChrono = {0x00};
 
   fChrono_Init(0xFFFFFFFF, 1, &tickVal); // It takes 4.294967296 seconds to overflow the tick generator.
 
@@ -1586,6 +1611,8 @@ TEST(chronoLongUnitTests, ChronoLong_TimeoutMsWithVeryLongDuration_IsTimeoutRetu
 TEST_GROUP_RUNNER(chronoUnitTests) {
 
   RUN_TEST_CASE(chronoUnitTests, Chrono_InitChronoWithNullPointer_InitReturnFalse);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_InitChronoWithZeroTickTopValue_InitReturnFalse);
+  RUN_TEST_CASE(chronoUnitTests, Chrono_InitChronoWithZeroTickToNsCoef_InitReturnFalse);
   RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickIsCalledWhileChronoIsNotInit_ReturnZero);
   RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickIsCalled_ReturnCurrentTick);
   RUN_TEST_CASE(chronoUnitTests, Chrono_GetTickMsIsCalledWhileChronoIsNotInit_ReturnZero);
