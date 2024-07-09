@@ -42,22 +42,39 @@ extern "C" {
 /* Exported defines ----------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
+typedef struct {
+  
+  bool_t _run;            /*!< Holds the RUN state of the chronoLong object.
+                             When this parameter is false, the chronoLong is in stop mode, and time measurement functions will return 0.
+                             This parameter is private and is set by the chronoLong API. Users must not change its value. */
+
+  uint64_t _startTimeMs;  /*!< Holds the start time of the chronoLong in milliseconds.
+                             This parameter is private and is set by the chronoLong API. Users must not change its value. */
+  
+  uint64_t _timeoutMs;    /*!< Holds the timeout length.
+                             This parameter is private and is set by the chrono API. Users must not change its value. */
+  
+  bool_t _isTimeout;      /*!< Holds the timeout state of the chronoLong object.
+                             This parameter is private and is set by the chrono API. Users must not change its value. */
+  
+}sChronoLong;
+
 /* Exported constants --------------------------------------------------------*/
 /* Exported functions prototypes ---------------------------------------------*/
 /** @defgroup OBJECTIVE_API Objective API in the chrono_long module
- *  @brief These functions require an object of type sChrono. Users must declare one to use this API.
+ *  @brief These functions require an object of type sChronoLong. Users must declare one to use this API.
  *  @{
  */
 
 /** @defgroup CHRONO_CMD
  *  @ingroup OBJECTIVE_API
  *  @brief These functions are used to start and stop the chrono object. fChronoLong_Start() puts object in run state for time measurement and
- *         fChronoLong_Stop() stops the chrono object.
+ *         fChronoLong_Stop() stops the chronoLong object.
  *  @{
  */
 
-void fChronoLong_Start(sChrono * const me);
-void fChronoLong_Stop(sChrono * const me);
+void fChronoLong_Start(sChronoLong * const me);
+void fChronoLong_Stop(sChronoLong * const me);
 
 /** @} */ //End of DELAY
 
@@ -67,18 +84,18 @@ void fChronoLong_Stop(sChrono * const me);
  *  @{
  */
 
-timeS_t fChronoLong_ElapsedS(sChrono const * const me);
-timeMs_t fChronoLong_ElapsedMs(sChrono const * const me);
+uint64_t fChronoLong_ElapsedS(sChronoLong const * const me);
+uint64_t fChronoLong_ElapsedMs(sChronoLong const * const me);
 
 /** @} */ //End of ELAPSED
 
 /** @defgroup LEFT
  *  @ingroup FUNCTIONAL_API
- *  @brief These functions return the remaining time until the chrono object reaches its timeout.
+ *  @brief These functions return the remaining time until the chronoLong object reaches its timeout.
  *  @{
  */
-timeS_t fChronoLong_LeftS(sChrono * const me);
-timeMs_t fChronoLong_LeftMs(sChrono * const me);
+uint64_t fChronoLong_LeftS(sChronoLong * const me);
+uint64_t fChronoLong_LeftMs(sChronoLong * const me);
 
 /** @} */ //End of LEFT
 
@@ -88,9 +105,9 @@ timeMs_t fChronoLong_LeftMs(sChrono * const me);
  *  @{
  */
 
-void fChronoLong_StartTimeoutS(sChrono * const me, timeS_t timeout);
-void fChronoLong_StartTimeoutMs(sChrono * const me, timeMs_t timeout);
-bool_t fChronoLong_IsTimeout(sChrono * const me);
+void fChronoLong_StartTimeoutS(sChronoLong * const me, uint64_t timeout);
+void fChronoLong_StartTimeoutMs(sChronoLong * const me, uint64_t timeout);
+bool_t fChronoLong_IsTimeout(sChronoLong * const me);
 
 /** @} */ //End of TIMEOUT
 

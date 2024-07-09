@@ -22,6 +22,8 @@
 
 #include "chrono_long_config.h"
 
+#include <limits.h>
+
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /**
@@ -30,7 +32,7 @@
  * @note Chronologically, "a" must be a time tick after "b", but the value of "a" could be less than "b" (e.g., when tick overflows).
  * 
  */
-#define ELAPSED_(a, b)  (((a) >= (b)) ? ((a) - (b)) : ((0xFFFFFFFF) - ((b) - (a))))
+#define ELAPSED_(a, b)  (((a) >= (b)) ? ((a) - (b)) : (ULLONG_MAX - ((b) - (a))))
 
 /**
  * @brief Checks whether the chrono object is in the run state or not.
@@ -59,29 +61,29 @@
 /**
  * @brief Starts the chrono object for measuring time.
  * 
- * @note This function puts the chrono object in the run state.
+ * @note This function puts the chronoLong object in the run state.
  *       Functions like fChronoLong_ElapsedS() or fChronoLong_IntervalUs() only return measured values if there is a start time tag already.
  *       Therefore, this function must be called before any time measurement.
  * 
- * @param me Pointer to the chrono object
+ * @param me Pointer to the chronoLong object
  */
-void fChronoLong_Start(sChrono * const me) {
+void fChronoLong_Start(sChronoLong * const me) {
 
   CHRONO_LONG_CRITICAL_SECTION_ENTER_;
-  me->_startTick = (tick_t)millis_();
+  me->_startTimeMs = millis_();
   CHRONO_LONG_CRITICAL_SECTION_EXIT_;
 
   me->_run = TRUE;
 }
 
 /**
- * @brief Stops the chrono object to signal the end of time measurement.
+ * @brief Stops the chronoLong object to signal the end of time measurement.
  * 
- * @note This function stops the chrono object and puts it in the stop state. Measurements are not valid in this case, and corresponding functions return 0.
+ * @note This function stops the chronoLong object and puts it in the stop state. Measurements are not valid in this case, and corresponding functions return 0.
  * 
  * @param me Pointer to the chrono object
  */
-void fChronoLong_Stop(sChrono * const me) {
+void fChronoLong_Stop(sChronoLong * const me) {
   
   me->_run = FALSE;
   me->_isTimeout = FALSE;
@@ -92,20 +94,20 @@ void fChronoLong_Stop(sChrono * const me) {
  * 
  * @note fChronoLong_Start() must be called before using this function. It returns the time passed since the start.
  * 
- * @param me Pointer to the chrono object
+ * @param me Pointer to the chronoLong object
  * @retval elapsed: Elapsed time since starting the chrono object (seconds)
  */
-timeS_t fChronoLong_ElapsedS(sChrono const * const me) {
+uint64_t fChronoLong_ElapsedS(sChronoLong const * const me) {
   
-  CHECK_RUN_(0);  /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((uint64_t)0);  /* MISRA 2012 Rule 15.5 deviation */
   
-  tick_t startTick = me->_startTick;
+  uint64_t startTime = me->_startTimeMs;
   
   CHRONO_LONG_CRITICAL_SECTION_ENTER_;
   uint64_t millis = millis_();
   CHRONO_LONG_CRITICAL_SECTION_EXIT_;
 
-  return (timeS_t)((timeS_t)(ELAPSED_(millis, startTick)) * 0.001);
+  return (ELAPSED_(millis, startTime) / 1000U);
 }
 
 /**
@@ -113,20 +115,20 @@ timeS_t fChronoLong_ElapsedS(sChrono const * const me) {
  * 
  * @note fChronoLong_Start() must be called before using this function. It returns the time passed since the start.
  * 
- * @param me Pointer to the chrono object
+ * @param me Pointer to the chronoLong object
  * @retval elapsed: Elapsed time since starting the chrono object (milliseconds)
  */
-timeMs_t fChronoLong_ElapsedMs(sChrono const * const me) {
+uint64_t fChronoLong_ElapsedMs(sChronoLong const * const me) {
   
-  CHECK_RUN_(0);  /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((uint64_t)0);  /* MISRA 2012 Rule 15.5 deviation */
   
-  tick_t startTick = me->_startTick;
+  uint64_t startTime = me->_startTimeMs;
 
   CHRONO_LONG_CRITICAL_SECTION_ENTER_;
   uint64_t millis = millis_();
   CHRONO_LONG_CRITICAL_SECTION_EXIT_;
   
-  return (timeMs_t)((timeMs_t)(ELAPSED_(millis, startTick)));
+  return ELAPSED_(millis, startTime);
 }
 
 /**
@@ -140,26 +142,26 @@ timeMs_t fChronoLong_ElapsedMs(sChrono const * const me) {
  * @param me Pointer to the chrono object
  * @retval timeLeft: Time length until timeout (seconds)
  */
-timeS_t fChronoLong_LeftS(sChrono * const me) {
+uint64_t fChronoLong_LeftS(sChronoLong * const me) {
   
-  CHECK_RUN_(0);  /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((uint64_t)0);  /* MISRA 2012 Rule 15.5 deviation */
   
-  tick_t startTick = me->_startTick;
+  uint64_t startTime = me->_startTimeMs;
   
   if(me->_isTimeout) {
-    return 0;
+    return (uint64_t)0;
   }
 
   CHRONO_LONG_CRITICAL_SECTION_ENTER_;
   uint64_t millis = millis_();
   CHRONO_LONG_CRITICAL_SECTION_EXIT_;
     
-  timeS_t elapsed = (timeS_t)((timeS_t)(ELAPSED_(millis, startTick)) * 0.001);
-  if(elapsed >= (me->_timeout * 0.001)) {
+  uint64_t elapsed = (ELAPSED_(millis, startTime)) / (uint64_t)1000U;
+  if(elapsed >= (me->_timeoutMs / (tick_t)1000U)) {
     me->_isTimeout = TRUE;
     return 0;
   } else {
-    return ((me->_timeout * 0.001) - elapsed);
+    return ((me->_timeoutMs / (tick_t)1000) - elapsed);
   }
 }
 
@@ -174,70 +176,70 @@ timeS_t fChronoLong_LeftS(sChrono * const me) {
  * @param me Pointer to the chrono object
  * @retval timeLeft: Time length until timeout (milliseconds)
  */
-timeMs_t fChronoLong_LeftMs(sChrono * const me) {
+uint64_t fChronoLong_LeftMs(sChronoLong * const me) {
   
-  CHECK_RUN_(0);  /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_((uint64_t)0);  /* MISRA 2012 Rule 15.5 deviation */
   
-  tick_t startTick = me->_startTick;
+  uint64_t startTime = me->_startTimeMs;
   
   if(me->_isTimeout) {
-    return 0;
+    return (timeMs_t)0;
   }
 
   CHRONO_LONG_CRITICAL_SECTION_ENTER_;
   uint64_t millis = millis_();
   CHRONO_LONG_CRITICAL_SECTION_EXIT_;
     
-  timeMs_t elapsed = (timeMs_t)((timeMs_t)(ELAPSED_(millis, startTick)));
-  if(elapsed >= (me->_timeout)) {
+  uint64_t elapsed = ELAPSED_(millis, startTime);
+  if(elapsed >= (me->_timeoutMs)) {
     me->_isTimeout = TRUE;
-    return 0;
+    return (timeMs_t)0;
   } else {
-    return ((me->_timeout) - elapsed);
+    return ((me->_timeoutMs) - elapsed);
   }
 }
 
 /**
- * @brief Starts the chrono object in timeout mode.
+ * @brief Starts the chronoLong object in timeout mode.
  * 
- * @param me Pointer to the chrono object
- * @param timeout Time length until the chrono object times out (seconds)
+ * @param me Pointer to the chronoLong object
+ * @param timeout Time length until the chronoLong object times out (seconds)
  */
-void fChronoLong_StartTimeoutS(sChrono * const me, timeS_t timeout) {
+void fChronoLong_StartTimeoutS(sChronoLong * const me, uint64_t timeout) {
   
-  me->_timeout = (tick_t)(timeout / (timeS_t)0.001);
+  me->_timeoutMs = (tick_t)(timeout * (uint64_t)1000U);
   me->_isTimeout = FALSE;
   
   fChronoLong_Start(me);
 }
 
 /**
- * @brief Starts the chrono object in timeout mode.
+ * @brief Starts the chronoLong object in timeout mode.
  * 
- * @param me Pointer to the chrono object
- * @param timeout Time length until the chrono object times out (milliseconds)
+ * @param me Pointer to the chronoLong object
+ * @param timeout Time length until the chronoLong object times out (milliseconds)
  */
-void fChronoLong_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
+void fChronoLong_StartTimeoutMs(sChronoLong * const me, uint64_t timeout) {
   
-  me->_timeout = (tick_t)(timeout / (timeMs_t)1);
+  me->_timeoutMs = timeout;
   me->_isTimeout = FALSE;
   
   fChronoLong_Start(me);
 }
 
 /**
- * @brief Returns the timeout status of the chrono object.
+ * @brief Returns the timeout status of the chronoLong object.
  * 
  * @note Before using this function, ensure that fChronoLong_StartTimeoutS() or fChronoLong_StartTimeoutMs() has been called to start the measurement.
  * 
- * @param me Pointer to the chrono object
- * @retval isTimeout: TRUE if the chrono is timed out, otherwise returns FALSE
+ * @param me Pointer to the chronoLong object
+ * @retval isTimeout: TRUE if the chronoLong is timed out, otherwise returns FALSE
  */
-bool_t fChronoLong_IsTimeout(sChrono * const me) {
+bool_t fChronoLong_IsTimeout(sChronoLong * const me) {
   
   CHECK_RUN_(FALSE);  /* MISRA 2012 Rule 15.5 deviation */
   
-  tick_t startTick = me->_startTick;
+  uint64_t startTime = me->_startTimeMs;
   
   if(me->_isTimeout) {
     return TRUE;
@@ -247,7 +249,7 @@ bool_t fChronoLong_IsTimeout(sChrono * const me) {
   uint64_t millis = millis_();
   CHRONO_LONG_CRITICAL_SECTION_EXIT_;
 
-  if(ELAPSED_(millis, startTick) >= me->_timeout) {
+  if(ELAPSED_(millis, startTime) >= me->_timeoutMs) {
     me->_isTimeout = TRUE;
   } else {
     return FALSE;

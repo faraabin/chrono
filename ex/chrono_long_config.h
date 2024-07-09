@@ -17,8 +17,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __chrono_long_config_H
-#define __chrono_long_config_H
+#ifndef CHRONO_LONG_CONFIG_H
+#define CHRONO_LONG_CONFIG_H
 
 #ifdef __cplusplus
 extern "C" {
