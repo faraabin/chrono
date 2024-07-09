@@ -40,6 +40,11 @@ extern "C" {
 #include "chrono_config.h"
 
 /* Exported defines ----------------------------------------------------------*/
+#define CHRONO_OK                     0
+#define CHRONO_ERROR_TICK_TOP_ZERO    1
+#define CHRONO_ERROR_TICK_TO_NS_ZERO  2
+#define CHRONO_ERROR_TICK_PTR_ERROR   3
+
 /* Exported macro ------------------------------------------------------------*/
 /** @defgroup TIME_MACROS Time macros
  *  @{
@@ -94,17 +99,9 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /**
-  * @brief Definition of float32_t, float64_t and bool_t for misra compliance.
+  * @brief Definition of bool_t for misra compliance.
   * 
   */
-#ifndef float32_t
-typedef float float32_t;
-#endif
-
-#ifndef float64_t
-typedef double float64_t;
-#endif
-
 #ifndef bool_t
 typedef bool bool_t;
 
@@ -204,7 +201,7 @@ tick_t fChrono_GetTickTopValue(void);
  * 
  * @retval tickToNsCoef: Tick-to-nanoseconds coefficient
  */
-float32_t fChrono_GetTickToNsCoef(void);
+uint32_t fChrono_GetTickToNsCoef(void);
 
 /**
  * @brief Returns the pointer to the tick generator.
@@ -217,7 +214,7 @@ float32_t fChrono_GetTickToNsCoef(void);
 
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
 
-  volatile fpTick_t fChrono_GetTickPointer(void);
+  fpTick_t fChrono_GetTickPointer(void);
 
 #else
 

@@ -48,9 +48,9 @@ extern "C" {
  * 
  */
 typedef uint32_t tick_t;
-typedef double timeS_t;
-typedef double timeMs_t;
-typedef double timeUs_t;
+typedef uint32_t timeS_t;
+typedef uint32_t timeMs_t;
+typedef uint32_t timeUs_t;
 
 #ifdef __cplusplus
 }
