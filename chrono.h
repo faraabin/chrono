@@ -95,6 +95,18 @@ extern "C" {
  */
 #define delaySeconds_(delay_)	fChrono_DelayS(delay_)
 
+/**
+ * @brief Measures elapsed time since a call to tic_().
+ * 
+ */
+#define tic_(name_) \
+  sChrono __tic_toc_##name_##__;\
+  fChrono_Start(&(__tic_toc_##name_##__))
+  
+#define tocUs_(name_) fChrono_ElapsedUs(&(__tic_toc_##name_##__))
+#define tocMs_(name_) fChrono_ElapsedMs(&(__tic_toc_##name_##__))
+#define tocS_(name_)  fChrono_ElapsedS(&(__tic_toc_##name_##__))
+
 /** @} */ //End of TIME_MACROS
 
 /* Exported types ------------------------------------------------------------*/
