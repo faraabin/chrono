@@ -185,6 +185,15 @@ typedef struct {
  */
 
 /**
+ * @brief Returns the availability of corresponding tick after initialization of the chrono module.
+ * 
+ * @retval isTickAvailable: Is corresponding tick available.
+ */
+bool_t fChrono_IsTickUsAvailable(void);
+bool_t fChrono_IsTickMsAvailable(void);
+bool_t fChrono_IsTickSAvailable(void);
+
+/**
  * @brief Get current tick.
  * 
  * @retval tick: Current tick (raw)

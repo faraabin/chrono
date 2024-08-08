@@ -478,6 +478,48 @@ uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, tick_t(*fpTickV
  */
 
 /**
+ * @brief Returns the availability of tick in microsecond after initialization of the chrono module.
+ * 
+ * @retval isTickAvailable: Is microseconds tick available.
+ */
+bool_t fChrono_IsTickUsAvailable(void) {
+  
+  if(!Init) {
+    return false;
+  }
+  
+  return InitUs;
+}
+
+/**
+ * @brief Returns the availability of tick in milliseconds after initialization of the chrono module.
+ * 
+ * @retval isTickAvailable: Is milliseconds tick available.
+ */
+bool_t fChrono_IsTickMsAvailable(void) {
+  
+  if(!Init) {
+    return false;
+  }
+  
+  return InitMs;
+}
+
+/**
+ * @brief Returns the availability of tick in milliseconds after initialization of the chrono module.
+ * 
+ * @retval isTickAvailable: Is milliseconds tick available.
+ */
+bool_t fChrono_IsTickSAvailable(void) {
+  
+  if(!Init) {
+    return false;
+  }
+  
+  return InitSec;
+}
+
+/**
  * @brief Get current tick.
  * 
  * @note based on CHRONO_TICK_TYPE two cases are possible:
