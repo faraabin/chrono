@@ -24,12 +24,13 @@
 extern "C" {
 #endif
 
+#include "chrono_private.h"
+#include "test\chrono_test_private.h"
+
 #include <stdint.h>
 
+#if (CHRONO_TEST_STATUS == CHRONO_TESTS_DISABLED)
 /* Exported defines ----------------------------------------------------------*/
-#define TICK_TYPE_VARIABLE  (1)
-#define TICK_TYPE_FUNCTION  (2)
-
 /**
   * @brief Select either reading current tick from an address in memory or by calling a function.
   *
@@ -42,6 +43,29 @@ extern "C" {
 #define CHRONO_TICK_TYPE  TICK_TYPE_VARIABLE
 
 /**
+ * @brief Set the top value that the tick generator can count.
+ * 
+ * @note For example, if you have a timer that counts upto 0xFFFFFFFFU, CHRONO_TICK_TOP_VALUE should be this value.
+ * 
+ */
+#define CHRONO_TICK_TOP_VALUE   (0xFFFFFFFFU)
+
+/**
+ * @brief Set the coefficient for converting one tick of the tick generator to nanoseconds.
+ * 
+ * @note For example, if you have a timer that counts with 1MHz frequency, CHRONO_TICK_TO_NANOSECOND_COEF should be 1000.
+ * 
+ */
+#define CHRONO_TICK_TO_NANOSECOND_COEF  (1000U)
+
+/**
+  * @brief Select the counter mode of the tick generator. Possible modes are TICK_COUNTERMODE_UP if the counter starts from zero to CHRONO_TICK_TOP_VALUE
+  *        and TICK_COUNTERMODE_DOWN if it counts downward from CHRONO_TICK_TOP_VALUE to zero.
+  *
+  */
+#define CHRONO_TICK_COUNTERMODE TICK_COUNTERMODE_UP
+
+/**
  * @brief User typedef for measurements in chrono module
  * 
  * @note Modify these types based on your application.
@@ -51,6 +75,8 @@ typedef uint32_t tick_t;
 typedef uint32_t timeS_t;
 typedef uint32_t timeMs_t;
 typedef uint32_t timeUs_t;
+
+#endif /* CHRONO_TEST_STATUS */
 
 #ifdef __cplusplus
 }

@@ -155,8 +155,6 @@ typedef struct {
  * 
  * @attention This function MUST be called before using any other function in this library.
  * 
- * @param tickTopValue The maximum number of counts that the tick generator can count (starting from zero).
- * @param tickToNsCoef Coefficient for converting one tick to nanoseconds.
  * @param tickValue If module is configured with TICK_TYPE_VARIABLE, pointer to the memory location that contains the tick value,
  *                  otherwise pointer to the function that returns tick value.
  * @retval initStatus: returns 0 if successful and 1 if it fails.
@@ -164,12 +162,12 @@ typedef struct {
 
 #if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
 
-  uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, volatile tick_t *tickValue);
+  uint8_t fChrono_Init(volatile tick_t *tickValue);
 
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
   
   typedef tick_t(*fpTick_t)(void);
-  uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, tick_t(*fpTickValue)(void));
+  uint8_t fChrono_Init(tick_t(*fpTickValue)(void));
 
 #else
 

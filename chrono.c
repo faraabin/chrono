@@ -32,7 +32,15 @@
     - Alternatively, select TICK_TYPE_FUNCTION if you prefer to obtain the current tick by calling a function.
     In this case, you must provide a function that returns the current tick as tick_t. The address of this function is passed to fChrono_Init().
   
-  2- In chrono_config.h file, specify type of the variables that chrono module uses for time measuremenst. These types are:
+  2- In chrono_config.h file, set the value of CHRONO_TICK_TOP_VALUE. This should be the top value that your tick generator can count upto.
+
+  3- In chrono_config.h file, set the value of CHRONO_TICK_TO_NANOSECOND_COEF. This is the amount of time that one tick increment takes.
+
+  4- In chrono_config.h file, set the CHRONO_TICK_COUNTERMODE which is the counting mode of your tick generator.
+    - Select TICK_COUNTERMODE_UP if tick generator counts from zero to CHRONO_TICK_TOP_VALUE.
+    - Select TICK_COUNTERMODE_DOWN if tick generator counts from CHRONO_TICK_TOP_VALUE to zero.
+  
+  5- In chrono_config.h file, specify type of the variables that chrono module uses for time measuremenst. These types are:
     - tick_t: Type of the tick value. Depending on your application, this type can be uint16_t, uint32_t, etc.
     - timeS_t: Type of the variable that is used to measure time lengths in seconds.
     - timeMs_t: Type of the variable that is used to measure time lengths in milliseconds.
@@ -43,7 +51,7 @@
   If you have a 16-bit MCU its better to configure chrono with a 16-bit time tick, but keep in mind that maximum measurable time is limited compared to a 32-bit tick.
   Also, a variable of type double has better accuracy for time measurements than a float one.
 
-  3- Initialize the chrono module by calling fChrono_Init(). You need to provide the following parameters:
+  6- Initialize the chrono module by calling fChrono_Init(). You need to provide the following parameters:
     - tickTopValue: The maximum tick value that the tick generator can count.
     - tickToNsCoef: A multiplier for converting each tick to its corresponding time length in nanoseconds.
     - Depending on the CHRONO_TICK_TYPE, provide either a pointer to a tick_t variable or a tick_t(*fptr)(void) function pointer
@@ -122,7 +130,7 @@
 
   int main(void) {
     // Initialize the chrono module
-    fChrono_Init(0xFFFFFFFF, 1000, tickValue);
+    fChrono_Init(tickValue);
 
     // Create a chrono object
     sChrono myChrono;
@@ -183,7 +191,13 @@
  * @note Chronologically, "a" must be a time tick after "b", but the value of "a" could be less than "b" i.e., when tick overflows.
  * 
  */
+#if(CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
 #define ELAPSED_(a, b)  (((a) >= (b)) ? ((a) - (b)) : ((TickTopValue) - ((b) - (a))))
+#elif(CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
+#define ELAPSED_(a, b)  (((a) <= (b)) ? ((b) - (a)) : ((TickTopValue) - ((a) - (b))))
+#else
+#error "CHRONO_TICK_COUNTERMODE should be either TICK_COUNTERMODE_UP or TICK_COUNTERMODE_DOWN in chrono_config.h file."
+#endif
 
 /**
  * @brief Checks whether the chrono object is in the run state or not.
@@ -360,23 +374,21 @@ static tick_t(*GetTickValue)(void) = NULL;
  *       allowing it to continuously count ticks. By reading the value from the corresponding COUNTER register, you can obtain the current tick value.
  *       This approach provides an efficient and accurate way to track time intervals and perform time-related operations in your embedded system.
  * 
- * @param tickTopValue The maximum number of counts that the tick generator can count (starting from zero).
- * @param tickToNsCoef Coefficient for converting one tick to nanoseconds. Other multipliers (tick to milliseconds and tick to seconds) are calculated based on this coefficient.
  * @param tickValue Pointer to the memory location that contains the tick value.
  * @retval initStatus: returns 0 if successful and 1 if it fails.
  */
-uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, volatile tick_t *tickValue) {
+uint8_t fChrono_Init(volatile tick_t *tickValue) {
   
   Init = FALSE;
   InitUs = FALSE;
   InitMs = FALSE;
   InitSec = FALSE;
 
-  if(tickTopValue == 0U) {
+  if(CHRONO_TICK_TOP_VALUE == 0U) {
     return CHRONO_ERROR_TICK_TOP_ZERO; /* MISRA 2012 Rule 15.5 deviation */
   }
 
-  if(tickToNsCoef == 0U) {
+  if(CHRONO_TICK_TO_NANOSECOND_COEF == 0U) {
     return CHRONO_ERROR_TICK_TO_NS_ZERO; /* MISRA 2012 Rule 15.5 deviation */
   }
   
@@ -384,13 +396,13 @@ uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, volatile tick_t
     return CHRONO_ERROR_TICK_PTR_ERROR; /* MISRA 2012 Rule 15.5 deviation */
   }
   
-  TickTopValue = tickTopValue;
-  TickToNsCoef = tickToNsCoef;
+  TickTopValue = CHRONO_TICK_TOP_VALUE;
+  TickToNsCoef = CHRONO_TICK_TO_NANOSECOND_COEF;
   pTickValue = tickValue;
 
-  UsToTickCoef = (1000U / tickToNsCoef);
-  MsToTickCoef = (1000000U / tickToNsCoef);
-  SecToTickCoef = (1000000000U / tickToNsCoef);
+  UsToTickCoef = (1000U / CHRONO_TICK_TO_NANOSECOND_COEF);
+  MsToTickCoef = (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
+  SecToTickCoef = (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
   
   ContinuousTickUs = 0U;
 	ContinuousTickMs = 0U;
@@ -420,37 +432,35 @@ uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, volatile tick_t
  *       The user provides a pointer to this function as an input argument when calling fChrono_Init(). This approach allows the chrono module to dynamically fetch the current tick value from the user-defined function,
  *       ensuring accurate and efficient timekeeping. Whether you're using a timer or a custom tick generator, this flexibility enables precise time measurements in your embedded system.
  * 
- * @param tickTopValue The maximum number of counts that the tick generator can count (starting from zero).
- * @param tickToNsCoef Coefficient for converting one tick to nanoseconds. Other multipliers (tick to milliseconds and tick to seconds) are calculated based on this coefficient.
  * @param fpTickValue Pointer to the function that returns tick value.
  * @retval initStatus: returns 0 if successful and 1 if it fails.
  */
-uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, tick_t(*fpTickValue)(void)) {
+uint8_t fChrono_Init(tick_t(*fpTickValue)(void)) {
 
   Init = FALSE;
   InitUs = FALSE;
   InitMs = FALSE;
   InitSec = FALSE;
 
-  if(tickTopValue == 0) {
+  if(CHRONO_TICK_TOP_VALUE == 0U) {
     return CHRONO_ERROR_TICK_TOP_ZERO; /* MISRA 2012 Rule 15.5 deviation */
   }
 
-  if(tickToNsCoef == 0) {
+  if(CHRONO_TICK_TO_NANOSECOND_COEF == 0U) {
     return CHRONO_ERROR_TICK_TO_NS_ZERO; /* MISRA 2012 Rule 15.5 deviation */
   }
   
-  if(fpTickValue == NULL) {
+  if(tickValue == NULL) {
     return CHRONO_ERROR_TICK_PTR_ERROR; /* MISRA 2012 Rule 15.5 deviation */
   }
-
-  TickTopValue = tickTopValue;
-  TickToNsCoef = tickToNsCoef;
-  GetTickValue = fpTickValue;
   
-  UsToTickCoef = (1000U / tickToNsCoef);
-  MsToTickCoef = (1000000U / tickToNsCoef);
-  SecToTickCoef = (1000000000U / tickToNsCoef);
+  TickTopValue = CHRONO_TICK_TOP_VALUE;
+  TickToNsCoef = CHRONO_TICK_TO_NANOSECOND_COEF;
+  GetTickValue = fpTickValue;
+
+  UsToTickCoef = (1000U / CHRONO_TICK_TO_NANOSECOND_COEF);
+  MsToTickCoef = (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
+  SecToTickCoef = (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
 
   ContinuousTickUs = 0U;
 	ContinuousTickMs = 0U;
