@@ -55,9 +55,13 @@ static void OneTimeTearDown(void);
  */
 int fChrono_UnitTests_Run(int argc, const char* argv[]) {
   
+  int ret = 0;
+  
   OneTimeSetup();
   
-  int ret = UnityMain(argc, argv, RunTests);
+#if (CHRONO_TEST_STATUS == CHRONO_TESTS_ENABLED)
+  ret = UnityMain(argc, argv, RunTests);
+#endif
   
   OneTimeTearDown();
   
@@ -1862,6 +1866,81 @@ TEST_GROUP_RUNNER(GROUP_7) {
 /** @} */ //End of TEST_GROUP_7
 #endif
 
+#if(CHRONO_TEST_GROUP == TEST_GROUP_8)
+/** @defgroup TEST_GROUP_8
+ *  @{
+ */
+
+/**
+ * @brief Test group object.
+ * 
+ */
+TEST_GROUP(GROUP_8);
+
+/**
+ * @brief Unit test setup.
+ * 
+ */
+TEST_SETUP(GROUP_8) {
+  
+}
+
+/**
+ * @brief Unit test teardown.
+ * 
+ */
+TEST_TEAR_DOWN(GROUP_8) {
+
+}
+
+/**
+ * @brief fChrono_fIntervalS() returns interval.
+ * 
+ */
+TEST(GROUP_8, Chrono_IntervalSIsCalledWhenChronoIsInit_ReturnInterval) {
+  
+  float interval = 0.0f;
+  fChrono_Init(&tickVal);
+
+  sChrono testChrono;
+  tickVal = 0xFFFFFFFFU;
+
+  fChrono_Start(&testChrono);
+  interval = fChrono_IntervalS(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(0, interval);
+
+  tickVal = 0xFFFFFC17U;
+  interval = fChrono_IntervalS(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(1000, interval);
+
+  tickVal = 0xFFFFD8EFU;
+  interval = fChrono_IntervalS(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(9000, interval);
+
+  tickVal = 0xFFFFB1DFU;
+  fChrono_Start(&testChrono);
+  interval = fChrono_IntervalS(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(0, interval);
+
+  tickVal = 0xFFFFADF7U;
+  interval = fChrono_IntervalS(&testChrono);
+  TEST_ASSERT_EQUAL_FLOAT(1000, interval);
+
+}
+
+/**
+ * @brief Test group runner.
+ * 
+ */
+TEST_GROUP_RUNNER(GROUP_8) {
+
+  RUN_TEST_CASE(GROUP_8, Chrono_IntervalSIsCalledWhenChronoIsInit_ReturnInterval);
+
+}
+
+/** @} */ //End of TEST_GROUP_8
+#endif
+
 /*
 ╔══════════════════════════════════════════════════════════════════════════════════╗
 ║                            ##### Private Functions #####                         ║
@@ -1873,6 +1952,10 @@ TEST_GROUP_RUNNER(GROUP_7) {
  * 
  */
 static void RunTests(void) {
+  
+#if(CHRONO_TEST_STATUS == CHRONO_TESTS_DISABLED)
+  (void)(RunTests);
+#endif
 
 #if(CHRONO_TEST_GROUP == TEST_GROUP_1)
   RUN_TEST_GROUP(GROUP_1);
@@ -1900,6 +1983,10 @@ static void RunTests(void) {
 
 #if(CHRONO_TEST_GROUP == TEST_GROUP_7)
   RUN_TEST_GROUP(GROUP_7);
+#endif
+
+#if(CHRONO_TEST_GROUP == TEST_GROUP_8)
+  RUN_TEST_GROUP(GROUP_8);
 #endif
 
 }

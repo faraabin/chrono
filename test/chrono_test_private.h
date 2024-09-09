@@ -45,7 +45,7 @@ extern "C" {
 #define CHRONO_TEST_STATUS  CHRONO_TESTS_DISABLED
 
 #if(CHRONO_TEST_STATUS == CHRONO_TESTS_ENABLED)
-#define CHRONO_TEST_GROUP   TEST_GROUP_7
+#define CHRONO_TEST_GROUP   TEST_GROUP_8
 #endif
 
 #if(CHRONO_TEST_GROUP == TEST_GROUP_1)
@@ -172,6 +172,24 @@ typedef uint32_t timeMs_t;
 typedef uint32_t timeUs_t;
 
 /** @} */ //End of TEST_GROUP_7_CONFIG
+#endif
+
+#if(CHRONO_TEST_GROUP == TEST_GROUP_8)
+/** @defgroup TEST_GROUP_8_CONFIG
+ *  @{
+ */
+
+#define CHRONO_TICK_TYPE                TICK_TYPE_VARIABLE
+#define CHRONO_TICK_TOP_VALUE           (0xFFFFFFFFU)
+#define CHRONO_TICK_TO_NANOSECOND_COEF  (1000000000U)
+#define CHRONO_TICK_COUNTERMODE         TICK_COUNTERMODE_DOWN
+
+typedef uint32_t tick_t;
+typedef uint32_t timeS_t;
+typedef uint32_t timeMs_t;
+typedef uint32_t timeUs_t;
+
+/** @} */ //End of TEST_GROUP_8_CONFIG
 #endif
 
 #ifdef __cplusplus
