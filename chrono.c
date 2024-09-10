@@ -450,7 +450,7 @@ uint8_t fChrono_Init(tick_t(*fpTickValue)(void)) {
     return CHRONO_ERROR_TICK_TO_NS_ZERO; /* MISRA 2012 Rule 15.5 deviation */
   }
   
-  if(tickValue == NULL) {
+  if(fpTickValue == NULL) {
     return CHRONO_ERROR_TICK_PTR_ERROR; /* MISRA 2012 Rule 15.5 deviation */
   }
   
