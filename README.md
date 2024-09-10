@@ -31,9 +31,7 @@
 ```c
 
 //Example 1: Initialize module
-//tickValue is pointer to 32bit register that contain tick value
-//tickValue increment every us. so, each tick value is 1000 ns
-//top value of tick is maximum of uisgned 32bit variable that is 0xFFFFFFFF
+//tickValue is pointer to variable that contain tick value
 fChrono_Init(tickValue);
 
 //Example 2: Generate Delay
