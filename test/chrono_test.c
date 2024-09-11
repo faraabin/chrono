@@ -19,7 +19,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "chrono_test.h"
-#include "chrono_test_private.h"
+#include "chrono_config.h"
 
 #include "..\chrono.h"
 #include "..\ex\chrono_long.h"

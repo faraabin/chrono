@@ -25,11 +25,9 @@ extern "C" {
 #endif
 
 #include "chrono_private.h"
-#include "test\chrono_test_private.h"
 
 #include <stdint.h>
 
-#if (CHRONO_TEST_STATUS == CHRONO_TESTS_DISABLED)
 /* Exported defines ----------------------------------------------------------*/
 /**
   * @brief Select either reading current tick from an address in memory or by calling a function.
@@ -75,8 +73,6 @@ typedef uint32_t tick_t;
 typedef uint32_t timeS_t;
 typedef uint32_t timeMs_t;
 typedef uint32_t timeUs_t;
-
-#endif /* CHRONO_TEST_STATUS */
 
 #ifdef __cplusplus
 }

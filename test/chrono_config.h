@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
-  * @file           : chrono_test_private.h
-  * @brief          : Chrono module configuration file.
+  * @file           : chrono_config.h
+  * @brief          : Chrono test module configuration file.
   ******************************************************************************
   * @attention
   *
@@ -17,8 +17,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef CHRONO_TEST_PRIVATE_H
-#define CHRONO_TEST_PRIVATE_H
+#ifndef CHRONO_CONFIG_H
+#define CHRONO_CONFIG_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -42,7 +42,7 @@ extern "C" {
 #define CHRONO_TESTS_ENABLED  (1U)
 
 /* Exported defines ----------------------------------------------------------*/
-#define CHRONO_TEST_STATUS  CHRONO_TESTS_DISABLED
+#define CHRONO_TEST_STATUS  CHRONO_TESTS_ENABLED
 
 #if(CHRONO_TEST_STATUS == CHRONO_TESTS_ENABLED)
 #define CHRONO_TEST_GROUP   TEST_GROUP_8
@@ -196,6 +196,6 @@ typedef uint32_t timeUs_t;
 }
 #endif
 
-#endif /* CHRONO_TEST_PRIVATE_H */
+#endif /* CHRONO_CONFIG_H */
 
 /************************ © COPYRIGHT FaraabinCo *****END OF FILE****/
