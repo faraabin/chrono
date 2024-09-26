@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Chrono: CHRONO_CMD</title>
+<title>chrono: CHRONO_CMD</title>
 <link rel="icon" href="logo.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -29,9 +29,8 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">chrono
    </div>
-   <div id="projectbrief">Chrono is a C-library for time measurement in embedded software. It can be used in any embedded system, independent of MCU architecture or brand.</div>
   </td>
  </tr>
  </tbody>
@@ -111,9 +110,16 @@ Functions</h2></td></tr>
 <tr class="memitem:gaa624ac6207c6bb5ed055f7ff002b1913" id="r_gaa624ac6207c6bb5ed055f7ff002b1913"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaa624ac6207c6bb5ed055f7ff002b1913">fChrono_Stop</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
 <tr class="memdesc:gaa624ac6207c6bb5ed055f7ff002b1913"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the chrono object to signal the end of time measurement.  <br /></td></tr>
 <tr class="separator:gaa624ac6207c6bb5ed055f7ff002b1913"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga14506deb33d4c22339c8323d99dcca2f" id="r_ga14506deb33d4c22339c8323d99dcca2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga14506deb33d4c22339c8323d99dcca2f">fChronoLong_Start</a> (<a class="el" href="structs_chrono_long.html">sChronoLong</a> *const me)</td></tr>
+<tr class="memdesc:ga14506deb33d4c22339c8323d99dcca2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the chrono object for measuring time.  <br /></td></tr>
+<tr class="separator:ga14506deb33d4c22339c8323d99dcca2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaefc014404c861b8b1613e23d5c6f38ad" id="r_gaefc014404c861b8b1613e23d5c6f38ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gaefc014404c861b8b1613e23d5c6f38ad">fChronoLong_Stop</a> (<a class="el" href="structs_chrono_long.html">sChronoLong</a> *const me)</td></tr>
+<tr class="memdesc:gaefc014404c861b8b1613e23d5c6f38ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the chronoLong object to signal the end of time measurement.  <br /></td></tr>
+<tr class="separator:gaefc014404c861b8b1613e23d5c6f38ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>These functions are used to start and stop the chrono object. <a class="el" href="#ga417bdc43dd68de4cc05fa01bccf99a8a" title="Starts the chrono object for measuring time.">fChrono_Start()</a> puts object in run state for time measurement and <a class="el" href="#gaa624ac6207c6bb5ed055f7ff002b1913" title="Stops the chrono object to signal the end of time measurement.">fChrono_Stop()</a> stops the chrono object. </p>
+<p>These functions are used to start and stop the chrono object. <a class="el" href="#ga14506deb33d4c22339c8323d99dcca2f" title="Starts the chrono object for measuring time.">fChronoLong_Start()</a> puts object in run state for time measurement and <a class="el" href="#gaefc014404c861b8b1613e23d5c6f38ad" title="Stops the chronoLong object to signal the end of time measurement.">fChronoLong_Stop()</a> stops the chronoLong object.</p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="ga417bdc43dd68de4cc05fa01bccf99a8a" name="ga417bdc43dd68de4cc05fa01bccf99a8a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga417bdc43dd68de4cc05fa01bccf99a8a">&#9670;&#160;</a></span>fChrono_Start()</h2>
@@ -131,7 +137,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Starts the chrono object for measuring time. </p>
-<dl class="section note"><dt>Note</dt><dd>This function puts the chrono object in the run state. Functions like <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga8e017c10832b53a221f3595ea6aa0103" title="Returns the elapsed time in seconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedS()</a> or <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga218b2038b0ebfa0b5232ad5894c4b40e" title="Returns the time interval in microseconds between two consecutive calls to this function.">fChrono_IntervalUs()</a> only return measured values if there is a start time tag already. Therefore, this function must be called before any time measurement.</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function puts the chrono object in the run state. Functions like <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaf6327b36909b1986f2d3cfd869b959a5" title="Returns the elapsed time in seconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedS()</a> or <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga218b2038b0ebfa0b5232ad5894c4b40e" title="Returns the time interval in microseconds between two consecutive calls to this function.">fChrono_IntervalUs()</a> only return measured values if there is a start time tag already. Therefore, this function must be called before any time measurement.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">me</td><td>Pointer to the chrono object </td></tr>
@@ -167,12 +173,64 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga14506deb33d4c22339c8323d99dcca2f" name="ga14506deb33d4c22339c8323d99dcca2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga14506deb33d4c22339c8323d99dcca2f">&#9670;&#160;</a></span>fChronoLong_Start()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fChronoLong_Start </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structs_chrono_long.html">sChronoLong</a> *const</td>          <td class="paramname"><span class="paramname"><em>me</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Starts the chrono object for measuring time. </p>
+<dl class="section note"><dt>Note</dt><dd>This function puts the chronoLong object in the run state. Functions like <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga2fda5729944e0bf778c92e9de3d97993" title="Returns the elapsed time in seconds since the start of the measurement using fChronoLong_Start().">fChronoLong_ElapsedS()</a> or fChronoLong_IntervalUs() only return measured values if there is a start time tag already. Therefore, this function must be called before any time measurement.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">me</td><td>Pointer to the chronoLong object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gaefc014404c861b8b1613e23d5c6f38ad" name="gaefc014404c861b8b1613e23d5c6f38ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaefc014404c861b8b1613e23d5c6f38ad">&#9670;&#160;</a></span>fChronoLong_Stop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fChronoLong_Stop </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structs_chrono_long.html">sChronoLong</a> *const</td>          <td class="paramname"><span class="paramname"><em>me</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Stops the chronoLong object to signal the end of time measurement. </p>
+<dl class="section note"><dt>Note</dt><dd>This function stops the chronoLong object and puts it in the stop state. Measurements are not valid in this case, and corresponding functions return 0.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">me</td><td>Pointer to the chrono object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 12:47:46 for chrono by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

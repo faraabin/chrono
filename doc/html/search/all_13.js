@@ -1,4 +1,31 @@
 var searchData=
 [
-  ['تنظیمات_20ماژول_0',['تنظیمات ماژول',['../C:/Users/ASUS/Desktop/fw_nucleo32_l4_under_construction/src/library/utility/chrono/README.md#autotoc_md14',1,'']]]
+  ['the_20chrono_20module_0',['Objective API in the chrono module',['../group___o_b_j_e_c_t_i_v_e___a_p_i.html',1,'']]],
+  ['tic_5f_1',['tic_',['../group___t_i_m_e___m_a_c_r_o_s.html#ga029c40607e4d67ce9b4bb5ad96d26cc0',1,'chrono.h']]],
+  ['tick_20from_20tick_20generator_2',['Getting current tick from tick generator',['../index.html#autotoc_md8',1,'']]],
+  ['tick_20pointer_20for_20getting_20current_20tick_20value_3',['Tick pointer for getting current tick value.',['../group___c_h_r_o_n_o___t_i_c_k___p_o_i_n_t_e_r.html',1,'']]],
+  ['tick_20value_4',['Tick pointer for getting current tick value.',['../group___c_h_r_o_n_o___t_i_c_k___p_o_i_n_t_e_r.html',1,'']]],
+  ['tick_5f_5',['tick_',['../group___t_i_m_e___m_a_c_r_o_s.html#gaa5ee47337a76d57c0f9d188b6a23457b',1,'chrono.h']]],
+  ['tick_5fcountermode_5fdown_6',['TICK_COUNTERMODE_DOWN',['../group___p_r_i_v_a_t_e___d_e_f_i_n_e_s.html#ga13b7b46b11f380d4be2a81b70a70c673',1,'chrono_private.h']]],
+  ['tick_5fcountermode_5fup_7',['TICK_COUNTERMODE_UP',['../group___p_r_i_v_a_t_e___d_e_f_i_n_e_s.html#ga57d46b29a5cfc0ed69e570a8a5976793',1,'chrono_private.h']]],
+  ['tick_5ft_8',['tick_t',['../chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687',1,'chrono_config.h']]],
+  ['tick_5ftype_5ffunction_9',['TICK_TYPE_FUNCTION',['../group___p_r_i_v_a_t_e___d_e_f_i_n_e_s.html#gaa20606ef68859b9bbc1724930536b8cf',1,'chrono_private.h']]],
+  ['tick_5ftype_5fvariable_10',['TICK_TYPE_VARIABLE',['../group___p_r_i_v_a_t_e___d_e_f_i_n_e_s.html#gaf3af7ab3a36bb21aa66317abcbe03d79',1,'chrono_private.h']]],
+  ['ticktonscoef_11',['TickToNsCoef',['../group___c_h_r_o_n_o___p_v_t___c_o_e_f_s.html#gaf14553dee35ad7c46827716bedb03c43',1,'chrono.c']]],
+  ['ticktopvalue_12',['TickTopValue',['../group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#gae36079f94fb974027f0c371d85b62044',1,'chrono.c']]],
+  ['time_20delay_13',['Generating time delay',['../index.html#autotoc_md6',1,'']]],
+  ['time_20intervals_14',['Measuring time intervals',['../index.html#autotoc_md7',1,'']]],
+  ['time_20macros_15',['Time macros',['../group___t_i_m_e___m_a_c_r_o_s.html',1,'']]],
+  ['time_20measurement_16',['Time measurement',['../index.html#autotoc_md4',1,'']]],
+  ['time_5fspan_17',['TIME_SPAN',['../group___t_i_m_e___s_p_a_n.html',1,'']]],
+  ['timems_5ft_18',['timeMs_t',['../chrono__config_8h.html#a3b6aa526d6e57d4b09c062816045644c',1,'chrono_config.h']]],
+  ['timeout_19',['TIMEOUT',['../group___t_i_m_e_o_u_t.html',1,'']]],
+  ['timeout_20',['Timeout',['../index.html#autotoc_md5',1,'']]],
+  ['times_5ft_21',['timeS_t',['../chrono__config_8h.html#a48573b8bb932937a31d7cc400fd4a60a',1,'chrono_config.h']]],
+  ['timeus_5ft_22',['timeUs_t',['../chrono__config_8h.html#ac12de3804aa3b0af2499ee09ead1603b',1,'chrono_config.h']]],
+  ['to_20use_23',['How to use',['../index.html#autotoc_md1',1,'']]],
+  ['tocms_5f_24',['tocMs_',['../group___t_i_m_e___m_a_c_r_o_s.html#gac7e94112b328865fceddf3a25da9f7cf',1,'chrono.h']]],
+  ['tocs_5f_25',['tocS_',['../group___t_i_m_e___m_a_c_r_o_s.html#ga4ed77b954324be58d0d3b4edb0d959aa',1,'chrono.h']]],
+  ['tocus_5f_26',['tocUs_',['../group___t_i_m_e___m_a_c_r_o_s.html#gafe1254d7e3b351222eac417482242f44',1,'chrono.h']]],
+  ['true_27',['TRUE',['../chrono_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d',1,'chrono.h']]]
 ];

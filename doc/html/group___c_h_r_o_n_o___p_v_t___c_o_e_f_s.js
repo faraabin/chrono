@@ -1,7 +1,7 @@
 var group___c_h_r_o_n_o___p_v_t___c_o_e_f_s =
 [
-    [ "TickToMsCoef", "group___c_h_r_o_n_o___p_v_t___c_o_e_f_s.html#ga67a9d183f047117392897449bac2cea8", null ],
-    [ "TickToNsCoef", "group___c_h_r_o_n_o___p_v_t___c_o_e_f_s.html#gad6cf135c6907e10f7ac2b81b74398f74", null ],
-    [ "TickToSecCoef", "group___c_h_r_o_n_o___p_v_t___c_o_e_f_s.html#ga42bc718562a94d62d93e56ba69583f97", null ],
-    [ "TickToUsCoef", "group___c_h_r_o_n_o___p_v_t___c_o_e_f_s.html#ga45a2cd0ba271dab4b60f55b05b8c36dd", null ]
+    [ "MsToTickCoef", "group___c_h_r_o_n_o___p_v_t___c_o_e_f_s.html#ga06f492d4a7e8aaa835c7457f5c3af12d", null ],
+    [ "SecToTickCoef", "group___c_h_r_o_n_o___p_v_t___c_o_e_f_s.html#gaa7aff3233f9b18b74bba20f56c0042aa", null ],
+    [ "TickToNsCoef", "group___c_h_r_o_n_o___p_v_t___c_o_e_f_s.html#gaf14553dee35ad7c46827716bedb03c43", null ],
+    [ "UsToTickCoef", "group___c_h_r_o_n_o___p_v_t___c_o_e_f_s.html#ga82ae6abb19e92968139d99644f512bbc", null ]
 ];

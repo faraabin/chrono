@@ -8,6 +8,9 @@ var group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s =
     [ "ContinuousTickMs", "group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#gac6a074b4152adf210c7b686d9962c9e1", null ],
     [ "ContinuousTickS", "group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga280edd8456b87038b09887bfaa804a27", null ],
     [ "ContinuousTickUs", "group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga1466279556f219467760753609c7afec", null ],
-    [ "Init", "group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga190a54bf0c6980c9e88e20171ef8f300", null ],
+    [ "Init", "group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#gac0879926a610e8aacb43ddf8f7e47de0", null ],
+    [ "InitMs", "group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#gacdc52d750518d63a53e3cd64c571dec2", null ],
+    [ "InitSec", "group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#gaa92722296c6e3d575f7c91b6590f5195", null ],
+    [ "InitUs", "group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#ga671b5125cd270292021ff5be2077af9d", null ],
     [ "TickTopValue", "group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html#gae36079f94fb974027f0c371d85b62044", null ]
 ];

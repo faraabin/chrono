@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Chrono: Initialization functions</title>
+<title>chrono: Initialization functions</title>
 <link rel="icon" href="logo.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -29,9 +29,8 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">chrono
    </div>
-   <div id="projectbrief">Chrono is a C-library for time measurement in embedded software. It can be used in any embedded system, independent of MCU architecture or brand.</div>
   </td>
  </tr>
  </tbody>
@@ -102,14 +101,14 @@ $(function(){initNavTree('group___i_n_i_t___f_u_n_c_t_i_o_n.html',''); initResiz
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga99e3b10b0b5bb751dc77e7a4be3ae03f" id="r_ga99e3b10b0b5bb751dc77e7a4be3ae03f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga99e3b10b0b5bb751dc77e7a4be3ae03f">fChrono_Init</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> tickTopValue, uint32_t tickToNsCoef, volatile <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> *tickValue)</td></tr>
-<tr class="memdesc:ga99e3b10b0b5bb751dc77e7a4be3ae03f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes chrono module in VARIABLE mode based on specified parameters.  <br /></td></tr>
-<tr class="separator:ga99e3b10b0b5bb751dc77e7a4be3ae03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga51e56a54a077f2f424ff7f91c4653e60" id="r_ga51e56a54a077f2f424ff7f91c4653e60"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga51e56a54a077f2f424ff7f91c4653e60">fChrono_Init</a> (volatile <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> *tickValue)</td></tr>
+<tr class="memdesc:ga51e56a54a077f2f424ff7f91c4653e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes chrono module in VARIABLE mode based on specified parameters.  <br /></td></tr>
+<tr class="separator:ga51e56a54a077f2f424ff7f91c4653e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga99e3b10b0b5bb751dc77e7a4be3ae03f" name="ga99e3b10b0b5bb751dc77e7a4be3ae03f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga99e3b10b0b5bb751dc77e7a4be3ae03f">&#9670;&#160;</a></span>fChrono_Init()</h2>
+<a id="ga51e56a54a077f2f424ff7f91c4653e60" name="ga51e56a54a077f2f424ff7f91c4653e60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga51e56a54a077f2f424ff7f91c4653e60">&#9670;&#160;</a></span>fChrono_Init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -117,17 +116,8 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">uint8_t fChrono_Init </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a></td>          <td class="paramname"><span class="paramname"><em>tickTopValue</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">volatile <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> *</td>          <td class="paramname"><span class="paramname"><em>tickValue</em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">uint32_t</td>          <td class="paramname"><span class="paramname"><em>tickToNsCoef</em>, </span></td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">volatile <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> *</td>          <td class="paramname"><span class="paramname"><em>tickValue</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -140,8 +130,6 @@ Functions</h2></td></tr>
 When configuring the chrono module with the TICK_TYPE_VARIABLE, the module fetches the current tick from the tick generator by dereferencing a memory address as tick_t. The pointer to this memory location is provided by the user via the tickValue argument. A practical use case for this configuration is when you have a spare timer available. You can start this timer in free run mode, allowing it to continuously count ticks. By reading the value from the corresponding COUNTER register, you can obtain the current tick value. This approach provides an efficient and accurate way to track time intervals and perform time-related operations in your embedded system.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tickTopValue</td><td>The maximum number of counts that the tick generator can count (starting from zero). </td></tr>
-    <tr><td class="paramname">tickToNsCoef</td><td>Coefficient for converting one tick to nanoseconds. Other multipliers (tick to milliseconds and tick to seconds) are calculated based on this coefficient. </td></tr>
     <tr><td class="paramname">tickValue</td><td>Pointer to the memory location that contains the tick value. </td></tr>
   </table>
   </dd>
@@ -155,8 +143,6 @@ When configuring the chrono module with the TICK_TYPE_VARIABLE, the module fetch
 <dl class="section attention"><dt>Attention</dt><dd>This function MUST be called before using any other function in this library.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">tickTopValue</td><td>The maximum number of counts that the tick generator can count (starting from zero). </td></tr>
-    <tr><td class="paramname">tickToNsCoef</td><td>Coefficient for converting one tick to nanoseconds. </td></tr>
     <tr><td class="paramname">tickValue</td><td>If module is configured with TICK_TYPE_VARIABLE, pointer to the memory location that contains the tick value, otherwise pointer to the function that returns tick value. </td></tr>
   </table>
   </dd>
@@ -175,7 +161,7 @@ When configuring the chrono module with the TICK_TYPE_VARIABLE, the module fetch
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 12:47:46 for chrono by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

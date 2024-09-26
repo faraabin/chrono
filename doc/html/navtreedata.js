@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Chrono", "index.html", [
+  [ "chrono", "index.html", [
     [ "Features", "index.html#autotoc_md0", null ],
     [ "How to use", "index.html#autotoc_md1", [
       [ "Configuration", "index.html#autotoc_md2", null ],
@@ -36,6 +36,7 @@ var NAVTREE =
         [ "Getting current tick from tick generator", "index.html#autotoc_md8", null ]
       ] ]
     ] ],
+    [ "MISRA Compliance", "md__m_i_s_r_a.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],

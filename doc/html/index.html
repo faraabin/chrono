@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Chrono: Chrono</title>
+<title>chrono: chrono</title>
 <link rel="icon" href="logo.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -29,9 +29,8 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">chrono
    </div>
-   <div id="projectbrief">Chrono is a C-library for time measurement in embedded software. It can be used in any embedded system, independent of MCU architecture or brand.</div>
   </td>
  </tr>
  </tbody>
@@ -94,7 +93,7 @@ $(function(){initNavTree('index.html',''); initResizable(); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Chrono </div></div>
+  <div class="headertitle"><div class="title">chrono </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
@@ -110,10 +109,16 @@ How to use</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Configuration</h2>
 <p>1- In <a class="el" href="chrono__config_8h.html" title=": Chrono module configuration file.">chrono_config.h</a> file, select the appropriate CHRONO_TICK_TYPE:</p><ul>
-<li>Choose TICK_TYPE_VARIABLE if you want to provide an address of the memory location where the tick value can be read. This address is passed to <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a> as a pointer to a variable of type tick_t.</li>
-<li>Alternatively, select TICK_TYPE_FUNCTION if you prefer to obtain the current tick by calling a function. In this case, you must provide a function that returns the current tick as tick_t. The address of this function is passed to <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.</li>
+<li>Choose TICK_TYPE_VARIABLE if you want to provide an address of the memory location where the tick value can be read. This address is passed to <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga51e56a54a077f2f424ff7f91c4653e60" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a> as a pointer to a variable of type tick_t.</li>
+<li>Alternatively, select TICK_TYPE_FUNCTION if you prefer to obtain the current tick by calling a function. In this case, you must provide a function that returns the current tick as tick_t. The address of this function is passed to <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga51e56a54a077f2f424ff7f91c4653e60" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.</li>
 </ul>
-<p>2- In <a class="el" href="chrono__config_8h.html" title=": Chrono module configuration file.">chrono_config.h</a> file, specify type of the variables that chrono module uses for time measuremenst. These types are:</p><ul>
+<p>2- In <a class="el" href="chrono__config_8h.html" title=": Chrono module configuration file.">chrono_config.h</a> file, set the value of CHRONO_TICK_TOP_VALUE. This should be the top value that your tick generator can count upto.</p>
+<p>3- In <a class="el" href="chrono__config_8h.html" title=": Chrono module configuration file.">chrono_config.h</a> file, set the value of CHRONO_TICK_TO_NANOSECOND_COEF. This is the amount of time that one tick increment takes.</p>
+<p>4- In <a class="el" href="chrono__config_8h.html" title=": Chrono module configuration file.">chrono_config.h</a> file, set the CHRONO_TICK_COUNTERMODE which is the counting mode of your tick generator.</p><ul>
+<li>Select TICK_COUNTERMODE_UP if tick generator up counts from zero to CHRONO_TICK_TOP_VALUE.</li>
+<li>Select TICK_COUNTERMODE_DOWN if tick generator down counts from CHRONO_TICK_TOP_VALUE to zero.</li>
+</ul>
+<p>5- In <a class="el" href="chrono__config_8h.html" title=": Chrono module configuration file.">chrono_config.h</a> file, specify type of the variables that chrono module uses for time measuremenst. These types are:</p><ul>
 <li>tick_t: Type of the tick value. Depending on your application, this type can be uint16_t, uint32_t, etc.</li>
 <li>timeS_t: Type of the variable that is used to measure time lengths in seconds.</li>
 <li>timeMs_t: Type of the variable that is used to measure time lengths in milliseconds.</li>
@@ -121,9 +126,7 @@ Configuration</h2>
 <li>Atomic access to memory for obtaining tickValue.</li>
 <li>Maximum measurable time length and its accuracy in long time measurements. If you have a 16-bit MCU its better to configure chrono with a 16-bit time tick, but keep in mind that maximum measurable time is limited compared to a 32-bit tick. Also, a variable of type double has better accuracy for time measurements than a float one.</li>
 </ul>
-<p>3- Initialize the chrono module by calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>. You need to provide the following parameters:</p><ul>
-<li>tickTopValue: The maximum tick value that the tick generator can count.</li>
-<li>tickToNsCoef: A multiplier for converting each tick to its corresponding time length in nanoseconds.</li>
+<p>6- Initialize the chrono module by calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga51e56a54a077f2f424ff7f91c4653e60" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>. You need to provide the following parameter:</p><ul>
 <li>Depending on the CHRONO_TICK_TYPE, provide either a pointer to a tick_t variable or a <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687" title="User typedef for measurements in chrono module.">tick_t(*fptr)</a>(void) function pointer that returns the current tick for the chrono module.</li>
 </ul>
 <p>Now the chrono module is ready to use!</p>
@@ -132,7 +135,7 @@ Using functions</h2>
 <p>After initializing the module, there are two kinds of methods available for users.</p>
 <p>1- Functions that Require a Chrono Object (<a class="el" href="structs_chrono.html" title="Definition of the Chrono object.">sChrono</a>) as Input:</p><ul>
 <li>The following methods need an instantiated <a class="el" href="structs_chrono.html" title="Definition of the Chrono object.">sChrono</a> object:<ul>
-<li><a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a" title="Starts the chrono object for measuring time.">fChrono_Start()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaa624ac6207c6bb5ed055f7ff002b1913" title="Stops the chrono object to signal the end of time measurement.">fChrono_Stop()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga8e017c10832b53a221f3595ea6aa0103" title="Returns the elapsed time in seconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedS()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga7939cc1637a108d7775a16a62ccb839e" title="Returns the elapsed time in milliseconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedMs()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga51fddb4616aec4792d4beaadde4e5396" title="Returns the elapsed time in microseconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedUs()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gad58c1b8ec3583d183ea095429bbfe5f5" title="Returns the remaining time in seconds until the chrono object reaches its timeout.">fChrono_LeftS()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga02dad31fb2289f335007d178dd7a7d46" title="Returns the remaining time in milliseconds until the chrono object reaches its timeout.">fChrono_LeftMs()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga0e4b024e9428377e0e211a1edd2c4c5f" title="Returns the remaining time in microseconds until the chrono object reaches its timeout.">fChrono_LeftUs()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga461b7bba20d8635f9d059cb512cb3fb5" title="Starts the chrono object in timeout mode.">fChrono_StartTimeoutS()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga1ef183445d2a3e10194faf5136e4d9e0" title="Starts the chrono object in timeout mode.">fChrono_StartTimeoutMs()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gabb3a6a2fb17e2792e7e8a9d436fdd89d" title="Starts the chrono object in timeout mode.">fChrono_StartTimeoutUs()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaf01bd33d0413fb4275afe31882ce5896" title="Returns the timeout status of the chrono object.">fChrono_IsTimeout()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaaaa7e46612309748870d8f29246d4cb6" title="Returns the time interval in seconds between two consecutive calls to this function.">fChrono_IntervalS()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga744c7b6005ad752960f3d5f7e44b7a0a" title="Returns the time interval in milliseconds between two consecutive calls to this function.">fChrono_IntervalMs()</a> and <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga218b2038b0ebfa0b5232ad5894c4b40e" title="Returns the time interval in microseconds between two consecutive calls to this function.">fChrono_IntervalUs()</a>.</li>
+<li><a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a" title="Starts the chrono object for measuring time.">fChrono_Start()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaa624ac6207c6bb5ed055f7ff002b1913" title="Stops the chrono object to signal the end of time measurement.">fChrono_Stop()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaf6327b36909b1986f2d3cfd869b959a5" title="Returns the elapsed time in seconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedS()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gae10c122153d7a2590cfab99c423095ca" title="Returns the elapsed time in milliseconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedMs()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gabdc269fb62eba2f8407fbad5c6938358" title="Returns the elapsed time in microseconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedUs()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gad58c1b8ec3583d183ea095429bbfe5f5" title="Returns the remaining time in seconds until the chrono object reaches its timeout.">fChrono_LeftS()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga02dad31fb2289f335007d178dd7a7d46" title="Returns the remaining time in milliseconds until the chrono object reaches its timeout.">fChrono_LeftMs()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga0e4b024e9428377e0e211a1edd2c4c5f" title="Returns the remaining time in microseconds until the chrono object reaches its timeout.">fChrono_LeftUs()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga461b7bba20d8635f9d059cb512cb3fb5" title="Starts the chrono object in timeout mode.">fChrono_StartTimeoutS()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga1ef183445d2a3e10194faf5136e4d9e0" title="Starts the chrono object in timeout mode.">fChrono_StartTimeoutMs()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gabb3a6a2fb17e2792e7e8a9d436fdd89d" title="Starts the chrono object in timeout mode.">fChrono_StartTimeoutUs()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga3a8d1705cf68514589452ed00e6ff60d" title="Returns the timeout status of the chrono object.">fChrono_IsTimeout()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaaaa7e46612309748870d8f29246d4cb6" title="Returns the time interval in seconds between two consecutive calls to this function.">fChrono_IntervalS()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga744c7b6005ad752960f3d5f7e44b7a0a" title="Returns the time interval in milliseconds between two consecutive calls to this function.">fChrono_IntervalMs()</a> and <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga218b2038b0ebfa0b5232ad5894c4b40e" title="Returns the time interval in microseconds between two consecutive calls to this function.">fChrono_IntervalUs()</a>.</li>
 </ul>
 </li>
 <li>These methods are primarily used for creating time stamps and measuring time intervals. They require a variable of type <a class="el" href="structs_chrono.html" title="Definition of the Chrono object.">sChrono</a> to perform their tasks.</li>
@@ -142,7 +145,7 @@ Using functions</h2>
 <li><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga61b79bca1f6b452d9af60b356ddc01ec" title="Get current tick.">fChrono_GetTick()</a>, <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gaa5984a81837625bc4183788d900d3684" title="Returns the continuous tick value converted to milliseconds since calling fChrono_Init().">fChrono_GetContinuousTickMs()</a>, <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gad32b8aeb7641f4dea97f10a219e962d2" title="Get Tick top value.">fChrono_GetTickTopValue()</a>, <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga2b5ecb09816d083a9a191aa87373e48c" title="Returns the coefficient for converting one tick to nanoseconds.">fChrono_GetTickToNsCoef()</a>, <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga0ddd2d4a5e0b3bdbf10f52dd732e0b12" title="Returns the maximum measurable time interval in milliseocnds that can be counted by the tick generato...">fChrono_GetMaxMeasurableTimeMs()</a>, <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gac4b6550167e7b22bf296fb9e66a35157" title="Generates a delay in seconds.">fChrono_DelayS()</a>, <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga74dd1ce71f42a66fb721667568a2e56d" title="Generates a delay in milliseconds.">fChrono_DelayMs()</a>, <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga71f794624e83e3eebc5437914027d225" title="Generates a delay in microseconds.">fChrono_DelayUs()</a>, <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga3ea069d033bfee32566a2a9bfe403b9f" title="Returns the time length in seconds between two time ticks.">fChrono_TimeSpanS()</a>, <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga5a175785342cacd3dd500af83845e004" title="Returns the time length in milliseconds between two time ticks.">fChrono_TimeSpanMs()</a> and <a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga2b753e532cf17482840f6441890a60a7" title="Returns the time length in microseconds between two time ticks.">fChrono_TimeSpanUs()</a>.</li>
 </ul>
 </li>
-<li>These functions are used for obtaining internal information from the chrono module, generating delays, and measuring time duration between two ticks. Since they serve specific purposes, they do not require an instantiated <a class="el" href="structs_chrono.html" title="Definition of the Chrono object.">sChrono</a> object.</li>
+<li>These functions are used for obtaining internal information from the chrono module, generating delays, and measuring time duration between two ticks. Since they serve general purposes, they do not require a specific instantiated <a class="el" href="structs_chrono.html" title="Definition of the Chrono object.">sChrono</a> object.</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md4"></a>
 Time measurement</h3>
@@ -150,9 +153,9 @@ Time measurement</h3>
 <li>Create a variable of type <a class="el" href="structs_chrono.html" title="Definition of the Chrono object.">sChrono</a>.</li>
 <li>Start this chrono object using the <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a" title="Starts the chrono object for measuring time.">fChrono_Start()</a> function. This function puts the object in the run state and creates a time tag in the user's code.</li>
 <li>Call one of the following functions:<ul>
-<li><a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga8e017c10832b53a221f3595ea6aa0103" title="Returns the elapsed time in seconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedS()</a></li>
-<li><a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga7939cc1637a108d7775a16a62ccb839e" title="Returns the elapsed time in milliseconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedMs()</a></li>
-<li><a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga51fddb4616aec4792d4beaadde4e5396" title="Returns the elapsed time in microseconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedUs()</a></li>
+<li><a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaf6327b36909b1986f2d3cfd869b959a5" title="Returns the elapsed time in seconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedS()</a></li>
+<li><a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gae10c122153d7a2590cfab99c423095ca" title="Returns the elapsed time in milliseconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedMs()</a></li>
+<li><a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gabdc269fb62eba2f8407fbad5c6938358" title="Returns the elapsed time in microseconds since the start of the measurement using fChrono_Start().">fChrono_ElapsedUs()</a></li>
 </ul>
 </li>
 <li>These functions measure the time length between the line of code where <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a" title="Starts the chrono object for measuring time.">fChrono_Start()</a> was called and the line of code where these measurement functions are called. They return the time length in their corresponding units.</li>
@@ -163,8 +166,8 @@ Timeout</h3>
 <p>To utilize the timeout functionality, follow these steps:</p><ul>
 <li>Create a variable of type <a class="el" href="structs_chrono.html" title="Definition of the Chrono object.">sChrono</a>.</li>
 <li>Start this chrono object in timeout mode using the <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga461b7bba20d8635f9d059cb512cb3fb5" title="Starts the chrono object in timeout mode.">fChrono_StartTimeoutS()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga1ef183445d2a3e10194faf5136e4d9e0" title="Starts the chrono object in timeout mode.">fChrono_StartTimeoutMs()</a> and <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gabb3a6a2fb17e2792e7e8a9d436fdd89d" title="Starts the chrono object in timeout mode.">fChrono_StartTimeoutUs()</a> functions.</li>
-<li>Query whether the chrono is timed out or not using <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaf01bd33d0413fb4275afe31882ce5896" title="Returns the timeout status of the chrono object.">fChrono_IsTimeout()</a>.</li>
-<li>To stop the chrono object, call <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaa624ac6207c6bb5ed055f7ff002b1913" title="Stops the chrono object to signal the end of time measurement.">fChrono_Stop()</a>. This action puts the object in the stop state, and checking its timeout state will return false.</li>
+<li>Query whether the chrono is timed out or not using <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga3a8d1705cf68514589452ed00e6ff60d" title="Returns the timeout status of the chrono object.">fChrono_IsTimeout()</a>.</li>
+<li>To stop the chrono object, call <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaa624ac6207c6bb5ed055f7ff002b1913" title="Stops the chrono object to signal the end of time measurement.">fChrono_Stop()</a>. This action puts the object in the stop state, and checking its timeout state will return FALSE.</li>
 <li>To determine the remaining time until the chrono times out, use <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gad58c1b8ec3583d183ea095429bbfe5f5" title="Returns the remaining time in seconds until the chrono object reaches its timeout.">fChrono_LeftS()</a>, <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga02dad31fb2289f335007d178dd7a7d46" title="Returns the remaining time in milliseconds until the chrono object reaches its timeout.">fChrono_LeftMs()</a>, or <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga0e4b024e9428377e0e211a1edd2c4c5f" title="Returns the remaining time in microseconds until the chrono object reaches its timeout.">fChrono_LeftUs()</a>.</li>
 </ul>
 <h3><a class="anchor" id="autotoc_md6"></a>
@@ -206,7 +209,7 @@ Getting current tick from tick generator</h3>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">void</span>) {</div>
 <div class="line">  <span class="comment">// Initialize the chrono module</span></div>
-<div class="line">  <a class="code hl_function" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f">fChrono_Init</a>(0xFFFFFFFF, 1000, tickValue);</div>
+<div class="line">  <a class="code hl_function" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga51e56a54a077f2f424ff7f91c4653e60">fChrono_Init</a>(tickValue);</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// Create a chrono object</span></div>
 <div class="line">  <a class="code hl_struct" href="structs_chrono.html">sChrono</a> myChrono;</div>
@@ -218,7 +221,7 @@ Getting current tick from tick generator</h3>
 <div class="line">  <span class="comment">// ...</span></div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// Measure elapsed time in milliseconds</span></div>
-<div class="line">  uint32_t elapsedMs = <a class="code hl_function" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga7939cc1637a108d7775a16a62ccb839e">fChrono_ElapsedMs</a>(&amp;myChrono);</div>
+<div class="line">  uint32_t elapsedMs = <a class="code hl_function" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gae10c122153d7a2590cfab99c423095ca">fChrono_ElapsedMs</a>(&amp;myChrono);</div>
 <div class="line">  printf(<span class="stringliteral">&quot;Elapsed time: %u ms\n&quot;</span>, elapsedMs);</div>
 <div class="line"> </div>
 <div class="line">  <span class="comment">// Get the current tick value</span></div>
@@ -239,29 +242,30 @@ Getting current tick from tick generator</h3>
 <div class="line">  <a class="code hl_function" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a">fChrono_Start</a>(&amp;intervalChrono);</div>
 <div class="line">  <a class="code hl_function" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga1ef183445d2a3e10194faf5136e4d9e0">fChrono_StartTimeoutMs</a>(&amp;intervalChrono, 5000);</div>
 <div class="line"> </div>
-<div class="line">  <span class="keywordflow">while</span>(<span class="keyword">true</span>) {</div>
+<div class="line">  <span class="keywordflow">while</span>(<a class="code hl_define" href="chrono_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>) {</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Measure time interval</span></div>
 <div class="line">    <span class="keywordtype">float</span> interval = <a class="code hl_function" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga218b2038b0ebfa0b5232ad5894c4b40e">fChrono_IntervalUs</a>(&amp;chronoPeriod);</div>
 <div class="line">    printf(<span class="stringliteral">&quot;Runtime interval: %f\n&quot;</span>, interval);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// Check if the chrono has timed out (assuming a timeout of 5000 ms)</span></div>
-<div class="line">    <span class="keywordflow">if</span>(<a class="code hl_function" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaf01bd33d0413fb4275afe31882ce5896">fChrono_IsTimeout</a>(&amp;myChrono)) {</div>
+<div class="line">    <span class="keywordflow">if</span>(<a class="code hl_function" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga3a8d1705cf68514589452ed00e6ff60d">fChrono_IsTimeout</a>(&amp;myChrono)) {</div>
 <div class="line">      printf(<span class="stringliteral">&quot;Timeout occurred!\n&quot;</span>);</div>
 <div class="line">    }</div>
 <div class="line">  }</div>
 <div class="line">}</div>
 <div class="ttc" id="achrono_8h_html"><div class="ttname"><a href="chrono_8h.html">chrono.h</a></div><div class="ttdoc">: Chrono module header file.</div></div>
-<div class="ttc" id="agroup___f_u_n_c_t_i_o_n_a_l___a_p_i_html_ga61b79bca1f6b452d9af60b356ddc01ec"><div class="ttname"><a href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga61b79bca1f6b452d9af60b356ddc01ec">fChrono_GetTick</a></div><div class="ttdeci">tick_t fChrono_GetTick(void)</div><div class="ttdoc">Get current tick.</div><div class="ttdef"><b>Definition</b> chrono.c:449</div></div>
-<div class="ttc" id="agroup___f_u_n_c_t_i_o_n_a_l___a_p_i_html_gac4b6550167e7b22bf296fb9e66a35157"><div class="ttname"><a href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gac4b6550167e7b22bf296fb9e66a35157">fChrono_DelayS</a></div><div class="ttdeci">void fChrono_DelayS(timeS_t delayS)</div><div class="ttdoc">Generates a delay in seconds.</div><div class="ttdef"><b>Definition</b> chrono.c:640</div></div>
-<div class="ttc" id="agroup___i_n_i_t___f_u_n_c_t_i_o_n_html_ga99e3b10b0b5bb751dc77e7a4be3ae03f"><div class="ttname"><a href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f">fChrono_Init</a></div><div class="ttdeci">uint8_t fChrono_Init(tick_t tickTopValue, uint32_t tickToNsCoef, volatile tick_t *tickValue)</div><div class="ttdoc">Initializes chrono module in VARIABLE mode based on specified parameters.</div><div class="ttdef"><b>Definition</b> chrono.c:362</div></div>
-<div class="ttc" id="agroup___o_b_j_e_c_t_i_v_e___a_p_i_html_ga1ef183445d2a3e10194faf5136e4d9e0"><div class="ttname"><a href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga1ef183445d2a3e10194faf5136e4d9e0">fChrono_StartTimeoutMs</a></div><div class="ttdeci">void fChrono_StartTimeoutMs(sChrono *const me, timeMs_t timeout)</div><div class="ttdoc">Starts the chrono object in timeout mode.</div><div class="ttdef"><b>Definition</b> chrono.c:891</div></div>
-<div class="ttc" id="agroup___o_b_j_e_c_t_i_v_e___a_p_i_html_ga218b2038b0ebfa0b5232ad5894c4b40e"><div class="ttname"><a href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga218b2038b0ebfa0b5232ad5894c4b40e">fChrono_IntervalUs</a></div><div class="ttdeci">timeUs_t fChrono_IntervalUs(sChrono *const me)</div><div class="ttdoc">Returns the time interval in microseconds between two consecutive calls to this function.</div><div class="ttdef"><b>Definition</b> chrono.c:1004</div></div>
-<div class="ttc" id="agroup___o_b_j_e_c_t_i_v_e___a_p_i_html_ga417bdc43dd68de4cc05fa01bccf99a8a"><div class="ttname"><a href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a">fChrono_Start</a></div><div class="ttdeci">void fChrono_Start(sChrono *const me)</div><div class="ttdoc">Starts the chrono object for measuring time.</div><div class="ttdef"><b>Definition</b> chrono.c:703</div></div>
-<div class="ttc" id="agroup___o_b_j_e_c_t_i_v_e___a_p_i_html_ga7939cc1637a108d7775a16a62ccb839e"><div class="ttname"><a href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga7939cc1637a108d7775a16a62ccb839e">fChrono_ElapsedMs</a></div><div class="ttdeci">timeMs_t fChrono_ElapsedMs(sChrono *const me)</div><div class="ttdoc">Returns the elapsed time in milliseconds since the start of the measurement using fChrono_Start().</div><div class="ttdef"><b>Definition</b> chrono.c:750</div></div>
-<div class="ttc" id="agroup___o_b_j_e_c_t_i_v_e___a_p_i_html_gaa624ac6207c6bb5ed055f7ff002b1913"><div class="ttname"><a href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaa624ac6207c6bb5ed055f7ff002b1913">fChrono_Stop</a></div><div class="ttdeci">void fChrono_Stop(sChrono *const me)</div><div class="ttdoc">Stops the chrono object to signal the end of time measurement.</div><div class="ttdef"><b>Definition</b> chrono.c:718</div></div>
-<div class="ttc" id="agroup___o_b_j_e_c_t_i_v_e___a_p_i_html_gaf01bd33d0413fb4275afe31882ce5896"><div class="ttname"><a href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaf01bd33d0413fb4275afe31882ce5896">fChrono_IsTimeout</a></div><div class="ttdeci">bool fChrono_IsTimeout(sChrono *const me)</div><div class="ttdoc">Returns the timeout status of the chrono object.</div><div class="ttdef"><b>Definition</b> chrono.c:921</div></div>
-<div class="ttc" id="astructs_chrono_html"><div class="ttname"><a href="structs_chrono.html">sChrono</a></div><div class="ttdoc">Definition of the Chrono object.</div><div class="ttdef"><b>Definition</b> chrono.h:99</div></div>
+<div class="ttc" id="achrono_8h_html_aa8cecfc5c5c054d2875c03e77b7be15d"><div class="ttname"><a href="chrono_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a></div><div class="ttdeci">#define TRUE</div><div class="ttdef"><b>Definition</b> chrono.h:121</div></div>
+<div class="ttc" id="agroup___f_u_n_c_t_i_o_n_a_l___a_p_i_html_ga61b79bca1f6b452d9af60b356ddc01ec"><div class="ttname"><a href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga61b79bca1f6b452d9af60b356ddc01ec">fChrono_GetTick</a></div><div class="ttdeci">tick_t fChrono_GetTick(void)</div><div class="ttdoc">Get current tick.</div><div class="ttdef"><b>Definition</b> chrono.c:550</div></div>
+<div class="ttc" id="agroup___f_u_n_c_t_i_o_n_a_l___a_p_i_html_gac4b6550167e7b22bf296fb9e66a35157"><div class="ttname"><a href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gac4b6550167e7b22bf296fb9e66a35157">fChrono_DelayS</a></div><div class="ttdeci">void fChrono_DelayS(timeS_t delayS)</div><div class="ttdoc">Generates a delay in seconds.</div><div class="ttdef"><b>Definition</b> chrono.c:784</div></div>
+<div class="ttc" id="agroup___i_n_i_t___f_u_n_c_t_i_o_n_html_ga51e56a54a077f2f424ff7f91c4653e60"><div class="ttname"><a href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga51e56a54a077f2f424ff7f91c4653e60">fChrono_Init</a></div><div class="ttdeci">uint8_t fChrono_Init(volatile tick_t *tickValue)</div><div class="ttdoc">Initializes chrono module in VARIABLE mode based on specified parameters.</div><div class="ttdef"><b>Definition</b> chrono.c:389</div></div>
+<div class="ttc" id="agroup___o_b_j_e_c_t_i_v_e___a_p_i_html_ga1ef183445d2a3e10194faf5136e4d9e0"><div class="ttname"><a href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga1ef183445d2a3e10194faf5136e4d9e0">fChrono_StartTimeoutMs</a></div><div class="ttdeci">void fChrono_StartTimeoutMs(sChrono *const me, timeMs_t timeout)</div><div class="ttdoc">Starts the chrono object in timeout mode.</div><div class="ttdef"><b>Definition</b> chrono.c:1056</div></div>
+<div class="ttc" id="agroup___o_b_j_e_c_t_i_v_e___a_p_i_html_ga218b2038b0ebfa0b5232ad5894c4b40e"><div class="ttname"><a href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga218b2038b0ebfa0b5232ad5894c4b40e">fChrono_IntervalUs</a></div><div class="ttdeci">timeUs_t fChrono_IntervalUs(sChrono *const me)</div><div class="ttdoc">Returns the time interval in microseconds between two consecutive calls to this function.</div><div class="ttdef"><b>Definition</b> chrono.c:1182</div></div>
+<div class="ttc" id="agroup___o_b_j_e_c_t_i_v_e___a_p_i_html_ga3a8d1705cf68514589452ed00e6ff60d"><div class="ttname"><a href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga3a8d1705cf68514589452ed00e6ff60d">fChrono_IsTimeout</a></div><div class="ttdeci">bool_t fChrono_IsTimeout(sChrono *const me)</div><div class="ttdoc">Returns the timeout status of the chrono object.</div><div class="ttdef"><b>Definition</b> chrono.c:1092</div></div>
+<div class="ttc" id="agroup___o_b_j_e_c_t_i_v_e___a_p_i_html_ga417bdc43dd68de4cc05fa01bccf99a8a"><div class="ttname"><a href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a">fChrono_Start</a></div><div class="ttdeci">void fChrono_Start(sChrono *const me)</div><div class="ttdoc">Starts the chrono object for measuring time.</div><div class="ttdef"><b>Definition</b> chrono.c:847</div></div>
+<div class="ttc" id="agroup___o_b_j_e_c_t_i_v_e___a_p_i_html_gaa624ac6207c6bb5ed055f7ff002b1913"><div class="ttname"><a href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaa624ac6207c6bb5ed055f7ff002b1913">fChrono_Stop</a></div><div class="ttdeci">void fChrono_Stop(sChrono *const me)</div><div class="ttdoc">Stops the chrono object to signal the end of time measurement.</div><div class="ttdef"><b>Definition</b> chrono.c:863</div></div>
+<div class="ttc" id="agroup___o_b_j_e_c_t_i_v_e___a_p_i_html_gae10c122153d7a2590cfab99c423095ca"><div class="ttname"><a href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gae10c122153d7a2590cfab99c423095ca">fChrono_ElapsedMs</a></div><div class="ttdeci">timeMs_t fChrono_ElapsedMs(sChrono const *const me)</div><div class="ttdoc">Returns the elapsed time in milliseconds since the start of the measurement using fChrono_Start().</div><div class="ttdef"><b>Definition</b> chrono.c:899</div></div>
+<div class="ttc" id="astructs_chrono_html"><div class="ttname"><a href="structs_chrono.html">sChrono</a></div><div class="ttdoc">Definition of the Chrono object.</div><div class="ttdef"><b>Definition</b> chrono.h:130</div></div>
 </div><!-- fragment --> </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"/>
 </div><!-- contents -->
@@ -269,7 +273,7 @@ Getting current tick from tick generator</h3>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 12:47:46 for chrono by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

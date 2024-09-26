@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['value_0',['Tick pointer for getting current tick value.',['../group___c_h_r_o_n_o___t_i_c_k___p_o_i_n_t_e_r.html',1,'']]],
-  ['variables_20in_20chrono_20module_1',['Private variables in chrono module.',['../group___c_h_r_o_n_o___p_r_i_v_a_t_e___v_a_r_i_a_b_l_e_s.html',1,'']]]
+  ['readme_0',['@page md__r_e_a_d_m_e README',['../C:/Users/ASUS/Desktop/chrono/README.md#autotoc_md12',1,'']]],
+  ['readme_2emd_1',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
+  ['rule_2015_205_2',['Rule 15.5',['../md__m_i_s_r_a.html#autotoc_md11',1,'']]],
+  ['rule_203_201_3',['Rule 3.1',['../md__m_i_s_r_a.html#autotoc_md10',1,'']]]
 ];

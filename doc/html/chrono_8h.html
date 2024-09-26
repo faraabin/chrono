@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Chrono: C:/Users/ASUS/Desktop/fw_nucleo32_l4_under_construction/src/library/utility/chrono/chrono.h File Reference</title>
+<title>chrono: chrono.h File Reference</title>
 <link rel="icon" href="logo.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -29,9 +29,8 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">chrono
    </div>
-   <div id="projectbrief">Chrono is a C-library for time measurement in embedded software. It can be used in any embedded system, independent of MCU architecture or brand.</div>
   </td>
  </tr>
  </tbody>
@@ -97,8 +96,9 @@ $(function(){initNavTree('chrono_8h.html',''); initResizable(); });
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
-  <div class="headertitle"><div class="title">C:/Users/ASUS/Desktop/fw_nucleo32_l4_under_construction/src/library/utility/chrono/chrono.h File Reference</div></div>
+  <div class="headertitle"><div class="title">chrono.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -119,6 +119,14 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:a997e5b67c9b9e705f973cec266519869" id="r_a997e5b67c9b9e705f973cec266519869"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a997e5b67c9b9e705f973cec266519869">CHRONO_OK</a>&#160;&#160;&#160;(0U)</td></tr>
+<tr class="separator:a997e5b67c9b9e705f973cec266519869"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e1c347241d11317e8e5e8b29aa125ca" id="r_a2e1c347241d11317e8e5e8b29aa125ca"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e1c347241d11317e8e5e8b29aa125ca">CHRONO_ERROR_TICK_TOP_ZERO</a>&#160;&#160;&#160;(1U)</td></tr>
+<tr class="separator:a2e1c347241d11317e8e5e8b29aa125ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2667ffaa0e070394c6a7b969b97df6b5" id="r_a2667ffaa0e070394c6a7b969b97df6b5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2667ffaa0e070394c6a7b969b97df6b5">CHRONO_ERROR_TICK_TO_NS_ZERO</a>&#160;&#160;&#160;(2U)</td></tr>
+<tr class="separator:a2667ffaa0e070394c6a7b969b97df6b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30abbc5847f0cdaed5c94bcede15450a" id="r_a30abbc5847f0cdaed5c94bcede15450a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30abbc5847f0cdaed5c94bcede15450a">CHRONO_ERROR_TICK_PTR_ERROR</a>&#160;&#160;&#160;(3U)</td></tr>
+<tr class="separator:a30abbc5847f0cdaed5c94bcede15450a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa5ee47337a76d57c0f9d188b6a23457b" id="r_gaa5ee47337a76d57c0f9d188b6a23457b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___m_a_c_r_o_s.html#gaa5ee47337a76d57c0f9d188b6a23457b">tick_</a>()&#160;&#160;&#160;<a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga61b79bca1f6b452d9af60b356ddc01ec">fChrono_GetTick</a>()</td></tr>
 <tr class="memdesc:gaa5ee47337a76d57c0f9d188b6a23457b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns current tick value a the number of ticks, since the start of the tick generator.  <br /></td></tr>
 <tr class="separator:gaa5ee47337a76d57c0f9d188b6a23457b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,23 +148,51 @@ Macros</h2></td></tr>
 <tr class="memitem:ga849ab979729bcb4cb6c4041a8ce87f7f" id="r_ga849ab979729bcb4cb6c4041a8ce87f7f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___m_a_c_r_o_s.html#ga849ab979729bcb4cb6c4041a8ce87f7f">delaySeconds_</a>(delay_)&#160;&#160;&#160;<a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gac4b6550167e7b22bf296fb9e66a35157">fChrono_DelayS</a>(delay_)</td></tr>
 <tr class="memdesc:ga849ab979729bcb4cb6c4041a8ce87f7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a delay for the amount of time (in second) specified as input parameter.  <br /></td></tr>
 <tr class="separator:ga849ab979729bcb4cb6c4041a8ce87f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga029c40607e4d67ce9b4bb5ad96d26cc0" id="r_ga029c40607e4d67ce9b4bb5ad96d26cc0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___m_a_c_r_o_s.html#ga029c40607e4d67ce9b4bb5ad96d26cc0">tic_</a>(name_)</td></tr>
+<tr class="memdesc:ga029c40607e4d67ce9b4bb5ad96d26cc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures elapsed time since a call to <a class="el" href="group___t_i_m_e___m_a_c_r_o_s.html#ga029c40607e4d67ce9b4bb5ad96d26cc0" title="Measures elapsed time since a call to tic_().">tic_()</a>.  <br /></td></tr>
+<tr class="separator:ga029c40607e4d67ce9b4bb5ad96d26cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafe1254d7e3b351222eac417482242f44" id="r_gafe1254d7e3b351222eac417482242f44"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___m_a_c_r_o_s.html#gafe1254d7e3b351222eac417482242f44">tocUs_</a>(name_)&#160;&#160;&#160;<a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gabdc269fb62eba2f8407fbad5c6938358">fChrono_ElapsedUs</a>(&amp;(__tic_toc_##name_##__))</td></tr>
+<tr class="separator:gafe1254d7e3b351222eac417482242f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac7e94112b328865fceddf3a25da9f7cf" id="r_gac7e94112b328865fceddf3a25da9f7cf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___m_a_c_r_o_s.html#gac7e94112b328865fceddf3a25da9f7cf">tocMs_</a>(name_)&#160;&#160;&#160;<a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gae10c122153d7a2590cfab99c423095ca">fChrono_ElapsedMs</a>(&amp;(__tic_toc_##name_##__))</td></tr>
+<tr class="separator:gac7e94112b328865fceddf3a25da9f7cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ed77b954324be58d0d3b4edb0d959aa" id="r_ga4ed77b954324be58d0d3b4edb0d959aa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___m_a_c_r_o_s.html#ga4ed77b954324be58d0d3b4edb0d959aa">tocS_</a>(name_)&#160;&#160;&#160;<a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaf6327b36909b1986f2d3cfd869b959a5">fChrono_ElapsedS</a>(&amp;(__tic_toc_##name_##__))</td></tr>
+<tr class="separator:ga4ed77b954324be58d0d3b4edb0d959aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa93f0eb578d23995850d61f7d61c55c1" id="r_aa93f0eb578d23995850d61f7d61c55c1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>&#160;&#160;&#160;((<a class="el" href="#a2b21255bd7f7192db778983b15089208">bool_t</a>)0)</td></tr>
+<tr class="separator:aa93f0eb578d23995850d61f7d61c55c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8cecfc5c5c054d2875c03e77b7be15d" id="r_aa8cecfc5c5c054d2875c03e77b7be15d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>&#160;&#160;&#160;((<a class="el" href="#a2b21255bd7f7192db778983b15089208">bool_t</a>)1)</td></tr>
+<tr class="separator:aa8cecfc5c5c054d2875c03e77b7be15d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a2b21255bd7f7192db778983b15089208" id="r_a2b21255bd7f7192db778983b15089208"><td class="memItemLeft" align="right" valign="top">typedef bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2b21255bd7f7192db778983b15089208">bool_t</a></td></tr>
+<tr class="memdesc:a2b21255bd7f7192db778983b15089208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Definition of bool_t for misra compliance.  <br /></td></tr>
+<tr class="separator:a2b21255bd7f7192db778983b15089208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga99e3b10b0b5bb751dc77e7a4be3ae03f" id="r_ga99e3b10b0b5bb751dc77e7a4be3ae03f"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f">fChrono_Init</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> tickTopValue, uint32_t tickToNsCoef, volatile <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> *tickValue)</td></tr>
-<tr class="memdesc:ga99e3b10b0b5bb751dc77e7a4be3ae03f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes chrono module in VARIABLE mode based on specified parameters.  <br /></td></tr>
-<tr class="separator:ga99e3b10b0b5bb751dc77e7a4be3ae03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga51e56a54a077f2f424ff7f91c4653e60" id="r_ga51e56a54a077f2f424ff7f91c4653e60"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga51e56a54a077f2f424ff7f91c4653e60">fChrono_Init</a> (volatile <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> *tickValue)</td></tr>
+<tr class="memdesc:ga51e56a54a077f2f424ff7f91c4653e60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes chrono module in VARIABLE mode based on specified parameters.  <br /></td></tr>
+<tr class="separator:ga51e56a54a077f2f424ff7f91c4653e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga94005ebb33be636926eabd49bff68e94" id="r_ga94005ebb33be636926eabd49bff68e94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a2b21255bd7f7192db778983b15089208">bool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga94005ebb33be636926eabd49bff68e94">fChrono_IsTickUsAvailable</a> (void)</td></tr>
+<tr class="memdesc:ga94005ebb33be636926eabd49bff68e94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the availability of tick in microsecond after initialization of the chrono module.  <br /></td></tr>
+<tr class="separator:ga94005ebb33be636926eabd49bff68e94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7c630855fac3c14a2fc646166546ba3c" id="r_ga7c630855fac3c14a2fc646166546ba3c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a2b21255bd7f7192db778983b15089208">bool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga7c630855fac3c14a2fc646166546ba3c">fChrono_IsTickMsAvailable</a> (void)</td></tr>
+<tr class="memdesc:ga7c630855fac3c14a2fc646166546ba3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the availability of tick in milliseconds after initialization of the chrono module.  <br /></td></tr>
+<tr class="separator:ga7c630855fac3c14a2fc646166546ba3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga05c30e07f0eee39daeffd14afa9f9cc7" id="r_ga05c30e07f0eee39daeffd14afa9f9cc7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a2b21255bd7f7192db778983b15089208">bool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga05c30e07f0eee39daeffd14afa9f9cc7">fChrono_IsTickSAvailable</a> (void)</td></tr>
+<tr class="memdesc:ga05c30e07f0eee39daeffd14afa9f9cc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the availability of tick in milliseconds after initialization of the chrono module.  <br /></td></tr>
+<tr class="separator:ga05c30e07f0eee39daeffd14afa9f9cc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga61b79bca1f6b452d9af60b356ddc01ec" id="r_ga61b79bca1f6b452d9af60b356ddc01ec"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga61b79bca1f6b452d9af60b356ddc01ec">fChrono_GetTick</a> (void)</td></tr>
 <tr class="memdesc:ga61b79bca1f6b452d9af60b356ddc01ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current tick.  <br /></td></tr>
 <tr class="separator:ga61b79bca1f6b452d9af60b356ddc01ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3237597e835f1c92f03f335c364b7048" id="r_ga3237597e835f1c92f03f335c364b7048"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga3237597e835f1c92f03f335c364b7048">fChrono_GetContinuousTickUs</a> (void)</td></tr>
-<tr class="memdesc:ga3237597e835f1c92f03f335c364b7048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the continuous tick value converted to microseconds since calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
+<tr class="memdesc:ga3237597e835f1c92f03f335c364b7048"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the continuous tick value converted to microseconds since calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga51e56a54a077f2f424ff7f91c4653e60" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
 <tr class="separator:ga3237597e835f1c92f03f335c364b7048"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa5984a81837625bc4183788d900d3684" id="r_gaa5984a81837625bc4183788d900d3684"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gaa5984a81837625bc4183788d900d3684">fChrono_GetContinuousTickMs</a> (void)</td></tr>
-<tr class="memdesc:gaa5984a81837625bc4183788d900d3684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the continuous tick value converted to milliseconds since calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
+<tr class="memdesc:gaa5984a81837625bc4183788d900d3684"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the continuous tick value converted to milliseconds since calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga51e56a54a077f2f424ff7f91c4653e60" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
 <tr class="separator:gaa5984a81837625bc4183788d900d3684"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaef0ca9fcf426a5c1be655c8b4de41ad3" id="r_gaef0ca9fcf426a5c1be655c8b4de41ad3"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gaef0ca9fcf426a5c1be655c8b4de41ad3">fChrono_GetContinuousTickS</a> (void)</td></tr>
-<tr class="memdesc:gaef0ca9fcf426a5c1be655c8b4de41ad3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the continuous tick value converted to seconds since calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga99e3b10b0b5bb751dc77e7a4be3ae03f" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
+<tr class="memdesc:gaef0ca9fcf426a5c1be655c8b4de41ad3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the continuous tick value converted to seconds since calling <a class="el" href="group___i_n_i_t___f_u_n_c_t_i_o_n.html#ga51e56a54a077f2f424ff7f91c4653e60" title="Initializes chrono module in VARIABLE mode based on specified parameters.">fChrono_Init()</a>.  <br /></td></tr>
 <tr class="separator:gaef0ca9fcf426a5c1be655c8b4de41ad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad32b8aeb7641f4dea97f10a219e962d2" id="r_gad32b8aeb7641f4dea97f10a219e962d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gad32b8aeb7641f4dea97f10a219e962d2">fChrono_GetTickTopValue</a> (void)</td></tr>
 <tr class="memdesc:gad32b8aeb7641f4dea97f10a219e962d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Tick top value.  <br /></td></tr>
@@ -164,31 +200,37 @@ Functions</h2></td></tr>
 <tr class="memitem:ga2b5ecb09816d083a9a191aa87373e48c" id="r_ga2b5ecb09816d083a9a191aa87373e48c"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#ga2b5ecb09816d083a9a191aa87373e48c">fChrono_GetTickToNsCoef</a> (void)</td></tr>
 <tr class="memdesc:ga2b5ecb09816d083a9a191aa87373e48c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the coefficient for converting one tick to nanoseconds.  <br /></td></tr>
 <tr class="separator:ga2b5ecb09816d083a9a191aa87373e48c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga45014dd6cca36276f94e82f3f5638593" id="r_ga45014dd6cca36276f94e82f3f5638593"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a1e309926828d2c7c6c43c266300e54c9">timeS_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___m_a_x___m_e_a_s_u_r_a_b_l_e___t_i_m_e.html#ga45014dd6cca36276f94e82f3f5638593">fChrono_GetMaxMeasurableTimeS</a> (void)</td></tr>
+<tr class="memitem:gac05a08ab72d4a67c96992cb579c17838" id="r_gac05a08ab72d4a67c96992cb579c17838"><td class="memItemLeft" align="right" valign="top">volatile <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gac05a08ab72d4a67c96992cb579c17838">fChrono_GetTickPointer</a> (void)</td></tr>
+<tr class="memdesc:gac05a08ab72d4a67c96992cb579c17838"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pointer to the tick generator.  <br /></td></tr>
+<tr class="separator:gac05a08ab72d4a67c96992cb579c17838"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga45014dd6cca36276f94e82f3f5638593" id="r_ga45014dd6cca36276f94e82f3f5638593"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a48573b8bb932937a31d7cc400fd4a60a">timeS_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___m_a_x___m_e_a_s_u_r_a_b_l_e___t_i_m_e.html#ga45014dd6cca36276f94e82f3f5638593">fChrono_GetMaxMeasurableTimeS</a> (void)</td></tr>
 <tr class="memdesc:ga45014dd6cca36276f94e82f3f5638593"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum measurable time interval in seocnds that can be counted by the tick generator until it reaches its top value.  <br /></td></tr>
 <tr class="separator:ga45014dd6cca36276f94e82f3f5638593"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0ddd2d4a5e0b3bdbf10f52dd732e0b12" id="r_ga0ddd2d4a5e0b3bdbf10f52dd732e0b12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a747cb12f03b286881a150fdda13ae0fa">timeMs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___m_a_x___m_e_a_s_u_r_a_b_l_e___t_i_m_e.html#ga0ddd2d4a5e0b3bdbf10f52dd732e0b12">fChrono_GetMaxMeasurableTimeMs</a> (void)</td></tr>
+<tr class="memitem:ga0ddd2d4a5e0b3bdbf10f52dd732e0b12" id="r_ga0ddd2d4a5e0b3bdbf10f52dd732e0b12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a3b6aa526d6e57d4b09c062816045644c">timeMs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___m_a_x___m_e_a_s_u_r_a_b_l_e___t_i_m_e.html#ga0ddd2d4a5e0b3bdbf10f52dd732e0b12">fChrono_GetMaxMeasurableTimeMs</a> (void)</td></tr>
 <tr class="memdesc:ga0ddd2d4a5e0b3bdbf10f52dd732e0b12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum measurable time interval in milliseocnds that can be counted by the tick generator until it reaches its top value.  <br /></td></tr>
 <tr class="separator:ga0ddd2d4a5e0b3bdbf10f52dd732e0b12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga63e30306f8cf1875e7b7f13b0e18b8a4" id="r_ga63e30306f8cf1875e7b7f13b0e18b8a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#afaf2e55459cb2e82e7e7000354c9fc0c">timeUs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___m_a_x___m_e_a_s_u_r_a_b_l_e___t_i_m_e.html#ga63e30306f8cf1875e7b7f13b0e18b8a4">fChrono_GetMaxMeasurableTimeUs</a> (void)</td></tr>
+<tr class="memitem:ga63e30306f8cf1875e7b7f13b0e18b8a4" id="r_ga63e30306f8cf1875e7b7f13b0e18b8a4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#ac12de3804aa3b0af2499ee09ead1603b">timeUs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___m_a_x___m_e_a_s_u_r_a_b_l_e___t_i_m_e.html#ga63e30306f8cf1875e7b7f13b0e18b8a4">fChrono_GetMaxMeasurableTimeUs</a> (void)</td></tr>
 <tr class="memdesc:ga63e30306f8cf1875e7b7f13b0e18b8a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum measurable time interval in microseocnds that can be counted by the tick generator until it reaches its top value.  <br /></td></tr>
 <tr class="separator:ga63e30306f8cf1875e7b7f13b0e18b8a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3ea069d033bfee32566a2a9bfe403b9f" id="r_ga3ea069d033bfee32566a2a9bfe403b9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a1e309926828d2c7c6c43c266300e54c9">timeS_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___s_p_a_n.html#ga3ea069d033bfee32566a2a9bfe403b9f">fChrono_TimeSpanS</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> startTick, <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> endTick)</td></tr>
+<tr class="memitem:ga3ea069d033bfee32566a2a9bfe403b9f" id="r_ga3ea069d033bfee32566a2a9bfe403b9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a48573b8bb932937a31d7cc400fd4a60a">timeS_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___s_p_a_n.html#ga3ea069d033bfee32566a2a9bfe403b9f">fChrono_TimeSpanS</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> startTick, <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> endTick)</td></tr>
 <tr class="memdesc:ga3ea069d033bfee32566a2a9bfe403b9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the time length in seconds between two time ticks.  <br /></td></tr>
 <tr class="separator:ga3ea069d033bfee32566a2a9bfe403b9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5a175785342cacd3dd500af83845e004" id="r_ga5a175785342cacd3dd500af83845e004"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a747cb12f03b286881a150fdda13ae0fa">timeMs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___s_p_a_n.html#ga5a175785342cacd3dd500af83845e004">fChrono_TimeSpanMs</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> startTick, <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> endTick)</td></tr>
+<tr class="memitem:ga5a175785342cacd3dd500af83845e004" id="r_ga5a175785342cacd3dd500af83845e004"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a3b6aa526d6e57d4b09c062816045644c">timeMs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___s_p_a_n.html#ga5a175785342cacd3dd500af83845e004">fChrono_TimeSpanMs</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> startTick, <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> endTick)</td></tr>
 <tr class="memdesc:ga5a175785342cacd3dd500af83845e004"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the time length in milliseconds between two time ticks.  <br /></td></tr>
 <tr class="separator:ga5a175785342cacd3dd500af83845e004"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2b753e532cf17482840f6441890a60a7" id="r_ga2b753e532cf17482840f6441890a60a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#afaf2e55459cb2e82e7e7000354c9fc0c">timeUs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___s_p_a_n.html#ga2b753e532cf17482840f6441890a60a7">fChrono_TimeSpanUs</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> startTick, <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> endTick)</td></tr>
+<tr class="memitem:ga2b753e532cf17482840f6441890a60a7" id="r_ga2b753e532cf17482840f6441890a60a7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#ac12de3804aa3b0af2499ee09ead1603b">timeUs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___s_p_a_n.html#ga2b753e532cf17482840f6441890a60a7">fChrono_TimeSpanUs</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> startTick, <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> endTick)</td></tr>
 <tr class="memdesc:ga2b753e532cf17482840f6441890a60a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the time length in microseconds between two time ticks.  <br /></td></tr>
 <tr class="separator:ga2b753e532cf17482840f6441890a60a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac4b6550167e7b22bf296fb9e66a35157" id="r_gac4b6550167e7b22bf296fb9e66a35157"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___d_e_l_a_y.html#gac4b6550167e7b22bf296fb9e66a35157">fChrono_DelayS</a> (<a class="el" href="chrono__config_8h.html#a1e309926828d2c7c6c43c266300e54c9">timeS_t</a> delayS)</td></tr>
+<tr class="memitem:ga23183e70b19511b6410b605558417cbe" id="r_ga23183e70b19511b6410b605558417cbe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e___s_p_a_n.html#ga23183e70b19511b6410b605558417cbe">fChrono_TimeSpanTick</a> (<a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> startTick, <a class="el" href="chrono__config_8h.html#a451a7d205dfb766727eba25c6e61c687">tick_t</a> endTick)</td></tr>
+<tr class="memdesc:ga23183e70b19511b6410b605558417cbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the time length in ticks between two time ticks.  <br /></td></tr>
+<tr class="separator:ga23183e70b19511b6410b605558417cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac4b6550167e7b22bf296fb9e66a35157" id="r_gac4b6550167e7b22bf296fb9e66a35157"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___d_e_l_a_y.html#gac4b6550167e7b22bf296fb9e66a35157">fChrono_DelayS</a> (<a class="el" href="chrono__config_8h.html#a48573b8bb932937a31d7cc400fd4a60a">timeS_t</a> delayS)</td></tr>
 <tr class="memdesc:gac4b6550167e7b22bf296fb9e66a35157"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a delay in seconds.  <br /></td></tr>
 <tr class="separator:gac4b6550167e7b22bf296fb9e66a35157"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga74dd1ce71f42a66fb721667568a2e56d" id="r_ga74dd1ce71f42a66fb721667568a2e56d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___d_e_l_a_y.html#ga74dd1ce71f42a66fb721667568a2e56d">fChrono_DelayMs</a> (<a class="el" href="chrono__config_8h.html#a747cb12f03b286881a150fdda13ae0fa">timeMs_t</a> delayMs)</td></tr>
+<tr class="memitem:ga74dd1ce71f42a66fb721667568a2e56d" id="r_ga74dd1ce71f42a66fb721667568a2e56d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___d_e_l_a_y.html#ga74dd1ce71f42a66fb721667568a2e56d">fChrono_DelayMs</a> (<a class="el" href="chrono__config_8h.html#a3b6aa526d6e57d4b09c062816045644c">timeMs_t</a> delayMs)</td></tr>
 <tr class="memdesc:ga74dd1ce71f42a66fb721667568a2e56d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a delay in milliseconds.  <br /></td></tr>
 <tr class="separator:ga74dd1ce71f42a66fb721667568a2e56d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga71f794624e83e3eebc5437914027d225" id="r_ga71f794624e83e3eebc5437914027d225"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___d_e_l_a_y.html#ga71f794624e83e3eebc5437914027d225">fChrono_DelayUs</a> (<a class="el" href="chrono__config_8h.html#afaf2e55459cb2e82e7e7000354c9fc0c">timeUs_t</a> delayUs)</td></tr>
+<tr class="memitem:ga71f794624e83e3eebc5437914027d225" id="r_ga71f794624e83e3eebc5437914027d225"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___d_e_l_a_y.html#ga71f794624e83e3eebc5437914027d225">fChrono_DelayUs</a> (<a class="el" href="chrono__config_8h.html#ac12de3804aa3b0af2499ee09ead1603b">timeUs_t</a> delayUs)</td></tr>
 <tr class="memdesc:ga71f794624e83e3eebc5437914027d225"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a delay in microseconds.  <br /></td></tr>
 <tr class="separator:ga71f794624e83e3eebc5437914027d225"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga417bdc43dd68de4cc05fa01bccf99a8a" id="r_ga417bdc43dd68de4cc05fa01bccf99a8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_h_r_o_n_o___c_m_d.html#ga417bdc43dd68de4cc05fa01bccf99a8a">fChrono_Start</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
@@ -197,43 +239,43 @@ Functions</h2></td></tr>
 <tr class="memitem:gaa624ac6207c6bb5ed055f7ff002b1913" id="r_gaa624ac6207c6bb5ed055f7ff002b1913"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_h_r_o_n_o___c_m_d.html#gaa624ac6207c6bb5ed055f7ff002b1913">fChrono_Stop</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
 <tr class="memdesc:gaa624ac6207c6bb5ed055f7ff002b1913"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the chrono object to signal the end of time measurement.  <br /></td></tr>
 <tr class="separator:gaa624ac6207c6bb5ed055f7ff002b1913"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8e017c10832b53a221f3595ea6aa0103" id="r_ga8e017c10832b53a221f3595ea6aa0103"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a1e309926828d2c7c6c43c266300e54c9">timeS_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___e_l_a_p_s_e_d.html#ga8e017c10832b53a221f3595ea6aa0103">fChrono_ElapsedS</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
-<tr class="memdesc:ga8e017c10832b53a221f3595ea6aa0103"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the elapsed time in seconds since the start of the measurement using <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a" title="Starts the chrono object for measuring time.">fChrono_Start()</a>.  <br /></td></tr>
-<tr class="separator:ga8e017c10832b53a221f3595ea6aa0103"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7939cc1637a108d7775a16a62ccb839e" id="r_ga7939cc1637a108d7775a16a62ccb839e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a747cb12f03b286881a150fdda13ae0fa">timeMs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___e_l_a_p_s_e_d.html#ga7939cc1637a108d7775a16a62ccb839e">fChrono_ElapsedMs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
-<tr class="memdesc:ga7939cc1637a108d7775a16a62ccb839e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the elapsed time in milliseconds since the start of the measurement using <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a" title="Starts the chrono object for measuring time.">fChrono_Start()</a>.  <br /></td></tr>
-<tr class="separator:ga7939cc1637a108d7775a16a62ccb839e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga51fddb4616aec4792d4beaadde4e5396" id="r_ga51fddb4616aec4792d4beaadde4e5396"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#afaf2e55459cb2e82e7e7000354c9fc0c">timeUs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___e_l_a_p_s_e_d.html#ga51fddb4616aec4792d4beaadde4e5396">fChrono_ElapsedUs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
-<tr class="memdesc:ga51fddb4616aec4792d4beaadde4e5396"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the elapsed time in microseconds since the start of the measurement using <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a" title="Starts the chrono object for measuring time.">fChrono_Start()</a>.  <br /></td></tr>
-<tr class="separator:ga51fddb4616aec4792d4beaadde4e5396"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad58c1b8ec3583d183ea095429bbfe5f5" id="r_gad58c1b8ec3583d183ea095429bbfe5f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a1e309926828d2c7c6c43c266300e54c9">timeS_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___l_e_f_t.html#gad58c1b8ec3583d183ea095429bbfe5f5">fChrono_LeftS</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
+<tr class="memitem:gaf6327b36909b1986f2d3cfd869b959a5" id="r_gaf6327b36909b1986f2d3cfd869b959a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a48573b8bb932937a31d7cc400fd4a60a">timeS_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___e_l_a_p_s_e_d.html#gaf6327b36909b1986f2d3cfd869b959a5">fChrono_ElapsedS</a> (<a class="el" href="structs_chrono.html">sChrono</a> const *const me)</td></tr>
+<tr class="memdesc:gaf6327b36909b1986f2d3cfd869b959a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the elapsed time in seconds since the start of the measurement using <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a" title="Starts the chrono object for measuring time.">fChrono_Start()</a>.  <br /></td></tr>
+<tr class="separator:gaf6327b36909b1986f2d3cfd869b959a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae10c122153d7a2590cfab99c423095ca" id="r_gae10c122153d7a2590cfab99c423095ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a3b6aa526d6e57d4b09c062816045644c">timeMs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___e_l_a_p_s_e_d.html#gae10c122153d7a2590cfab99c423095ca">fChrono_ElapsedMs</a> (<a class="el" href="structs_chrono.html">sChrono</a> const *const me)</td></tr>
+<tr class="memdesc:gae10c122153d7a2590cfab99c423095ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the elapsed time in milliseconds since the start of the measurement using <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a" title="Starts the chrono object for measuring time.">fChrono_Start()</a>.  <br /></td></tr>
+<tr class="separator:gae10c122153d7a2590cfab99c423095ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabdc269fb62eba2f8407fbad5c6938358" id="r_gabdc269fb62eba2f8407fbad5c6938358"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#ac12de3804aa3b0af2499ee09ead1603b">timeUs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___e_l_a_p_s_e_d.html#gabdc269fb62eba2f8407fbad5c6938358">fChrono_ElapsedUs</a> (<a class="el" href="structs_chrono.html">sChrono</a> const *const me)</td></tr>
+<tr class="memdesc:gabdc269fb62eba2f8407fbad5c6938358"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the elapsed time in microseconds since the start of the measurement using <a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#ga417bdc43dd68de4cc05fa01bccf99a8a" title="Starts the chrono object for measuring time.">fChrono_Start()</a>.  <br /></td></tr>
+<tr class="separator:gabdc269fb62eba2f8407fbad5c6938358"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad58c1b8ec3583d183ea095429bbfe5f5" id="r_gad58c1b8ec3583d183ea095429bbfe5f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a48573b8bb932937a31d7cc400fd4a60a">timeS_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___l_e_f_t.html#gad58c1b8ec3583d183ea095429bbfe5f5">fChrono_LeftS</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
 <tr class="memdesc:gad58c1b8ec3583d183ea095429bbfe5f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the remaining time in seconds until the chrono object reaches its timeout.  <br /></td></tr>
 <tr class="separator:gad58c1b8ec3583d183ea095429bbfe5f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga02dad31fb2289f335007d178dd7a7d46" id="r_ga02dad31fb2289f335007d178dd7a7d46"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a747cb12f03b286881a150fdda13ae0fa">timeMs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___l_e_f_t.html#ga02dad31fb2289f335007d178dd7a7d46">fChrono_LeftMs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
+<tr class="memitem:ga02dad31fb2289f335007d178dd7a7d46" id="r_ga02dad31fb2289f335007d178dd7a7d46"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a3b6aa526d6e57d4b09c062816045644c">timeMs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___l_e_f_t.html#ga02dad31fb2289f335007d178dd7a7d46">fChrono_LeftMs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
 <tr class="memdesc:ga02dad31fb2289f335007d178dd7a7d46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the remaining time in milliseconds until the chrono object reaches its timeout.  <br /></td></tr>
 <tr class="separator:ga02dad31fb2289f335007d178dd7a7d46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0e4b024e9428377e0e211a1edd2c4c5f" id="r_ga0e4b024e9428377e0e211a1edd2c4c5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#afaf2e55459cb2e82e7e7000354c9fc0c">timeUs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___l_e_f_t.html#ga0e4b024e9428377e0e211a1edd2c4c5f">fChrono_LeftUs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
+<tr class="memitem:ga0e4b024e9428377e0e211a1edd2c4c5f" id="r_ga0e4b024e9428377e0e211a1edd2c4c5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#ac12de3804aa3b0af2499ee09ead1603b">timeUs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___l_e_f_t.html#ga0e4b024e9428377e0e211a1edd2c4c5f">fChrono_LeftUs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
 <tr class="memdesc:ga0e4b024e9428377e0e211a1edd2c4c5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the remaining time in microseconds until the chrono object reaches its timeout.  <br /></td></tr>
 <tr class="separator:ga0e4b024e9428377e0e211a1edd2c4c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga461b7bba20d8635f9d059cb512cb3fb5" id="r_ga461b7bba20d8635f9d059cb512cb3fb5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e_o_u_t.html#ga461b7bba20d8635f9d059cb512cb3fb5">fChrono_StartTimeoutS</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me, <a class="el" href="chrono__config_8h.html#a1e309926828d2c7c6c43c266300e54c9">timeS_t</a> timeout)</td></tr>
+<tr class="memitem:ga461b7bba20d8635f9d059cb512cb3fb5" id="r_ga461b7bba20d8635f9d059cb512cb3fb5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e_o_u_t.html#ga461b7bba20d8635f9d059cb512cb3fb5">fChrono_StartTimeoutS</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me, <a class="el" href="chrono__config_8h.html#a48573b8bb932937a31d7cc400fd4a60a">timeS_t</a> timeout)</td></tr>
 <tr class="memdesc:ga461b7bba20d8635f9d059cb512cb3fb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the chrono object in timeout mode.  <br /></td></tr>
 <tr class="separator:ga461b7bba20d8635f9d059cb512cb3fb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1ef183445d2a3e10194faf5136e4d9e0" id="r_ga1ef183445d2a3e10194faf5136e4d9e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e_o_u_t.html#ga1ef183445d2a3e10194faf5136e4d9e0">fChrono_StartTimeoutMs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me, <a class="el" href="chrono__config_8h.html#a747cb12f03b286881a150fdda13ae0fa">timeMs_t</a> timeout)</td></tr>
+<tr class="memitem:ga1ef183445d2a3e10194faf5136e4d9e0" id="r_ga1ef183445d2a3e10194faf5136e4d9e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e_o_u_t.html#ga1ef183445d2a3e10194faf5136e4d9e0">fChrono_StartTimeoutMs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me, <a class="el" href="chrono__config_8h.html#a3b6aa526d6e57d4b09c062816045644c">timeMs_t</a> timeout)</td></tr>
 <tr class="memdesc:ga1ef183445d2a3e10194faf5136e4d9e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the chrono object in timeout mode.  <br /></td></tr>
 <tr class="separator:ga1ef183445d2a3e10194faf5136e4d9e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabb3a6a2fb17e2792e7e8a9d436fdd89d" id="r_gabb3a6a2fb17e2792e7e8a9d436fdd89d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e_o_u_t.html#gabb3a6a2fb17e2792e7e8a9d436fdd89d">fChrono_StartTimeoutUs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me, <a class="el" href="chrono__config_8h.html#afaf2e55459cb2e82e7e7000354c9fc0c">timeUs_t</a> timeout)</td></tr>
+<tr class="memitem:gabb3a6a2fb17e2792e7e8a9d436fdd89d" id="r_gabb3a6a2fb17e2792e7e8a9d436fdd89d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e_o_u_t.html#gabb3a6a2fb17e2792e7e8a9d436fdd89d">fChrono_StartTimeoutUs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me, <a class="el" href="chrono__config_8h.html#ac12de3804aa3b0af2499ee09ead1603b">timeUs_t</a> timeout)</td></tr>
 <tr class="memdesc:gabb3a6a2fb17e2792e7e8a9d436fdd89d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the chrono object in timeout mode.  <br /></td></tr>
 <tr class="separator:gabb3a6a2fb17e2792e7e8a9d436fdd89d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf01bd33d0413fb4275afe31882ce5896" id="r_gaf01bd33d0413fb4275afe31882ce5896"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e_o_u_t.html#gaf01bd33d0413fb4275afe31882ce5896">fChrono_IsTimeout</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
-<tr class="memdesc:gaf01bd33d0413fb4275afe31882ce5896"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the timeout status of the chrono object.  <br /></td></tr>
-<tr class="separator:gaf01bd33d0413fb4275afe31882ce5896"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaaa7e46612309748870d8f29246d4cb6" id="r_gaaaa7e46612309748870d8f29246d4cb6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a1e309926828d2c7c6c43c266300e54c9">timeS_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___i_n_t_e_r_v_a_l.html#gaaaa7e46612309748870d8f29246d4cb6">fChrono_IntervalS</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
+<tr class="memitem:ga3a8d1705cf68514589452ed00e6ff60d" id="r_ga3a8d1705cf68514589452ed00e6ff60d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a2b21255bd7f7192db778983b15089208">bool_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___t_i_m_e_o_u_t.html#ga3a8d1705cf68514589452ed00e6ff60d">fChrono_IsTimeout</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
+<tr class="memdesc:ga3a8d1705cf68514589452ed00e6ff60d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the timeout status of the chrono object.  <br /></td></tr>
+<tr class="separator:ga3a8d1705cf68514589452ed00e6ff60d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaaa7e46612309748870d8f29246d4cb6" id="r_gaaaa7e46612309748870d8f29246d4cb6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a48573b8bb932937a31d7cc400fd4a60a">timeS_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___i_n_t_e_r_v_a_l.html#gaaaa7e46612309748870d8f29246d4cb6">fChrono_IntervalS</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
 <tr class="memdesc:gaaaa7e46612309748870d8f29246d4cb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the time interval in seconds between two consecutive calls to this function.  <br /></td></tr>
 <tr class="separator:gaaaa7e46612309748870d8f29246d4cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga744c7b6005ad752960f3d5f7e44b7a0a" id="r_ga744c7b6005ad752960f3d5f7e44b7a0a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a747cb12f03b286881a150fdda13ae0fa">timeMs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___i_n_t_e_r_v_a_l.html#ga744c7b6005ad752960f3d5f7e44b7a0a">fChrono_IntervalMs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
+<tr class="memitem:ga744c7b6005ad752960f3d5f7e44b7a0a" id="r_ga744c7b6005ad752960f3d5f7e44b7a0a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#a3b6aa526d6e57d4b09c062816045644c">timeMs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___i_n_t_e_r_v_a_l.html#ga744c7b6005ad752960f3d5f7e44b7a0a">fChrono_IntervalMs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
 <tr class="memdesc:ga744c7b6005ad752960f3d5f7e44b7a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the time interval in milliseconds between two consecutive calls to this function.  <br /></td></tr>
 <tr class="separator:ga744c7b6005ad752960f3d5f7e44b7a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga218b2038b0ebfa0b5232ad5894c4b40e" id="r_ga218b2038b0ebfa0b5232ad5894c4b40e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#afaf2e55459cb2e82e7e7000354c9fc0c">timeUs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___i_n_t_e_r_v_a_l.html#ga218b2038b0ebfa0b5232ad5894c4b40e">fChrono_IntervalUs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
+<tr class="memitem:ga218b2038b0ebfa0b5232ad5894c4b40e" id="r_ga218b2038b0ebfa0b5232ad5894c4b40e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="chrono__config_8h.html#ac12de3804aa3b0af2499ee09ead1603b">timeUs_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___i_n_t_e_r_v_a_l.html#ga218b2038b0ebfa0b5232ad5894c4b40e">fChrono_IntervalUs</a> (<a class="el" href="structs_chrono.html">sChrono</a> *const me)</td></tr>
 <tr class="memdesc:ga218b2038b0ebfa0b5232ad5894c4b40e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the time interval in microseconds between two consecutive calls to this function.  <br /></td></tr>
 <tr class="separator:ga218b2038b0ebfa0b5232ad5894c4b40e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -244,13 +286,115 @@ Functions</h2></td></tr>
 <p>This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component.</p>
 <p><a href="https://faraabinco.ir/">https://faraabinco.ir/</a> <a href="https://github.com/FaraabinCo">https://github.com/FaraabinCo</a></p>
 <pre class="fragment">For more information on how to use this module, please refer to the implementation
-of the module in chrono.c file.</pre> </div></div><!-- contents -->
+of the module in chrono.c file.</pre> </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a30abbc5847f0cdaed5c94bcede15450a" name="a30abbc5847f0cdaed5c94bcede15450a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30abbc5847f0cdaed5c94bcede15450a">&#9670;&#160;</a></span>CHRONO_ERROR_TICK_PTR_ERROR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHRONO_ERROR_TICK_PTR_ERROR&#160;&#160;&#160;(3U)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2667ffaa0e070394c6a7b969b97df6b5" name="a2667ffaa0e070394c6a7b969b97df6b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2667ffaa0e070394c6a7b969b97df6b5">&#9670;&#160;</a></span>CHRONO_ERROR_TICK_TO_NS_ZERO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHRONO_ERROR_TICK_TO_NS_ZERO&#160;&#160;&#160;(2U)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2e1c347241d11317e8e5e8b29aa125ca" name="a2e1c347241d11317e8e5e8b29aa125ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e1c347241d11317e8e5e8b29aa125ca">&#9670;&#160;</a></span>CHRONO_ERROR_TICK_TOP_ZERO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHRONO_ERROR_TICK_TOP_ZERO&#160;&#160;&#160;(1U)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a997e5b67c9b9e705f973cec266519869" name="a997e5b67c9b9e705f973cec266519869"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a997e5b67c9b9e705f973cec266519869">&#9670;&#160;</a></span>CHRONO_OK</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHRONO_OK&#160;&#160;&#160;(0U)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa93f0eb578d23995850d61f7d61c55c1" name="aa93f0eb578d23995850d61f7d61c55c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa93f0eb578d23995850d61f7d61c55c1">&#9670;&#160;</a></span>FALSE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define FALSE&#160;&#160;&#160;((<a class="el" href="#a2b21255bd7f7192db778983b15089208">bool_t</a>)0)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa8cecfc5c5c054d2875c03e77b7be15d" name="aa8cecfc5c5c054d2875c03e77b7be15d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8cecfc5c5c054d2875c03e77b7be15d">&#9670;&#160;</a></span>TRUE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TRUE&#160;&#160;&#160;((<a class="el" href="#a2b21255bd7f7192db778983b15089208">bool_t</a>)1)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a2b21255bd7f7192db778983b15089208" name="a2b21255bd7f7192db778983b15089208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b21255bd7f7192db778983b15089208">&#9670;&#160;</a></span>bool_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef bool <a class="el" href="#a2b21255bd7f7192db778983b15089208">bool_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition of bool_t for misra compliance. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="chrono_8h.html">chrono.h</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 12:47:46 for chrono by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

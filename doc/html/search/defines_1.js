@@ -1,4 +1,22 @@
 var searchData=
 [
-  ['elapsed_5f_0',['ELAPSED_',['../chrono_8c.html#af71654c6d86d0daaf7d52f666d145f75',1,'chrono.c']]]
+  ['check_5finit_5f_0',['CHECK_INIT_',['../chrono_8c.html#a06268baba499910017503433c85851de',1,'chrono.c']]],
+  ['check_5finit_5fms_5f_1',['CHECK_INIT_MS_',['../chrono_8c.html#a4cb2961758ed0766bbf214c70211b2f1',1,'chrono.c']]],
+  ['check_5finit_5fms_5fret_5f_2',['CHECK_INIT_MS_RET_',['../chrono_8c.html#a481654e000595059702f65831d8103ab',1,'chrono.c']]],
+  ['check_5finit_5fret_5f_3',['CHECK_INIT_RET_',['../chrono_8c.html#a9197e648aff6eade068870aee34ad7ca',1,'chrono.c']]],
+  ['check_5finit_5fsec_5f_4',['CHECK_INIT_SEC_',['../chrono_8c.html#a13b1cb81c0d4573b32c18bd4da0a1348',1,'chrono.c']]],
+  ['check_5finit_5fsec_5fret_5f_5',['CHECK_INIT_SEC_RET_',['../chrono_8c.html#a0ca51d44d8f5eae154462ec13f0220dc',1,'chrono.c']]],
+  ['check_5finit_5fus_5f_6',['CHECK_INIT_US_',['../chrono_8c.html#afea940b4403ced07b908769d32d0a435',1,'chrono.c']]],
+  ['check_5finit_5fus_5fret_5f_7',['CHECK_INIT_US_RET_',['../chrono_8c.html#a107c32ceb115812a1cc317d0b63f543e',1,'chrono.c']]],
+  ['check_5frun_5f_8',['CHECK_RUN_',['../chrono_8c.html#aaf9da3d82844214e18e57b558fe7c89c',1,'CHECK_RUN_:&#160;chrono.c'],['../chrono__long_8c.html#aaf9da3d82844214e18e57b558fe7c89c',1,'CHECK_RUN_:&#160;chrono_long.c']]],
+  ['chrono_5ferror_5ftick_5fptr_5ferror_9',['CHRONO_ERROR_TICK_PTR_ERROR',['../chrono_8h.html#a30abbc5847f0cdaed5c94bcede15450a',1,'chrono.h']]],
+  ['chrono_5ferror_5ftick_5fto_5fns_5fzero_10',['CHRONO_ERROR_TICK_TO_NS_ZERO',['../chrono_8h.html#a2667ffaa0e070394c6a7b969b97df6b5',1,'chrono.h']]],
+  ['chrono_5ferror_5ftick_5ftop_5fzero_11',['CHRONO_ERROR_TICK_TOP_ZERO',['../chrono_8h.html#a2e1c347241d11317e8e5e8b29aa125ca',1,'chrono.h']]],
+  ['chrono_5flong_5fcritical_5fsection_5fenter_5f_12',['CHRONO_LONG_CRITICAL_SECTION_ENTER_',['../chrono__long__config_8h.html#a41902e53979b6e64d0ba0a77228843a6',1,'chrono_long_config.h']]],
+  ['chrono_5flong_5fcritical_5fsection_5fexit_5f_13',['CHRONO_LONG_CRITICAL_SECTION_EXIT_',['../chrono__long__config_8h.html#a4570cec63cec8e4622a434d9750175ed',1,'chrono_long_config.h']]],
+  ['chrono_5fok_14',['CHRONO_OK',['../chrono_8h.html#a997e5b67c9b9e705f973cec266519869',1,'chrono.h']]],
+  ['chrono_5ftick_5fcountermode_15',['CHRONO_TICK_COUNTERMODE',['../chrono__config_8h.html#a805142fbbbed827b09a92128bfabd065',1,'chrono_config.h']]],
+  ['chrono_5ftick_5fto_5fnanosecond_5fcoef_16',['CHRONO_TICK_TO_NANOSECOND_COEF',['../chrono__config_8h.html#ad4f1ae150073a8ffe11ffa264d1e0fd1',1,'chrono_config.h']]],
+  ['chrono_5ftick_5ftop_5fvalue_17',['CHRONO_TICK_TOP_VALUE',['../chrono__config_8h.html#addf7e96b3fd8895f3508cf5514e7bb63',1,'chrono_config.h']]],
+  ['chrono_5ftick_5ftype_18',['CHRONO_TICK_TYPE',['../chrono__config_8h.html#a392daaf5441d324d6080a1b63f7aec4c',1,'chrono_config.h']]]
 ];

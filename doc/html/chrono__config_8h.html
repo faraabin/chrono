@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Chrono: C:/Users/ASUS/Desktop/fw_nucleo32_l4_under_construction/src/library/utility/chrono/chrono_config.h File Reference</title>
+<title>chrono: chrono_config.h File Reference</title>
 <link rel="icon" href="logo.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -29,9 +29,8 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">chrono
    </div>
-   <div id="projectbrief">Chrono is a C-library for time measurement in embedded software. It can be used in any embedded system, independent of MCU architecture or brand.</div>
   </td>
  </tr>
  </tbody>
@@ -97,37 +96,43 @@ $(function(){initNavTree('chrono__config_8h.html',''); initResizable(); });
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a>  </div>
-  <div class="headertitle"><div class="title">C:/Users/ASUS/Desktop/fw_nucleo32_l4_under_construction/src/library/utility/chrono/chrono_config.h File Reference</div></div>
+  <div class="headertitle"><div class="title">chrono_config.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p>: Chrono module configuration file.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="chrono__private_8h_source.html">chrono_private.h</a>&quot;</code><br />
+<code>#include &lt;stdint.h&gt;</code><br />
 </div>
 <p><a href="chrono__config_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:af3af7ab3a36bb21aa66317abcbe03d79" id="r_af3af7ab3a36bb21aa66317abcbe03d79"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3af7ab3a36bb21aa66317abcbe03d79">TICK_TYPE_VARIABLE</a>&#160;&#160;&#160;(1)</td></tr>
-<tr class="separator:af3af7ab3a36bb21aa66317abcbe03d79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa20606ef68859b9bbc1724930536b8cf" id="r_aa20606ef68859b9bbc1724930536b8cf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa20606ef68859b9bbc1724930536b8cf">TICK_TYPE_FUNCTION</a>&#160;&#160;&#160;(2)</td></tr>
-<tr class="separator:aa20606ef68859b9bbc1724930536b8cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a392daaf5441d324d6080a1b63f7aec4c" id="r_a392daaf5441d324d6080a1b63f7aec4c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a392daaf5441d324d6080a1b63f7aec4c">CHRONO_TICK_TYPE</a>&#160;&#160;&#160;<a class="el" href="#af3af7ab3a36bb21aa66317abcbe03d79">TICK_TYPE_VARIABLE</a></td></tr>
+<tr class="memitem:a392daaf5441d324d6080a1b63f7aec4c" id="r_a392daaf5441d324d6080a1b63f7aec4c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a392daaf5441d324d6080a1b63f7aec4c">CHRONO_TICK_TYPE</a>&#160;&#160;&#160;<a class="el" href="group___p_r_i_v_a_t_e___d_e_f_i_n_e_s.html#gaf3af7ab3a36bb21aa66317abcbe03d79">TICK_TYPE_VARIABLE</a></td></tr>
 <tr class="memdesc:a392daaf5441d324d6080a1b63f7aec4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select either reading current tick from an address in memory or by calling a function.  <br /></td></tr>
 <tr class="separator:a392daaf5441d324d6080a1b63f7aec4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addf7e96b3fd8895f3508cf5514e7bb63" id="r_addf7e96b3fd8895f3508cf5514e7bb63"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#addf7e96b3fd8895f3508cf5514e7bb63">CHRONO_TICK_TOP_VALUE</a>&#160;&#160;&#160;(0xFFFFFFFFU)</td></tr>
+<tr class="memdesc:addf7e96b3fd8895f3508cf5514e7bb63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the top value that the tick generator can count.  <br /></td></tr>
+<tr class="separator:addf7e96b3fd8895f3508cf5514e7bb63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4f1ae150073a8ffe11ffa264d1e0fd1" id="r_ad4f1ae150073a8ffe11ffa264d1e0fd1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4f1ae150073a8ffe11ffa264d1e0fd1">CHRONO_TICK_TO_NANOSECOND_COEF</a>&#160;&#160;&#160;(1000U)</td></tr>
+<tr class="memdesc:ad4f1ae150073a8ffe11ffa264d1e0fd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the coefficient for converting one tick of the tick generator to nanoseconds.  <br /></td></tr>
+<tr class="separator:ad4f1ae150073a8ffe11ffa264d1e0fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a805142fbbbed827b09a92128bfabd065" id="r_a805142fbbbed827b09a92128bfabd065"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a805142fbbbed827b09a92128bfabd065">CHRONO_TICK_COUNTERMODE</a>&#160;&#160;&#160;<a class="el" href="group___p_r_i_v_a_t_e___d_e_f_i_n_e_s.html#ga57d46b29a5cfc0ed69e570a8a5976793">TICK_COUNTERMODE_UP</a></td></tr>
+<tr class="memdesc:a805142fbbbed827b09a92128bfabd065"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select the counter mode of the tick generator. Possible modes are TICK_COUNTERMODE_UP if the counter starts from zero to CHRONO_TICK_TOP_VALUE and TICK_COUNTERMODE_DOWN if it counts downward from CHRONO_TICK_TOP_VALUE to zero.  <br /></td></tr>
+<tr class="separator:a805142fbbbed827b09a92128bfabd065"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:a451a7d205dfb766727eba25c6e61c687" id="r_a451a7d205dfb766727eba25c6e61c687"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a451a7d205dfb766727eba25c6e61c687">tick_t</a></td></tr>
 <tr class="memdesc:a451a7d205dfb766727eba25c6e61c687"><td class="mdescLeft">&#160;</td><td class="mdescRight">User typedef for measurements in chrono module.  <br /></td></tr>
 <tr class="separator:a451a7d205dfb766727eba25c6e61c687"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e309926828d2c7c6c43c266300e54c9" id="r_a1e309926828d2c7c6c43c266300e54c9"><td class="memItemLeft" align="right" valign="top">typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1e309926828d2c7c6c43c266300e54c9">timeS_t</a></td></tr>
-<tr class="separator:a1e309926828d2c7c6c43c266300e54c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a747cb12f03b286881a150fdda13ae0fa" id="r_a747cb12f03b286881a150fdda13ae0fa"><td class="memItemLeft" align="right" valign="top">typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a747cb12f03b286881a150fdda13ae0fa">timeMs_t</a></td></tr>
-<tr class="separator:a747cb12f03b286881a150fdda13ae0fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afaf2e55459cb2e82e7e7000354c9fc0c" id="r_afaf2e55459cb2e82e7e7000354c9fc0c"><td class="memItemLeft" align="right" valign="top">typedef double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afaf2e55459cb2e82e7e7000354c9fc0c">timeUs_t</a></td></tr>
-<tr class="separator:afaf2e55459cb2e82e7e7000354c9fc0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48573b8bb932937a31d7cc400fd4a60a" id="r_a48573b8bb932937a31d7cc400fd4a60a"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a48573b8bb932937a31d7cc400fd4a60a">timeS_t</a></td></tr>
+<tr class="separator:a48573b8bb932937a31d7cc400fd4a60a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b6aa526d6e57d4b09c062816045644c" id="r_a3b6aa526d6e57d4b09c062816045644c"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b6aa526d6e57d4b09c062816045644c">timeMs_t</a></td></tr>
+<tr class="separator:a3b6aa526d6e57d4b09c062816045644c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac12de3804aa3b0af2499ee09ead1603b" id="r_ac12de3804aa3b0af2499ee09ead1603b"><td class="memItemLeft" align="right" valign="top">typedef uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac12de3804aa3b0af2499ee09ead1603b">timeUs_t</a></td></tr>
+<tr class="separator:ac12de3804aa3b0af2499ee09ead1603b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>: Chrono module configuration file. </p>
@@ -136,6 +141,56 @@ Typedefs</h2></td></tr>
 <p>This software is licensed under terms that can be found in the LICENSE file in the root directory of this software component.</p>
 <p><a href="https://faraabinco.ir/">https://faraabinco.ir/</a> <a href="https://github.com/FaraabinCo">https://github.com/FaraabinCo</a> </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a805142fbbbed827b09a92128bfabd065" name="a805142fbbbed827b09a92128bfabd065"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a805142fbbbed827b09a92128bfabd065">&#9670;&#160;</a></span>CHRONO_TICK_COUNTERMODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHRONO_TICK_COUNTERMODE&#160;&#160;&#160;<a class="el" href="group___p_r_i_v_a_t_e___d_e_f_i_n_e_s.html#ga57d46b29a5cfc0ed69e570a8a5976793">TICK_COUNTERMODE_UP</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Select the counter mode of the tick generator. Possible modes are TICK_COUNTERMODE_UP if the counter starts from zero to CHRONO_TICK_TOP_VALUE and TICK_COUNTERMODE_DOWN if it counts downward from CHRONO_TICK_TOP_VALUE to zero. </p>
+
+</div>
+</div>
+<a id="ad4f1ae150073a8ffe11ffa264d1e0fd1" name="ad4f1ae150073a8ffe11ffa264d1e0fd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4f1ae150073a8ffe11ffa264d1e0fd1">&#9670;&#160;</a></span>CHRONO_TICK_TO_NANOSECOND_COEF</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHRONO_TICK_TO_NANOSECOND_COEF&#160;&#160;&#160;(1000U)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the coefficient for converting one tick of the tick generator to nanoseconds. </p>
+<dl class="section note"><dt>Note</dt><dd>For example, if you have a timer that counts with 1MHz frequency, CHRONO_TICK_TO_NANOSECOND_COEF should be 1000. </dd></dl>
+
+</div>
+</div>
+<a id="addf7e96b3fd8895f3508cf5514e7bb63" name="addf7e96b3fd8895f3508cf5514e7bb63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addf7e96b3fd8895f3508cf5514e7bb63">&#9670;&#160;</a></span>CHRONO_TICK_TOP_VALUE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CHRONO_TICK_TOP_VALUE&#160;&#160;&#160;(0xFFFFFFFFU)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the top value that the tick generator can count. </p>
+<dl class="section note"><dt>Note</dt><dd>For example, if you have a timer that counts upto 0xFFFFFFFFU, CHRONO_TICK_TOP_VALUE should be this value. </dd></dl>
+
+</div>
+</div>
 <a id="a392daaf5441d324d6080a1b63f7aec4c" name="a392daaf5441d324d6080a1b63f7aec4c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a392daaf5441d324d6080a1b63f7aec4c">&#9670;&#160;</a></span>CHRONO_TICK_TYPE</h2>
 
@@ -143,7 +198,7 @@ Typedefs</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define CHRONO_TICK_TYPE&#160;&#160;&#160;<a class="el" href="#af3af7ab3a36bb21aa66317abcbe03d79">TICK_TYPE_VARIABLE</a></td>
+          <td class="memname">#define CHRONO_TICK_TYPE&#160;&#160;&#160;<a class="el" href="group___p_r_i_v_a_t_e___d_e_f_i_n_e_s.html#gaf3af7ab3a36bb21aa66317abcbe03d79">TICK_TYPE_VARIABLE</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -152,34 +207,6 @@ Typedefs</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd>In cases that a timer is used to generate tick and reading its counter register is possible to get current tick, set CHRONO_TICK_TYPE to TICK_TYPE_VARIABLE.</dd>
 <dd>
 In cases that user wants to generate the tick and reading its value is not possible by dereferencing the tick address, value of current tick can be read via calling a function. </dd></dl>
-
-</div>
-</div>
-<a id="aa20606ef68859b9bbc1724930536b8cf" name="aa20606ef68859b9bbc1724930536b8cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa20606ef68859b9bbc1724930536b8cf">&#9670;&#160;</a></span>TICK_TYPE_FUNCTION</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TICK_TYPE_FUNCTION&#160;&#160;&#160;(2)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="af3af7ab3a36bb21aa66317abcbe03d79" name="af3af7ab3a36bb21aa66317abcbe03d79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3af7ab3a36bb21aa66317abcbe03d79">&#9670;&#160;</a></span>TICK_TYPE_VARIABLE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define TICK_TYPE_VARIABLE&#160;&#160;&#160;(1)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -201,42 +228,42 @@ In cases that user wants to generate the tick and reading its value is not possi
 
 </div>
 </div>
-<a id="a747cb12f03b286881a150fdda13ae0fa" name="a747cb12f03b286881a150fdda13ae0fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a747cb12f03b286881a150fdda13ae0fa">&#9670;&#160;</a></span>timeMs_t</h2>
+<a id="a3b6aa526d6e57d4b09c062816045644c" name="a3b6aa526d6e57d4b09c062816045644c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b6aa526d6e57d4b09c062816045644c">&#9670;&#160;</a></span>timeMs_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef double <a class="el" href="#a747cb12f03b286881a150fdda13ae0fa">timeMs_t</a></td>
+          <td class="memname">typedef uint32_t <a class="el" href="#a3b6aa526d6e57d4b09c062816045644c">timeMs_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a1e309926828d2c7c6c43c266300e54c9" name="a1e309926828d2c7c6c43c266300e54c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e309926828d2c7c6c43c266300e54c9">&#9670;&#160;</a></span>timeS_t</h2>
+<a id="a48573b8bb932937a31d7cc400fd4a60a" name="a48573b8bb932937a31d7cc400fd4a60a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48573b8bb932937a31d7cc400fd4a60a">&#9670;&#160;</a></span>timeS_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef double <a class="el" href="#a1e309926828d2c7c6c43c266300e54c9">timeS_t</a></td>
+          <td class="memname">typedef uint32_t <a class="el" href="#a48573b8bb932937a31d7cc400fd4a60a">timeS_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="afaf2e55459cb2e82e7e7000354c9fc0c" name="afaf2e55459cb2e82e7e7000354c9fc0c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afaf2e55459cb2e82e7e7000354c9fc0c">&#9670;&#160;</a></span>timeUs_t</h2>
+<a id="ac12de3804aa3b0af2499ee09ead1603b" name="ac12de3804aa3b0af2499ee09ead1603b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac12de3804aa3b0af2499ee09ead1603b">&#9670;&#160;</a></span>timeUs_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef double <a class="el" href="#afaf2e55459cb2e82e7e7000354c9fc0c">timeUs_t</a></td>
+          <td class="memname">typedef uint32_t <a class="el" href="#ac12de3804aa3b0af2499ee09ead1603b">timeUs_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -249,7 +276,7 @@ In cases that user wants to generate the tick and reading its value is not possi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="chrono__config_8h.html">chrono_config.h</a></li>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 12:47:46 for chrono by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>

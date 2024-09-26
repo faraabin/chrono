@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['گیری_20زمان_20در_20نرم_20افزار_20نهفته_0',['اندازه گیری زمان در نرم افزار نهفته',['../C:/Users/ASUS/Desktop/fw_nucleo32_l4_under_construction/src/library/utility/chrono/README.md#autotoc_md11',1,'']]]
+  ['وابستگی_20ها_0',['وابستگی ها',['../C:/Users/ASUS/Desktop/chrono/README.md#autotoc_md18',1,'']]]
 ];

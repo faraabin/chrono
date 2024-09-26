@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.10.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Chrono: Time macros</title>
+<title>chrono: Time macros</title>
 <link rel="icon" href="logo.png" type="image/x-icon" />
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -29,9 +29,8 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="logo.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Chrono<span id="projectnumber">&#160;1.0.1</span>
+   <div id="projectname">chrono
    </div>
-   <div id="projectbrief">Chrono is a C-library for time measurement in embedded software. It can be used in any embedded system, independent of MCU architecture or brand.</div>
   </td>
  </tr>
  </tbody>
@@ -123,6 +122,15 @@ Macros</h2></td></tr>
 <tr class="memitem:ga849ab979729bcb4cb6c4041a8ce87f7f" id="r_ga849ab979729bcb4cb6c4041a8ce87f7f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga849ab979729bcb4cb6c4041a8ce87f7f">delaySeconds_</a>(delay_)&#160;&#160;&#160;<a class="el" href="group___f_u_n_c_t_i_o_n_a_l___a_p_i.html#gac4b6550167e7b22bf296fb9e66a35157">fChrono_DelayS</a>(delay_)</td></tr>
 <tr class="memdesc:ga849ab979729bcb4cb6c4041a8ce87f7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generates a delay for the amount of time (in second) specified as input parameter.  <br /></td></tr>
 <tr class="separator:ga849ab979729bcb4cb6c4041a8ce87f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga029c40607e4d67ce9b4bb5ad96d26cc0" id="r_ga029c40607e4d67ce9b4bb5ad96d26cc0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga029c40607e4d67ce9b4bb5ad96d26cc0">tic_</a>(name_)</td></tr>
+<tr class="memdesc:ga029c40607e4d67ce9b4bb5ad96d26cc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measures elapsed time since a call to <a class="el" href="#ga029c40607e4d67ce9b4bb5ad96d26cc0" title="Measures elapsed time since a call to tic_().">tic_()</a>.  <br /></td></tr>
+<tr class="separator:ga029c40607e4d67ce9b4bb5ad96d26cc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafe1254d7e3b351222eac417482242f44" id="r_gafe1254d7e3b351222eac417482242f44"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gafe1254d7e3b351222eac417482242f44">tocUs_</a>(name_)&#160;&#160;&#160;<a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gabdc269fb62eba2f8407fbad5c6938358">fChrono_ElapsedUs</a>(&amp;(__tic_toc_##name_##__))</td></tr>
+<tr class="separator:gafe1254d7e3b351222eac417482242f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac7e94112b328865fceddf3a25da9f7cf" id="r_gac7e94112b328865fceddf3a25da9f7cf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#gac7e94112b328865fceddf3a25da9f7cf">tocMs_</a>(name_)&#160;&#160;&#160;<a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gae10c122153d7a2590cfab99c423095ca">fChrono_ElapsedMs</a>(&amp;(__tic_toc_##name_##__))</td></tr>
+<tr class="separator:gac7e94112b328865fceddf3a25da9f7cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4ed77b954324be58d0d3b4edb0d959aa" id="r_ga4ed77b954324be58d0d3b4edb0d959aa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ga4ed77b954324be58d0d3b4edb0d959aa">tocS_</a>(name_)&#160;&#160;&#160;<a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaf6327b36909b1986f2d3cfd869b959a5">fChrono_ElapsedS</a>(&amp;(__tic_toc_##name_##__))</td></tr>
+<tr class="separator:ga4ed77b954324be58d0d3b4edb0d959aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -199,6 +207,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the number of microseconds passed since the initialization of the chrono module. </p>
+<dl class="section note"><dt>Note</dt><dd>This macro is not re-entrant. if this condition may be happen, user should use critical section for prevent it. </dd></dl>
 
 </div>
 </div>
@@ -218,6 +227,7 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the number of milliseconds passed since the initialization of the chrono module. </p>
+<dl class="section note"><dt>Note</dt><dd>This macro is not re-entrant. if this condition may be happen, user should use critical section for prevent it. </dd></dl>
 
 </div>
 </div>
@@ -237,6 +247,29 @@ Macros</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Returns the number of seconds passed since the initialization of the chrono module. </p>
+<dl class="section note"><dt>Note</dt><dd>This macro is not re-entrant. if this condition may be happen, user should use critical section for prevent it. </dd></dl>
+
+</div>
+</div>
+<a id="ga029c40607e4d67ce9b4bb5ad96d26cc0" name="ga029c40607e4d67ce9b4bb5ad96d26cc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga029c40607e4d67ce9b4bb5ad96d26cc0">&#9670;&#160;</a></span>tic_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define tic_</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">name_</span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">  <a class="code hl_struct" href="structs_chrono.html">sChrono</a> __tic_toc_##name_##__;\</div>
+<div class="line">  fChrono_Start(&amp;(__tic_toc_##name_##__))</div>
+<div class="ttc" id="astructs_chrono_html"><div class="ttname"><a href="structs_chrono.html">sChrono</a></div><div class="ttdoc">Definition of the Chrono object.</div><div class="ttdef"><b>Definition</b> chrono.h:130</div></div>
+</div><!-- fragment -->
+<p>Measures elapsed time since a call to <a class="el" href="#ga029c40607e4d67ce9b4bb5ad96d26cc0" title="Measures elapsed time since a call to tic_().">tic_()</a>. </p>
 
 </div>
 </div>
@@ -259,12 +292,63 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<a id="gac7e94112b328865fceddf3a25da9f7cf" name="gac7e94112b328865fceddf3a25da9f7cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac7e94112b328865fceddf3a25da9f7cf">&#9670;&#160;</a></span>tocMs_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define tocMs_</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">name_</span></td><td>)</td>
+          <td>&#160;&#160;&#160;<a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gae10c122153d7a2590cfab99c423095ca">fChrono_ElapsedMs</a>(&amp;(__tic_toc_##name_##__))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ga4ed77b954324be58d0d3b4edb0d959aa" name="ga4ed77b954324be58d0d3b4edb0d959aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4ed77b954324be58d0d3b4edb0d959aa">&#9670;&#160;</a></span>tocS_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define tocS_</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">name_</span></td><td>)</td>
+          <td>&#160;&#160;&#160;<a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gaf6327b36909b1986f2d3cfd869b959a5">fChrono_ElapsedS</a>(&amp;(__tic_toc_##name_##__))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="gafe1254d7e3b351222eac417482242f44" name="gafe1254d7e3b351222eac417482242f44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafe1254d7e3b351222eac417482242f44">&#9670;&#160;</a></span>tocUs_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define tocUs_</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname">name_</span></td><td>)</td>
+          <td>&#160;&#160;&#160;<a class="el" href="group___o_b_j_e_c_t_i_v_e___a_p_i.html#gabdc269fb62eba2f8407fbad5c6938358">fChrono_ElapsedUs</a>(&amp;(__tic_toc_##name_##__))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
+    <li class="footer">Generated on Thu Sep 26 2024 12:47:46 for chrono by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.10.0 </li>
   </ul>
 </div>
 </body>
