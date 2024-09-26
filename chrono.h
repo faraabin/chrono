@@ -40,10 +40,10 @@ extern "C" {
 #include "chrono_config.h"
 
 /* Exported defines ----------------------------------------------------------*/
-#define CHRONO_OK                     0
-#define CHRONO_ERROR_TICK_TOP_ZERO    1
-#define CHRONO_ERROR_TICK_TO_NS_ZERO  2
-#define CHRONO_ERROR_TICK_PTR_ERROR   3
+#define CHRONO_OK                     (0U)
+#define CHRONO_ERROR_TICK_TOP_ZERO    (1U)
+#define CHRONO_ERROR_TICK_TO_NS_ZERO  (2U)
+#define CHRONO_ERROR_TICK_PTR_ERROR   (3U)
 
 /* Exported macro ------------------------------------------------------------*/
 /** @defgroup TIME_MACROS Time macros
@@ -129,18 +129,18 @@ typedef bool bool_t;
   */
 typedef struct {
   
-  bool_t _run;            /*!< Holds the RUN state of the chrono object.
-                             When this parameter is false, the chrono is in stop mode, and time measurement functions will return 0.
-                             This parameter is private and is set by the chrono API. Users must not change its value. */
+  bool_t _run;        /*!< Holds the RUN state of the chrono object.
+                           When this parameter is false, the chrono is in stop mode, and time measurement functions will return 0.
+                           This parameter is private and is set by the chrono API. Users must not change its value. */
 
-  tick_t _startTick;    /*!< Holds the start time of the chrono.
-                             This parameter is private and is set by the chrono API. Users must not change its value. */
+  tick_t _startTick;  /*!< Holds the start time of the chrono.
+                           This parameter is private and is set by the chrono API. Users must not change its value. */
 
-  tick_t _timeout;      /*!< Holds the timeout length.
-                             This parameter is private and is set by the chrono API. Users must not change its value. */
+  tick_t _timeout;    /*!< Holds the timeout length.
+                           This parameter is private and is set by the chrono API. Users must not change its value. */
   
-  bool_t _isTimeout;      /*!< Holds the timeout state of the chrono object.
-                             This parameter is private and is set by the chrono API. Users must not change its value. */
+  bool_t _isTimeout;  /*!< Holds the timeout state of the chrono object.
+                           This parameter is private and is set by the chrono API. Users must not change its value. */
 }sChrono;
 
 /* Exported constants --------------------------------------------------------*/
