@@ -216,6 +216,13 @@ uint64_t fChrono_GetContinuousTickS(void);
 tick_t fChrono_GetTickTopValue(void);
 
 /**
+ * @brief Get Tick init value.
+ * 
+ * @retval topValue: Tick init value
+ */
+tick_t fChrono_GetTickInitValue(void);
+
+/**
  * @brief Returns the coefficient for converting one tick to nanoseconds.
  * 
  * @retval tickToNsCoef: Tick-to-nanoseconds coefficient

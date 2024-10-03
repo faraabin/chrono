@@ -286,6 +286,12 @@ static uint32_t SecToTickCoef = 1U;
 static tick_t TickTopValue;
 
 /**
+ * @brief The tick init value. This private value is tick value when calling fChrono_Init().
+ * 
+ */
+static tick_t TickInitValue;
+
+/**
  * @brief **chrono** object that holds the tick value in microseconds since initializing the module using fChrono_Init().
  * 
  */
@@ -426,6 +432,8 @@ uint8_t fChrono_Init(volatile tick_t *tickValue) {
 	fChrono_Start(&ChronoTickMs);
 	fChrono_Start(&ChronoTickS);
 
+  TickInitValue = fChrono_GetTick();
+
   return CHRONO_OK;
 }
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
@@ -483,6 +491,8 @@ uint8_t fChrono_Init(tick_t(*fpTickValue)(void)) {
 	fChrono_Start(&ChronoTickUs);
 	fChrono_Start(&ChronoTickMs);
 	fChrono_Start(&ChronoTickS);
+
+  TickInitValue = fChrono_GetTick();
 
   return CHRONO_OK;
 }
@@ -630,6 +640,20 @@ tick_t fChrono_GetTickTopValue(void) {
   CHECK_INIT_RET_((tick_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
   return TickTopValue;
+}
+
+/**
+ * @brief Get Tick init value.
+ * 
+ * @note User can get tick init value, using this function. It returns the tick value when calling fChrono_Init().
+ * 
+ * @retval initValue: Tick init value
+ */
+tick_t fChrono_GetTickInitValue(void) {
+  
+  CHECK_INIT_RET_((tick_t)0); /* MISRA 2012 Rule 15.5 deviation */
+  
+  return TickInitValue;
 }
 
 /**
