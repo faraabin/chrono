@@ -192,9 +192,9 @@
  * 
  */
 #if(CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
-#define ELAPSED_(a, b)  (((a) >= (b)) ? ((a) - (b)) : ((TickTopValue) - ((b) - (a))))
+#define ELAPSED_(a, b)  (((a) >= (b)) ? ((a) - (b)) : ((_chrono.TickTopValue) - ((b) - (a))))
 #elif(CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
-#define ELAPSED_(a, b)  (((a) <= (b)) ? ((b) - (a)) : ((TickTopValue) - ((a) - (b))))
+#define ELAPSED_(a, b)  (((a) <= (b)) ? ((b) - (a)) : ((_chrono.TickTopValue) - ((a) - (b))))
 #else
 #error "CHRONO_TICK_COUNTERMODE should be either TICK_COUNTERMODE_UP or TICK_COUNTERMODE_DOWN in chrono_config.h file."
 #endif
@@ -213,10 +213,10 @@
  * @note If the chrono object is not initialized, this macro forces the API to return the values specified by "ret".
  * 
  */
-#define CHECK_INIT_RET_(ret)      if(!Init){return (ret);}
-#define CHECK_INIT_US_RET_(ret)   if(!InitUs){return (ret);}
-#define CHECK_INIT_MS_RET_(ret)   if(!InitMs){return (ret);}
-#define CHECK_INIT_SEC_RET_(ret)  if(!InitSec){return (ret);}
+#define CHECK_INIT_RET_(ret)      if(!_chrono.Init){return (ret);}
+#define CHECK_INIT_US_RET_(ret)   if(!_chrono.InitUs){return (ret);}
+#define CHECK_INIT_MS_RET_(ret)   if(!_chrono.InitMs){return (ret);}
+#define CHECK_INIT_SEC_RET_(ret)  if(!_chrono.InitSec){return (ret);}
 
 /**
  * @brief Asserts whether the object is null or not.
@@ -233,133 +233,75 @@
  * @note If the chrono object is not initialized, this macro forces the API to return.
  * 
  */
-#define CHECK_INIT_()     if(!Init){return;}
-#define CHECK_INIT_US_()  if(!InitUs){return;}
-#define CHECK_INIT_MS_()  if(!InitMs){return;}
-#define CHECK_INIT_SEC_() if(!InitSec){return;}
+#define CHECK_INIT_()     if(!_chrono.Init){return;}
+#define CHECK_INIT_US_()  if(!_chrono.InitUs){return;}
+#define CHECK_INIT_MS_()  if(!_chrono.InitMs){return;}
+#define CHECK_INIT_SEC_() if(!_chrono.InitSec){return;}
 
 /* Private typedef -----------------------------------------------------------*/
-/* Private variables ---------------------------------------------------------*/
-/** @defgroup CHRONO_PRIVATE_VARIABLES Private variables in chrono module.
- *  @{
- */
+typedef struct {
 
-/**
- * @brief Initialization state of the chrono module.
- * 
- */
-static bool_t Init = FALSE;
-static bool_t InitUs = FALSE;
-static bool_t InitMs = FALSE;
-static bool_t InitSec = FALSE;
+	bool_t Init;
+	
+	bool_t InitUs;
+	
+	bool_t InitMs;
+	
+	bool_t InitSec;
 
-/** @defgroup CHRONO_PVT_COEFS Private chrono coefficients
-  * @ingroup CHRONO_PRIVATE_VARIABLES
-  * @{
-  */
+	uint32_t TickToNsCoef; // Multiplier that converts ticks to nanosecond.
 
-/**
- * @brief Multiplier that converts ticks to nanosecond.
- */
-static uint32_t TickToNsCoef = 1U;
+	uint32_t UsToTickCoef; // Multiplier that converts microseconds to ticks.
 
-/**
- * @brief Multiplier that converts microseconds to ticks.
- */
-static uint32_t UsToTickCoef = 1U;
+	uint32_t MsToTickCoef; // Multiplier that converts milliseconds to ticks.
 
-/**
- * @brief Multiplier that converts milliseconds to ticks.
- */
-static uint32_t MsToTickCoef = 1U;
+	uint32_t SecToTickCoef; // Multiplier that converts seconds to ticks.
 
-/**
- * @brief Multiplier that converts seconds to ticks.
- */
-static uint32_t SecToTickCoef = 1U;
-/** @} */ //End of CHRONO_PVT_COEFS
+	tick_t TickTopValue; // The tick top value. This private value is set by calling fChrono_Init().
 
-/**
- * @brief The tick top value. This private value is set by calling fChrono_Init().
- * 
- */
-static tick_t TickTopValue;
+	tick_t TickInitValue; // The tick init value. This private value is tick value when calling fChrono_Init().
 
-/**
- * @brief The tick init value. This private value is tick value when calling fChrono_Init().
- * 
- */
-static tick_t TickInitValue;
+	sChrono ChronoTickUs; // **chrono** object that holds the tick value in microseconds since initializing the module using fChrono_Init().
 
-/**
- * @brief **chrono** object that holds the tick value in microseconds since initializing the module using fChrono_Init().
- * 
- */
-static sChrono ChronoTickUs;
+	sChrono ChronoTickMs; // **chrono** object that holds the tick value in milliseconds since initializing the module using fChrono_Init().
 
-/**
- * @brief **chrono** object that holds the tick value in milliseconds since initializing the module using fChrono_Init().
- * 
- */
-static sChrono ChronoTickMs;
+	sChrono ChronoTickS; // **chrono** object that holds the tick value in seconds since initializing the module using fChrono_Init().
 
-/**
- * @brief **chrono** object that holds the tick value in seconds since initializing the module using fChrono_Init().
- * 
- */
-static sChrono ChronoTickS;
+	uint64_t ContinuousTickUs; // Time length in microseconds since initializing the chrono module.
 
-/**
- * @brief Time length in microseconds since initializing the chrono module.
- * 
- * @note To get this value user must call fChrono_GetContinuousTickUs(). 
- * 
- */
-static uint64_t ContinuousTickUs;
+	uint64_t ContinuousTickMs; // Time length in milliseconds since initializing the chrono module.
 
-/**
- * @brief Time length in milliseconds since initializing the chrono module.
- * 
- * @note To get this value user must call fChrono_GetContinuousTickMs(). 
- * 
- */
-static uint64_t ContinuousTickMs;
+	uint64_t ContinuousTickS; // Time length in seconds since initializing the chrono module.
 
-/**
- * @brief Time length in seconds since initializing the chrono module.
- * 
- * @note To get this value user must call fChrono_GetContinuousTickS(). 
- * 
- */
-static uint64_t ContinuousTickS;
-
-/** @defgroup CHRONO_TICK_POINTER Tick pointer for getting current tick value.
- *  @{
- */
 #if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
 
-/**
- * @brief Pointer to an unsigned integer that hold current value of the tick.
- * 
- * @note This variable is only available when CHRONO_TICK_TYPE is TICK_TYPE_32BIT_VARIABLE.
- * 
- */
-static volatile tick_t *pTickValue;
+	volatile tick_t *pTickValue; // Pointer to an unsigned integer that hold current value of the tick.
 
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
 
-/**
- * @brief Function pointer to a function that returns current value of the tick.
- * 
- * @note This function pointer is only available when CHRONO_TICK_TYPE is TICK_TYPE_FUNCTION.
- * 
- */
-static tick_t(*GetTickValue)(void) = NULL;
+	tick_t(*GetTickValue)(void); // Function pointer to a function that returns current value of the tick.
 
 #endif
-/** @} */ //End of CHRONO_TICK_POINTER
 
-/** @} */ //End of CHRONO_PRIVATE_VARIABLES
+}sChronoInternal;
+
+/* Private variables ---------------------------------------------------------*/
+static sChronoInternal _chrono = {
+	
+	.Init = FALSE,
+	.InitUs = FALSE,
+	.InitMs = FALSE,
+	.InitSec = FALSE,
+	.TickToNsCoef = 1U,
+	.UsToTickCoef = 1U,
+	.MsToTickCoef = 1U,
+	.SecToTickCoef = 1U,
+#if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
+	.pTickValue = NULL,
+#elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
+	.GetTickValue = NULL
+#endif
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* Variables -----------------------------------------------------------------*/
@@ -394,10 +336,10 @@ static tick_t(*GetTickValue)(void) = NULL;
  */
 uint8_t fChrono_Init(volatile tick_t *tickValue) {
   
-  Init = FALSE;
-  InitUs = FALSE;
-  InitMs = FALSE;
-  InitSec = FALSE;
+  _chrono.Init = FALSE;
+  _chrono.InitUs = FALSE;
+  _chrono.InitMs = FALSE;
+  _chrono.InitSec = FALSE;
 
   if(CHRONO_TICK_TOP_VALUE == 0U) {
     return CHRONO_ERROR_TICK_TOP_ZERO; /* MISRA 2012 Rule 15.5 deviation */
@@ -411,28 +353,28 @@ uint8_t fChrono_Init(volatile tick_t *tickValue) {
     return CHRONO_ERROR_TICK_PTR_ERROR; /* MISRA 2012 Rule 15.5 deviation */
   }
   
-  TickTopValue = CHRONO_TICK_TOP_VALUE;
-  TickToNsCoef = CHRONO_TICK_TO_NANOSECOND_COEF;
-  pTickValue = tickValue;
+  _chrono.TickTopValue = CHRONO_TICK_TOP_VALUE;
+  _chrono.TickToNsCoef = CHRONO_TICK_TO_NANOSECOND_COEF;
+  _chrono.pTickValue = tickValue;
 
-  UsToTickCoef = (1000U / CHRONO_TICK_TO_NANOSECOND_COEF);
-  MsToTickCoef = (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
-  SecToTickCoef = (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
+  _chrono.UsToTickCoef = (1000U / CHRONO_TICK_TO_NANOSECOND_COEF);
+  _chrono.MsToTickCoef = (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
+  _chrono.SecToTickCoef = (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
   
-  ContinuousTickUs = 0U;
-	ContinuousTickMs = 0U;
-	ContinuousTickS = 0U;
+  _chrono.ContinuousTickUs = 0U;
+	_chrono.ContinuousTickMs = 0U;
+	_chrono.ContinuousTickS = 0U;
 	
-  Init = TRUE;
-  InitUs = (UsToTickCoef != 0U);
-  InitMs = (MsToTickCoef != 0U);
-  InitSec = (SecToTickCoef != 0U);
+  _chrono.Init = TRUE;
+  _chrono.InitUs = (_chrono.UsToTickCoef != 0U);
+  _chrono.InitMs = (_chrono.MsToTickCoef != 0U);
+  _chrono.InitSec = (_chrono.SecToTickCoef != 0U);
   
-	fChrono_Start(&ChronoTickUs);
-	fChrono_Start(&ChronoTickMs);
-	fChrono_Start(&ChronoTickS);
+	fChrono_Start(&_chrono.ChronoTickUs);
+	fChrono_Start(&_chrono.ChronoTickMs);
+	fChrono_Start(&_chrono.ChronoTickS);
 
-  TickInitValue = fChrono_GetTick();
+  _chrono.TickInitValue = fChrono_GetTick();
 
   return CHRONO_OK;
 }
@@ -454,10 +396,10 @@ uint8_t fChrono_Init(volatile tick_t *tickValue) {
  */
 uint8_t fChrono_Init(tick_t(*fpTickValue)(void)) {
 
-  Init = FALSE;
-  InitUs = FALSE;
-  InitMs = FALSE;
-  InitSec = FALSE;
+  _chrono.Init = FALSE;
+  _chrono.InitUs = FALSE;
+  _chrono.InitMs = FALSE;
+  _chrono.InitSec = FALSE;
 
   if(CHRONO_TICK_TOP_VALUE == 0U) {
     return CHRONO_ERROR_TICK_TOP_ZERO; /* MISRA 2012 Rule 15.5 deviation */
@@ -471,28 +413,28 @@ uint8_t fChrono_Init(tick_t(*fpTickValue)(void)) {
     return CHRONO_ERROR_TICK_PTR_ERROR; /* MISRA 2012 Rule 15.5 deviation */
   }
   
-  TickTopValue = CHRONO_TICK_TOP_VALUE;
-  TickToNsCoef = CHRONO_TICK_TO_NANOSECOND_COEF;
-  GetTickValue = fpTickValue;
+  _chrono.TickTopValue = CHRONO_TICK_TOP_VALUE;
+  _chrono.TickToNsCoef = CHRONO_TICK_TO_NANOSECOND_COEF;
+  _chrono.GetTickValue = fpTickValue;
 
-  UsToTickCoef = (1000U / CHRONO_TICK_TO_NANOSECOND_COEF);
-  MsToTickCoef = (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
-  SecToTickCoef = (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
+  _chrono.UsToTickCoef = (1000U / CHRONO_TICK_TO_NANOSECOND_COEF);
+  _chrono.MsToTickCoef = (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
+  _chrono.SecToTickCoef = (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
 
-  ContinuousTickUs = 0U;
-	ContinuousTickMs = 0U;
-	ContinuousTickS = 0U;
+  _chrono.ContinuousTickUs = 0U;
+	_chrono.ContinuousTickMs = 0U;
+	_chrono.ContinuousTickS = 0U;
 	
-  Init = TRUE;
-  InitUs = (UsToTickCoef != 0U);
-  InitMs = (MsToTickCoef != 0U);
-  InitSec = (SecToTickCoef != 0U);
+  _chrono.Init = TRUE;
+  _chrono.InitUs = (_chrono.UsToTickCoef != 0U);
+  _chrono.InitMs = (_chrono.MsToTickCoef != 0U);
+  _chrono.InitSec = (_chrono.SecToTickCoef != 0U);
   
-	fChrono_Start(&ChronoTickUs);
-	fChrono_Start(&ChronoTickMs);
-	fChrono_Start(&ChronoTickS);
+	fChrono_Start(&_chrono.ChronoTickUs);
+	fChrono_Start(&_chrono.ChronoTickMs);
+	fChrono_Start(&_chrono.ChronoTickS);
 
-  TickInitValue = fChrono_GetTick();
+  _chrono.TickInitValue = fChrono_GetTick();
 
   return CHRONO_OK;
 }
@@ -513,11 +455,11 @@ uint8_t fChrono_Init(tick_t(*fpTickValue)(void)) {
  */
 bool_t fChrono_IsTickUsAvailable(void) {
   
-  if(!Init) {
+  if(!_chrono.Init) {
     return false;
   }
   
-  return InitUs;
+  return _chrono.InitUs;
 }
 
 /**
@@ -527,11 +469,11 @@ bool_t fChrono_IsTickUsAvailable(void) {
  */
 bool_t fChrono_IsTickMsAvailable(void) {
   
-  if(!Init) {
+  if(!_chrono.Init) {
     return false;
   }
   
-  return InitMs;
+  return _chrono.InitMs;
 }
 
 /**
@@ -541,11 +483,21 @@ bool_t fChrono_IsTickMsAvailable(void) {
  */
 bool_t fChrono_IsTickSAvailable(void) {
   
-  if(!Init) {
+  if(!_chrono.Init) {
     return false;
   }
   
-  return InitSec;
+  return _chrono.InitSec;
+}
+
+/**
+ * @brief Get ram usage by module.
+ * 
+ * @retval ram usage in byte.
+ */
+uint32_t fChrono_GetRamUsage(void) {
+	
+	return sizeof(sChronoInternal);
 }
 
 /**
@@ -563,11 +515,11 @@ tick_t fChrono_GetTick(void) {
   
 #if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
 
-  return *pTickValue;
+  return *_chrono.pTickValue;
 
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
 
-  return GetTickValue();
+  return _chrono.GetTickValue();
 
 #else
   
@@ -587,11 +539,11 @@ tick_t fChrono_GetTick(void) {
  */
 uint64_t fChrono_GetContinuousTickUs(void) {
   
-  ContinuousTickUs += (uint64_t)fChrono_ElapsedUs(&ChronoTickUs);
+  _chrono.ContinuousTickUs += (uint64_t)fChrono_ElapsedUs(&_chrono.ChronoTickUs);
   
-  fChrono_Start(&ChronoTickUs);
+  fChrono_Start(&_chrono.ChronoTickUs);
   
-  return ContinuousTickUs;
+  return _chrono.ContinuousTickUs;
 }
 
 /**
@@ -604,11 +556,11 @@ uint64_t fChrono_GetContinuousTickUs(void) {
  */
 uint64_t fChrono_GetContinuousTickMs(void) {
   
-  ContinuousTickMs += (uint64_t)fChrono_ElapsedMs(&ChronoTickMs);
+  _chrono.ContinuousTickMs += (uint64_t)fChrono_ElapsedMs(&_chrono.ChronoTickMs);
   
-  fChrono_Start(&ChronoTickMs);
+  fChrono_Start(&_chrono.ChronoTickMs);
   
-  return ContinuousTickMs;
+  return _chrono.ContinuousTickMs;
 }
 
 /**
@@ -621,11 +573,11 @@ uint64_t fChrono_GetContinuousTickMs(void) {
  */
 uint64_t fChrono_GetContinuousTickS(void) {
   
-  ContinuousTickS += (uint64_t)fChrono_ElapsedS(&ChronoTickS);
+  _chrono.ContinuousTickS += (uint64_t)fChrono_ElapsedS(&_chrono.ChronoTickS);
   
-  fChrono_Start(&ChronoTickS);
+  fChrono_Start(&_chrono.ChronoTickS);
   
-  return ContinuousTickS;
+  return _chrono.ContinuousTickS;
 }
 
 /**
@@ -639,7 +591,7 @@ tick_t fChrono_GetTickTopValue(void) {
   
   CHECK_INIT_RET_((tick_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
-  return TickTopValue;
+  return _chrono.TickTopValue;
 }
 
 /**
@@ -653,7 +605,7 @@ tick_t fChrono_GetTickInitValue(void) {
   
   CHECK_INIT_RET_((tick_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
-  return TickInitValue;
+  return _chrono.TickInitValue;
 }
 
 /**
@@ -671,7 +623,7 @@ uint32_t fChrono_GetTickToNsCoef(void) {
   
   CHECK_INIT_RET_(0U); /* MISRA 2012 Rule 15.5 deviation */
   
-  return TickToNsCoef;
+  return _chrono.TickToNsCoef;
 }
 
 /**
@@ -685,7 +637,7 @@ uint32_t fChrono_GetTickToNsCoef(void) {
     
     CHECK_INIT_RET_(NULL);  /* MISRA 2012 Rule 15.5 deviation */
   
-    return pTickValue;
+    return _chrono.pTickValue;
   }
 
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
@@ -694,7 +646,7 @@ uint32_t fChrono_GetTickToNsCoef(void) {
     
     CHECK_INIT_RET_(NULL);
     
-    return GetTickValue;
+    return _chrono.GetTickValue;
   }
 
 #else
@@ -712,7 +664,7 @@ timeS_t fChrono_GetMaxMeasurableTimeS(void) {
   
   CHECK_INIT_SEC_RET_((timeS_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
-  return (timeS_t)TickTopValue / SecToTickCoef;
+  return (timeS_t)_chrono.TickTopValue / _chrono.SecToTickCoef;
 }
 
 /**
@@ -724,7 +676,7 @@ timeMs_t fChrono_GetMaxMeasurableTimeMs(void) {
   
   CHECK_INIT_MS_RET_((timeMs_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
-  return (timeMs_t)TickTopValue / MsToTickCoef;
+  return (timeMs_t)_chrono.TickTopValue / _chrono.MsToTickCoef;
 }
 
 /**
@@ -736,7 +688,7 @@ timeUs_t fChrono_GetMaxMeasurableTimeUs(void) {
   
   CHECK_INIT_US_RET_((timeUs_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
-  return (timeUs_t)TickTopValue / UsToTickCoef;
+  return (timeUs_t)_chrono.TickTopValue / _chrono.UsToTickCoef;
 }
 
 /**
@@ -750,7 +702,7 @@ timeS_t fChrono_TimeSpanS(tick_t startTick, tick_t endTick) {
   
   CHECK_INIT_SEC_RET_((timeS_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
-  return (timeS_t)(ELAPSED_(endTick, startTick)) / SecToTickCoef;
+  return (timeS_t)(ELAPSED_(endTick, startTick)) / _chrono.SecToTickCoef;
 }
 
 /**
@@ -764,7 +716,7 @@ timeMs_t fChrono_TimeSpanMs(tick_t startTick, tick_t endTick) {
   
   CHECK_INIT_MS_RET_((timeMs_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
-  return (timeMs_t)(ELAPSED_(endTick, startTick)) / MsToTickCoef;
+  return (timeMs_t)(ELAPSED_(endTick, startTick)) / _chrono.MsToTickCoef;
   
 }
 
@@ -779,7 +731,7 @@ timeUs_t fChrono_TimeSpanUs(tick_t startTick, tick_t endTick) {
   
   CHECK_INIT_US_RET_((timeUs_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
-  return (timeUs_t)(ELAPSED_(endTick, startTick)) / UsToTickCoef;
+  return (timeUs_t)(ELAPSED_(endTick, startTick)) / _chrono.UsToTickCoef;
   
 }
 
@@ -909,7 +861,7 @@ timeS_t fChrono_ElapsedS(sChrono const * const me) {
   tick_t startTick = me->_startTick;
   tick_t currentTick = fChrono_GetTick();
   
-  return (timeS_t)((timeS_t)(ELAPSED_(currentTick, startTick)) / SecToTickCoef);
+  return (timeS_t)((timeS_t)(ELAPSED_(currentTick, startTick)) / _chrono.SecToTickCoef);
 }
 
 /**
@@ -929,7 +881,7 @@ timeMs_t fChrono_ElapsedMs(sChrono const * const me) {
   tick_t startTick = me->_startTick;
   tick_t currentTick = fChrono_GetTick();
   
-  return (timeMs_t)((timeMs_t)(ELAPSED_(currentTick, startTick)) / MsToTickCoef);
+  return (timeMs_t)((timeMs_t)(ELAPSED_(currentTick, startTick)) / _chrono.MsToTickCoef);
 }
 
 /**
@@ -949,7 +901,7 @@ timeUs_t fChrono_ElapsedUs(sChrono const * const me) {
   tick_t startTick = me->_startTick;
   tick_t currentTick = fChrono_GetTick();
   
-  return (timeUs_t)((timeUs_t)(ELAPSED_(currentTick, startTick)) / UsToTickCoef);
+  return (timeUs_t)((timeUs_t)(ELAPSED_(currentTick, startTick)) / _chrono.UsToTickCoef);
 }
 
 /**
@@ -977,12 +929,12 @@ timeS_t fChrono_LeftS(sChrono * const me) {
   
   tick_t currentTick = fChrono_GetTick();
   tick_t elapsedTick = ELAPSED_(currentTick, startTick);
-  timeS_t elapsed = (timeS_t)((timeS_t)(elapsedTick) / SecToTickCoef);
+  timeS_t elapsed = (timeS_t)((timeS_t)(elapsedTick) / _chrono.SecToTickCoef);
   if(elapsedTick >= (me->_timeout)) {
     me->_isTimeout = TRUE;
     return (timeS_t)0;
   } else {
-    return ((me->_timeout / SecToTickCoef) - elapsed);
+    return ((me->_timeout / _chrono.SecToTickCoef) - elapsed);
   }
 }
 
@@ -1011,12 +963,12 @@ timeMs_t fChrono_LeftMs(sChrono * const me) {
   
   tick_t currentTick = fChrono_GetTick();
   tick_t elapsedTick = ELAPSED_(currentTick, startTick);
-  timeMs_t elapsed = (timeMs_t)((timeMs_t)(elapsedTick) / MsToTickCoef);
+  timeMs_t elapsed = (timeMs_t)((timeMs_t)(elapsedTick) / _chrono.MsToTickCoef);
   if(elapsedTick >= (me->_timeout)) {
     me->_isTimeout = TRUE;
     return (timeMs_t)0;
   } else {
-    return ((me->_timeout / MsToTickCoef) - elapsed);
+    return ((me->_timeout / _chrono.MsToTickCoef) - elapsed);
   }
 }
 
@@ -1045,12 +997,12 @@ timeUs_t fChrono_LeftUs(sChrono * const me) {
   
   tick_t currentTick = fChrono_GetTick();
   tick_t elapsedTick = ELAPSED_(currentTick, startTick);
-  timeUs_t elapsed = (timeUs_t)((timeUs_t)(elapsedTick) / UsToTickCoef);
+  timeUs_t elapsed = (timeUs_t)((timeUs_t)(elapsedTick) / _chrono.UsToTickCoef);
   if(elapsedTick >= (me->_timeout)) {
     me->_isTimeout = TRUE;
     return (timeUs_t)0;
   } else {
-    return ((me->_timeout / UsToTickCoef) - elapsed);
+    return ((me->_timeout / _chrono.UsToTickCoef) - elapsed);
   }
 }
 
@@ -1065,7 +1017,7 @@ void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout) {
   CHECK_INIT_SEC_();    /* MISRA 2012 Rule 15.5 deviation */
   ASSERT_NOT_NULL_(me); /* MISRA 2012 Rule 15.5 deviation */
   
-  me->_timeout = (tick_t)(timeout * (timeS_t)SecToTickCoef);
+  me->_timeout = (tick_t)(timeout * (timeS_t)_chrono.SecToTickCoef);
   me->_isTimeout = FALSE;
   
   fChrono_Start(me);
@@ -1082,7 +1034,7 @@ void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
   CHECK_INIT_MS_();     /* MISRA 2012 Rule 15.5 deviation */
   ASSERT_NOT_NULL_(me); /* MISRA 2012 Rule 15.5 deviation */
   
-  me->_timeout = (tick_t)(timeout * (timeMs_t)MsToTickCoef);
+  me->_timeout = (tick_t)(timeout * (timeMs_t)_chrono.MsToTickCoef);
   me->_isTimeout = FALSE;
   
   fChrono_Start(me);
@@ -1099,7 +1051,7 @@ void fChrono_StartTimeoutUs(sChrono * const me, timeUs_t timeout) {
   CHECK_INIT_US_();     /* MISRA 2012 Rule 15.5 deviation */
   ASSERT_NOT_NULL_(me); /* MISRA 2012 Rule 15.5 deviation */
   
-  me->_timeout = (tick_t)(timeout * (timeUs_t)UsToTickCoef);
+  me->_timeout = (tick_t)(timeout * (timeUs_t)_chrono.UsToTickCoef);
   me->_isTimeout = FALSE;
   
   fChrono_Start(me);
@@ -1159,7 +1111,7 @@ timeS_t fChrono_IntervalS(sChrono * const me) {
   tick_t startTick = me->_startTick;
   me->_startTick = currentTick;
   
-  return ((timeS_t)(ELAPSED_(currentTick, startTick)) / SecToTickCoef);
+  return ((timeS_t)(ELAPSED_(currentTick, startTick)) / _chrono.SecToTickCoef);
 }
 
 /**
@@ -1186,7 +1138,7 @@ timeMs_t fChrono_IntervalMs(sChrono * const me) {
   tick_t startTick = me->_startTick;
   me->_startTick = currentTick;
   
-  return ((timeMs_t)(ELAPSED_(currentTick, startTick)) / MsToTickCoef);
+  return ((timeMs_t)(ELAPSED_(currentTick, startTick)) / _chrono.MsToTickCoef);
 }
 
 /**
@@ -1213,7 +1165,7 @@ timeUs_t fChrono_IntervalUs(sChrono * const me) {
   tick_t startTick = me->_startTick;
   me->_startTick = currentTick;
   
-  return ((timeUs_t)(ELAPSED_(currentTick, startTick)) / UsToTickCoef);
+  return ((timeUs_t)(ELAPSED_(currentTick, startTick)) / _chrono.UsToTickCoef);
 }
 
 /** @} */ //End of OBJECTIVE_API

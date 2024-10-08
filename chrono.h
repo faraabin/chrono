@@ -192,6 +192,13 @@ bool_t fChrono_IsTickMsAvailable(void);
 bool_t fChrono_IsTickSAvailable(void);
 
 /**
+ * @brief Get ram usage by module.
+ * 
+ * @retval ram usage in byte.
+ */
+uint32_t fChrono_GetRamUsage(void);
+
+/**
  * @brief Get current tick.
  * 
  * @retval tick: Current tick (raw)
