@@ -136,6 +136,9 @@ typedef struct {
   tick_t _startTick;  /*!< Holds the start time of the chrono.
                            This parameter is private and is set by the chrono API. Users must not change its value. */
 
+  tick_t _stopTick;  /*!< Holds the stop time of the chrono.
+                           This parameter is private and is set by the chrono API. Users must not change its value. */
+
   tick_t _timeout;    /*!< Holds the timeout length.
                            This parameter is private and is set by the chrono API. Users must not change its value. */
   
@@ -310,8 +313,8 @@ void fChrono_DelayUs(timeUs_t delayUs);
  *  @{
  */
 
-void fChrono_Start(sChrono * const me);
-void fChrono_Stop(sChrono * const me);
+tick_t fChrono_Start(sChrono * const me);
+tick_t fChrono_Stop(sChrono * const me);
 
 /** @} */ //End of DELAY
 

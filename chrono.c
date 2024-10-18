@@ -820,13 +820,15 @@ void fChrono_DelayUs(timeUs_t delayUs) {
  * 
  * @param me Pointer to the chrono object
  */
-void fChrono_Start(sChrono * const me) {
+tick_t fChrono_Start(sChrono * const me) {
 
-  CHECK_INIT_();        /* MISRA 2012 Rule 15.5 deviation */
-  ASSERT_NOT_NULL_(me); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_RET_((tick_t)0);        /* MISRA 2012 Rule 15.5 deviation */
+  ASSERT_NOT_NULL_RET_(me, (tick_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
   me->_startTick = fChrono_GetTick();
   me->_run = TRUE;
+
+  return me->_startTick;
 }
 
 /**
@@ -836,12 +838,15 @@ void fChrono_Start(sChrono * const me) {
  * 
  * @param me Pointer to the chrono object
  */
-void fChrono_Stop(sChrono * const me) {
+tick_t fChrono_Stop(sChrono * const me) {
 
-  ASSERT_NOT_NULL_(me); /* MISRA 2012 Rule 15.5 deviation */
+  ASSERT_NOT_NULL_RET_(me, (tick_t)0); /* MISRA 2012 Rule 15.5 deviation */
   
+  me->_stopTick = fChrono_GetTick();
   me->_run = FALSE;
   me->_isTimeout = FALSE;
+
+  return me->_stopTick;
 }
 
 /**
@@ -856,7 +861,7 @@ timeS_t fChrono_ElapsedS(sChrono const * const me) {
   
   CHECK_INIT_SEC_RET_((timeS_t)0);      /* MISRA 2012 Rule 15.5 deviation */
   ASSERT_NOT_NULL_RET_(me, (timeS_t)0); /* MISRA 2012 Rule 15.5 deviation */
-  CHECK_RUN_((timeS_t)0);               /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_(fChrono_TimeSpanS(me->_startTick, me->_stopTick));               /* MISRA 2012 Rule 15.5 deviation */
   
   tick_t startTick = me->_startTick;
   tick_t currentTick = fChrono_GetTick();
@@ -876,7 +881,7 @@ timeMs_t fChrono_ElapsedMs(sChrono const * const me) {
   
   CHECK_INIT_MS_RET_((timeMs_t)0);        /* MISRA 2012 Rule 15.5 deviation */
   ASSERT_NOT_NULL_RET_(me, (timeMs_t)0);  /* MISRA 2012 Rule 15.5 deviation */
-  CHECK_RUN_((timeMs_t)0);                /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_(fChrono_TimeSpanMs(me->_startTick, me->_stopTick));                /* MISRA 2012 Rule 15.5 deviation */
   
   tick_t startTick = me->_startTick;
   tick_t currentTick = fChrono_GetTick();
@@ -896,7 +901,7 @@ timeUs_t fChrono_ElapsedUs(sChrono const * const me) {
   
   CHECK_INIT_US_RET_((timeUs_t)0);        /* MISRA 2012 Rule 15.5 deviation */
   ASSERT_NOT_NULL_RET_(me, (timeUs_t)0);  /* MISRA 2012 Rule 15.5 deviation */
-  CHECK_RUN_((timeUs_t)0);                /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_RUN_(fChrono_TimeSpanUs(me->_startTick, me->_stopTick));                /* MISRA 2012 Rule 15.5 deviation */
   
   tick_t startTick = me->_startTick;
   tick_t currentTick = fChrono_GetTick();
