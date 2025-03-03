@@ -30,15 +30,15 @@ extern "C" {
 
 /* Exported defines ----------------------------------------------------------*/
 /**
-  * @brief Select either reading current tick from an address in memory or by calling a function.
+  * @brief Selects the method to read the current tick: from a memory address (hardware tick) or by calling a function (software tick).
   *
-  * @note In cases that a timer is used to generate tick and reading its counter register is possible to get current tick,
-  *       set CHRONO_TICK_TYPE to TICK_TYPE_VARIABLE.
+  * @note As an example if a timer generates the tick and reading its counter register is possible, set CHRONO_TICK_TYPE to TICK_TYPE_VARIABLE.
   *
-  * @note In cases that user wants to generate the tick and reading its value is not possible by dereferencing the tick address,
-  *       value of current tick can be read via calling a function.
+  * @note If reading tick value from the an address in memory is not possible, and a function will return current tick value,
+  *       set CHRONO_TICK_TYPE to TICK_TYPE_FUNCTION. In this case, chrono module will call this function whenever it needs to get the tick.
   */
-#define CHRONO_TICK_TYPE  TICK_TYPE_VARIABLE
+ #define CHRONO_TICK_TYPE  TICK_TYPE_VARIABLE
+
 
 /**
  * @brief Set the top value that the tick generator can count.
@@ -57,14 +57,16 @@ extern "C" {
 #define CHRONO_TICK_TO_NANOSECOND_COEF  (1000U)
 
 /**
-  * @brief Select the counter mode of the tick generator. Possible modes are TICK_COUNTERMODE_UP if the counter starts from zero to CHRONO_TICK_TOP_VALUE
-  *        and TICK_COUNTERMODE_DOWN if it counts downward from CHRONO_TICK_TOP_VALUE to zero.
+  * @brief Select the counter mode of the tick generator.
   *
+  * @note If the counter starts from zero to CHRONO_TICK_TOP_VALUE then define it as TICK_COUNTERMODE_UP.
+  * 
+  * @note if it counts downward from CHRONO_TICK_TOP_VALUE to zero then define it as TICK_COUNTERMODE_DOWN.
   */
 #define CHRONO_TICK_COUNTERMODE TICK_COUNTERMODE_UP
 
 /**
- * @brief User typedef for measurements in chrono module
+ * @brief User typedefs for measurements in chrono module.
  * 
  * @note Modify these types based on your application.
  * 
