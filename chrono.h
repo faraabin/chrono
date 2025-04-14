@@ -117,9 +117,15 @@ extern "C" {
 #ifndef bool_t
 typedef bool bool_t;
 
+#ifndef FALSE
 #define FALSE ((bool_t)0)
+#endif  //FALSE
+
+#ifndef TRUE
 #define TRUE  ((bool_t)1)
-#endif
+#endif  //TRUE
+
+#endif  //bool_t
 
 /**
   * @brief Definition of the Chrono object.
