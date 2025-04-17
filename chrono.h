@@ -114,7 +114,9 @@ extern "C" {
   * @brief Definition of bool_t for misra compliance.
   * 
   */
-#ifndef bool_t
+#ifndef bool_t__
+#define bool_t__
+
 typedef bool bool_t;
 
 #ifndef FALSE
