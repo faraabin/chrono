@@ -321,8 +321,8 @@ void fChrono_DelayUs(timeUs_t delayUs);
  *  @{
  */
 
-tick_t fChrono_Start(sChrono * const me);
-tick_t fChrono_Stop(sChrono * const me);
+void fChrono_Start(sChrono * const me);
+void fChrono_Stop(sChrono * const me);
 
 /** @} */ //End of DELAY
 

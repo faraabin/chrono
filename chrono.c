@@ -807,7 +807,7 @@ void fChrono_DelayUs(timeUs_t delayUs) {
 /** @} */ //End of FUNCTIONAL_API
 
 /** @defgroup OBJECTIVE_API Objective API in the chrono module
- *  @brief These functions require an object of type sChrono. Users must declare one to use this API.
+ *  @brief These functions require an object of type sChrono. Users must declare one to use them.
  *  @{
  */
 
@@ -820,15 +820,14 @@ void fChrono_DelayUs(timeUs_t delayUs) {
  * 
  * @param me Pointer to the chrono object
  */
-tick_t fChrono_Start(sChrono * const me) {
-
-  CHECK_INIT_RET_((tick_t)0);        /* MISRA 2012 Rule 15.5 deviation */
-  ASSERT_NOT_NULL_RET_(me, (tick_t)0); /* MISRA 2012 Rule 15.5 deviation */
+void fChrono_Start(sChrono * const me) {
+  
+  CHECK_INIT_();        /* MISRA 2012 Rule 15.5 deviation */
+  ASSERT_NOT_NULL_(me); /* MISRA 2012 Rule 15.5 deviation */
   
   me->_startTick = fChrono_GetTick();
   me->_run = TRUE;
 
-  return me->_startTick;
 }
 
 /**
@@ -838,15 +837,15 @@ tick_t fChrono_Start(sChrono * const me) {
  * 
  * @param me Pointer to the chrono object
  */
-tick_t fChrono_Stop(sChrono * const me) {
+void fChrono_Stop(sChrono * const me) {
 
-  ASSERT_NOT_NULL_RET_(me, (tick_t)0); /* MISRA 2012 Rule 15.5 deviation */
+  CHECK_INIT_();        /* MISRA 2012 Rule 15.5 deviation */
+  ASSERT_NOT_NULL_(me); /* MISRA 2012 Rule 15.5 deviation */
   
   me->_stopTick = fChrono_GetTick();
   me->_run = FALSE;
   me->_isTimeout = FALSE;
 
-  return me->_stopTick;
 }
 
 /**
