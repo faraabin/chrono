@@ -40,6 +40,12 @@ extern "C" {
 #include "chrono_config.h"
 
 /* Exported defines ----------------------------------------------------------*/
+/**
+ * @brief Define result type & value of chrono functions.
+ * 
+ */
+typedef uint8_t chrono_res_t;
+
 #define CHRONO_OK                     (0U)
 #define CHRONO_ERROR_TICK_TOP_ZERO    (1U)
 #define CHRONO_ERROR_TICK_TO_NS_ZERO  (2U)
@@ -173,12 +179,12 @@ typedef struct {
 
 #if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
 
-  uint8_t fChrono_Init(volatile tick_t *tickValue);
+  chrono_res_t fChrono_Init(volatile tick_t *tickValue);
 
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
   
   typedef tick_t(*fpTick_t)(void);
-  uint8_t fChrono_Init(tick_t(*fpTickValue)(void));
+  chrono_res_t fChrono_Init(tick_t(*fpTickValue)(void));
 
 #else
 
