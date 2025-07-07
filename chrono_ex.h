@@ -538,17 +538,17 @@ extern "C" {
  */
 #define RUN_AFTER_QTY_(name_, qty_) \
   static uint32_t __run_after_qty_##name_##__ = 0;\
-  static bool _is_run_after_qty_##name_##__ = false;\
+  static bool _is_run_after_qty_##name_##__ = FALSE;\
   if(!_is_run_after_qty_##name_##__) {\
     __run_after_qty_##name_##__++;\
     if(__run_after_qty_##name_##__++ >= (qty_)) {\
       __run_after_qty_##name_##__ = 0;\
-      _is_run_after_qty_##name_##__ = true;\
+      _is_run_after_qty_##name_##__ = TRUE;\
     }\
   } else {
 
 #define RUN_AFTER_QTY_RESET_(name_) \
-  _is_run_after_qty_##name_##__ = false
+  _is_run_after_qty_##name_##__ = FALSE
 
 #define RUN_END_ }
 
@@ -559,12 +559,12 @@ extern "C" {
  *       have a timeout for prevent lock in while loop.
  */
 #define WAIT_FOR_WITH_TIMEOUT_US_(name_, condition_, timeoutUs_, isTimeout_) \
-  (isTimeout_) = false; \
+  (isTimeout_) = FALSE; \
   static sChrono __wait_for_us_##name_##__ = {FALSE, 0, 0, 0, FALSE}; \
   fChrono_StartTimeoutUs(&(__wait_for_us_##name_##__), timeoutUs_); \
   while(!(condition_)) { \
     if(fChrono_IsTimeout(&(__wait_for_us_##name_##__))) { \
-      (isTimeout_) = true; \
+      (isTimeout_) = TRUE; \
       break; \
     } \
   }
@@ -576,12 +576,12 @@ extern "C" {
  *       have a timeout for prevent lock in while loop.
  */
 #define WAIT_FOR_WITH_TIMEOUT_MS_(name_, condition_, timeoutMs_, isTimeout_) \
-  (isTimeout_) = false; \
+  (isTimeout_) = FALSE; \
   static sChrono __wait_for_ms_##name_##__ = {FALSE, 0, 0, 0, FALSE}; \
   fChrono_StartTimeoutMs(&(__wait_for_ms_##name_##__), timeoutMs_); \
   while(!(condition_)) { \
     if(fChrono_IsTimeout(&(__wait_for_ms_##name_##__))) { \
-      (isTimeout_) = true; \
+      (isTimeout_) = TRUE; \
       break; \
     } \
   }
@@ -593,16 +593,78 @@ extern "C" {
  *       have a timeout for prevent lock in while loop.
  */
 #define WAIT_FOR_WITH_TIMEOUT_S_(name_, condition_, timeoutS_, isTimeout_) \
-  (isTimeout_) = false; \
+  (isTimeout_) = FALSE; \
   static sChrono __wait_for_s_##name_##__ = {FALSE, 0, 0, 0, FALSE}; \
   fChrono_StartTimeoutS(&(__wait_for_s_##name_##__), timeoutS_); \
   while(!(condition_)) { \
     if(fChrono_IsTimeout(&(__wait_for_s_##name_##__))) { \
-      (isTimeout_) = true; \
+      (isTimeout_) = TRUE; \
       break; \
     } \
   }
-    
+
+/**
+ * @brief These macros set the out_pulse_ for a predefined duration_, if a rising edge
+ *        is detected on the condition_ value.
+ * 
+ * @note To reset the pulser, condition_ must be FALSE for at least one execution period of the 
+ *       PULSE_ONCE_FOR_XS_ macro.
+ *
+ */
+#define PULSE_ONCE_FOR_US_(name_, condition_, duration_, out_pulse_)  \
+  static bool_t pulse_latch_##name_##__ = FALSE;\
+  static sChrono pulse_timer_##name_##__ = {FALSE, 0, 0, 0, FALSE};\
+  if(!(pulse_latch_##name_##__) && ((condition_) == TRUE)) {\
+    pulse_latch_##name_##__ = TRUE;\
+    fChrono_StartTimeoutUs(&(pulse_timer_##name_##__), duration_);\
+    out_pulse_ = 1;\
+  }\
+  if(pulse_latch_##name_##__) {\
+    if(fChrono_IsTimeout(&(pulse_timer_##name_##__))) {\
+      out_pulse_ = 0;\
+      fChrono_Stop(&(pulse_timer_##name_##__));\
+    }\
+    if((condition_) == FALSE) {\
+      pulse_latch_##name_##__ = FALSE;\
+    }\
+  }
+
+#define PULSE_ONCE_FOR_MS_(name_, condition_, duration_, out_pulse_)  \
+  static bool_t pulse_latch_##name_##__ = FALSE;\
+  static sChrono pulse_timer_##name_##__ = {FALSE, 0, 0, 0, FALSE};\
+  if(!(pulse_latch_##name_##__) && ((condition_) == TRUE)) {\
+    pulse_latch_##name_##__ = TRUE;\
+    fChrono_StartTimeoutMs(&(pulse_timer_##name_##__), duration_);\
+    out_pulse_ = 1;\
+  }\
+  if(pulse_latch_##name_##__) {\
+    if(fChrono_IsTimeout(&(pulse_timer_##name_##__))) {\
+      out_pulse_ = 0;\
+      fChrono_Stop(&(pulse_timer_##name_##__));\
+    }\
+    if((condition_) == FALSE) {\
+      pulse_latch_##name_##__ = FALSE;\
+    }\
+  }
+
+#define PULSE_ONCE_FOR_S_(name_, condition_, duration_, out_pulse_)  \
+  static bool_t pulse_latch_##name_##__ = FALSE;\
+  static sChrono pulse_timer_##name_##__ = {FALSE, 0, 0, 0, FALSE};\
+  if(!(pulse_latch_##name_##__) && ((condition_) == TRUE)) {\
+    pulse_latch_##name_##__ = TRUE;\
+    fChrono_StartTimeoutS(&(pulse_timer_##name_##__), duration_);\
+    out_pulse_ = 1;\
+  }\
+  if(pulse_latch_##name_##__) {\
+    if(fChrono_IsTimeout(&(pulse_timer_##name_##__))) {\
+      out_pulse_ = 0;\
+      fChrono_Stop(&(pulse_timer_##name_##__));\
+    }\
+    if((condition_) == FALSE) {\
+      pulse_latch_##name_##__ = FALSE;\
+    }\
+  }
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported functions prototypes ---------------------------------------------*/
