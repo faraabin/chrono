@@ -623,9 +623,10 @@ extern "C" {
     if(fChrono_IsTimeout(&(pulse_timer_##name_##__))) {\
       out_pulse_ = 0;\
       fChrono_Stop(&(pulse_timer_##name_##__));\
-    }\
-    if((condition_) == FALSE) {\
-      pulse_latch_##name_##__ = FALSE;\
+    } else {\
+      if((condition_) == FALSE) {\
+        pulse_latch_##name_##__ = FALSE;\
+      }\
     }\
   }
 
@@ -641,9 +642,10 @@ extern "C" {
     if(fChrono_IsTimeout(&(pulse_timer_##name_##__))) {\
       out_pulse_ = 0;\
       fChrono_Stop(&(pulse_timer_##name_##__));\
-    }\
-    if((condition_) == FALSE) {\
-      pulse_latch_##name_##__ = FALSE;\
+    } else {\
+      if((condition_) == FALSE) {\
+        pulse_latch_##name_##__ = FALSE;\
+      }\
     }\
   }
 
@@ -659,9 +661,10 @@ extern "C" {
     if(fChrono_IsTimeout(&(pulse_timer_##name_##__))) {\
       out_pulse_ = 0;\
       fChrono_Stop(&(pulse_timer_##name_##__));\
-    }\
-    if((condition_) == FALSE) {\
-      pulse_latch_##name_##__ = FALSE;\
+    } else {\
+      if((condition_) == FALSE) {\
+        pulse_latch_##name_##__ = FALSE;\
+      }\
     }\
   }
 
