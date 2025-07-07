@@ -22,7 +22,7 @@
 #include "chrono_config.h"
 
 #include "..\chrono.h"
-#include "..\ex\chrono_long.h"
+#include "..\long\chrono_long.h"
 
 #include "unity_fixture.h"
 
