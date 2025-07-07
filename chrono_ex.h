@@ -604,24 +604,24 @@ extern "C" {
   }
 
 /**
- * @brief These macros set the out_pulse_ for a predefined duration_, if a rising edge
+ * @brief These macros set the outPulse_ for a predefined duration_, if a rising edge
  *        is detected on the condition_ value.
  * 
  * @note To reset the pulser, condition_ must be FALSE for at least one execution period of the 
  *       PULSE_ONCE_FOR_XS_ macro.
  *
  */
-#define PULSE_ONCE_FOR_US_(name_, condition_, duration_, out_pulse_)  \
+#define PULSE_ONCE_FOR_BASE_(name_, condition_, duration_, outPulse_, ts_)  \
   static bool_t pulse_latch_##name_##__ = FALSE;\
   static sChrono pulse_timer_##name_##__ = {FALSE, 0, 0, 0, FALSE};\
   if(!(pulse_latch_##name_##__) && ((condition_) == TRUE)) {\
     pulse_latch_##name_##__ = TRUE;\
-    fChrono_StartTimeoutUs(&(pulse_timer_##name_##__), duration_);\
-    out_pulse_ = 1;\
+    fChrono_StartTimeout##ts_(&(pulse_timer_##name_##__), duration_);\
+    outPulse_ = 1;\
   }\
   if(pulse_latch_##name_##__) {\
     if(fChrono_IsTimeout(&(pulse_timer_##name_##__))) {\
-      out_pulse_ = 0;\
+      outPulse_ = 0;\
       fChrono_Stop(&(pulse_timer_##name_##__));\
     } else {\
       if((condition_) == FALSE) {\
@@ -630,43 +630,12 @@ extern "C" {
     }\
   }
 
-#define PULSE_ONCE_FOR_MS_(name_, condition_, duration_, out_pulse_)  \
-  static bool_t pulse_latch_##name_##__ = FALSE;\
-  static sChrono pulse_timer_##name_##__ = {FALSE, 0, 0, 0, FALSE};\
-  if(!(pulse_latch_##name_##__) && ((condition_) == TRUE)) {\
-    pulse_latch_##name_##__ = TRUE;\
-    fChrono_StartTimeoutMs(&(pulse_timer_##name_##__), duration_);\
-    out_pulse_ = 1;\
-  }\
-  if(pulse_latch_##name_##__) {\
-    if(fChrono_IsTimeout(&(pulse_timer_##name_##__))) {\
-      out_pulse_ = 0;\
-      fChrono_Stop(&(pulse_timer_##name_##__));\
-    } else {\
-      if((condition_) == FALSE) {\
-        pulse_latch_##name_##__ = FALSE;\
-      }\
-    }\
-  }
-
-#define PULSE_ONCE_FOR_S_(name_, condition_, duration_, out_pulse_)  \
-  static bool_t pulse_latch_##name_##__ = FALSE;\
-  static sChrono pulse_timer_##name_##__ = {FALSE, 0, 0, 0, FALSE};\
-  if(!(pulse_latch_##name_##__) && ((condition_) == TRUE)) {\
-    pulse_latch_##name_##__ = TRUE;\
-    fChrono_StartTimeoutS(&(pulse_timer_##name_##__), duration_);\
-    out_pulse_ = 1;\
-  }\
-  if(pulse_latch_##name_##__) {\
-    if(fChrono_IsTimeout(&(pulse_timer_##name_##__))) {\
-      out_pulse_ = 0;\
-      fChrono_Stop(&(pulse_timer_##name_##__));\
-    } else {\
-      if((condition_) == FALSE) {\
-        pulse_latch_##name_##__ = FALSE;\
-      }\
-    }\
-  }
+/**
+ * @brief Define PULSE_ONCE_FOR_BASE_ macro for Us, Ms & S
+ */
+#define PULSE_ONCE_FOR_US_(name_, condition_, duration_, outPulse_)  PULSE_ONCE_FOR_BASE_(name_, condition_, duration_, outPulse_, Us)
+#define PULSE_ONCE_FOR_MS_(name_, condition_, duration_, outPulse_)  PULSE_ONCE_FOR_BASE_(name_, condition_, duration_, outPulse_, Ms)
+#define PULSE_ONCE_FOR_S_(name_, condition_, duration_, outPulse_)  PULSE_ONCE_FOR_BASE_(name_, condition_, duration_, outPulse_, S)
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
