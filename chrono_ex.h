@@ -437,6 +437,12 @@ extern "C" {
 
 /** @} */ //End of RUN_EVERY_S
 
+/**
+ * @brief 
+ * 
+ */
+#define RUN_AT_FREQ_HZ_(name_, freqHz_) RUN_EVERY_US_(name_, 1000000.0f / (freqHz_))
+
 /** @defgroup RUN_EVERY_QTY Quantity based macros
   * @ingroup RUN_EVERY
   * @{
