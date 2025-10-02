@@ -76,7 +76,7 @@ extern "C" {
  * 
  */
 typedef uint32_t high_resolution_tick_t;
-typedef float64_t timens_t;
+typedef float32_t timeNs_t;
 
 #ifdef __cplusplus
 }

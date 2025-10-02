@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file           : chrono_high_resolution.h
-  * @brief          : Chrono module header file.
+  * @brief          : Chrono high resolution module header file.
   ******************************************************************************
   * @attention
   *

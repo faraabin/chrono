@@ -102,10 +102,6 @@ typedef uint8_t chrono_res_t;
  * @brief Measures the elapsed time since the last call to tic_().
  *        The elapsed time can be retrieved using the tocUs_(), tocMs_() or tocS_() macros.
  * 
- * @note To accurately account for timing overhead, use the 
- *       fChrono_MeasureTicTocOverheadUs_(), fChrono_MeasureTicTocOverheadMs_() or fChrono_MeasureTicTocOverheadS_() functions.
- *       The actual elapsed time is calculated by subtracting the measured overhead from the
- *       time recorded by the tic and toc macros.
  */
 #define tic_(name_) \
   sChrono __tic_toc_##name_##__;\
@@ -114,36 +110,6 @@ typedef uint8_t chrono_res_t;
 #define tocUs_(name_) fChrono_ElapsedUs(&(__tic_toc_##name_##__))
 #define tocMs_(name_) fChrono_ElapsedMs(&(__tic_toc_##name_##__))
 #define tocS_(name_)  fChrono_ElapsedS(&(__tic_toc_##name_##__))
-
-#define fChrono_MeasureTicTocOverheadUs_(iter_, overheadUs_) \
-  do {\
-    float64_t sum_ = 0.0;\
-    for(uint32_t __i__ = 0; __i__ < iter_; __i__++) {\
-      tic_(__tic_toc_overhead__);\
-      sum_ += tocUs_(__tic_toc_overhead__);\
-    }\
-    overheadUs_ = ((sum_) / (iter_));\
-  }while(0)
-
-#define fChrono_MeasureTicTocOverheadMs_(iter_, overheadMs_) \
-  do {\
-    float64_t sum_ = 0.0;\
-    for(uint32_t __i__ = 0; __i__ < iter_; __i__++) {\
-      tic_(__tic_toc_overhead__);\
-      sum_ += tocUMs_(__tic_toc_overhead__);\
-    }\
-    overheadMs_ = ((sum_) / (iter_));\
-  }while(0)
-
-#define fChrono_MeasureTicTocOverheadS_(iter_, overheadS_) \
-  do {\
-    float64_t sum_ = 0.0;\
-    for(uint32_t __i__ = 0; __i__ < iter_; __i__++) {\
-      tic_(__tic_toc_overhead__);\
-      sum_ += tocS_(__tic_toc_overhead__);\
-    }\
-    overheadS_ = ((sum_) / (iter_));\
-  }while(0)
 
 /** @} */ //End of TIME_MACROS
 
