@@ -64,22 +64,19 @@ typedef uint8_t chrono_res_t;
 
 /**
  * @brief Returns the number of microseconds passed since the initialization of the chrono module.
- * @note This macro is not re-entrant. if this condition may be happen, user should use critical section
- *       for prevent it.
+ * @note This macro is not re-entrant. Use critical section if needed.
  */
 #define micros_()	fChrono_GetContinuousTickUs()
 
 /**
  * @brief Returns the number of milliseconds passed since the initialization of the chrono module.
- * @note This macro is not re-entrant. if this condition may be happen, user should use critical section
- *       for prevent it.
+ * @note This macro is not re-entrant. Use critical section if needed.
  */
 #define millis_()	fChrono_GetContinuousTickMs()
 
 /**
  * @brief Returns the number of seconds passed since the initialization of the chrono module.
- * @note This macro is not re-entrant. if this condition may be happen, user should use critical section
- *       for prevent it.
+ * @note This macro is not re-entrant. Use critical section if needed.
  */
 #define seconds_()	fChrono_GetContinuousTickS()
 
@@ -102,7 +99,8 @@ typedef uint8_t chrono_res_t;
 #define delaySeconds_(delay_)	fChrono_DelayS(delay_)
 
 /**
- * @brief Measures elapsed time since a call to tic_().
+ * @brief Measures the elapsed time since the last call to tic_().
+ *        The elapsed time can be retrieved using the tocUs_(), tocMs_() or tocS_() macros.
  * 
  */
 #define tic_(name_) \
@@ -224,8 +222,7 @@ tick_t fChrono_GetTick(void);
 
 /**
  * @brief Returns the amount of time converted to microseconds, milliseconds & seconds since calling fChrono_Init().
- * @note This functions are not re-entrant. if this condition may be happen, user should use critical section
- *       for prevent it.
+ * @note This functions are not re-entrant. Use critical section if needed.
  * @retval timeLength: Time length since calling fChrono_Init() in microseconds, milliseconds & seconds
  */
 uint64_t fChrono_GetContinuousTickUs(void);
