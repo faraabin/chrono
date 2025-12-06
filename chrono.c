@@ -275,17 +275,11 @@ typedef struct {
 
 	tick_t TickInitValue; // The tick init value. This private value is tick value when calling fChrono_Init().
 
-	sChrono ChronoTickUs; // **chrono** object that holds the tick value in microseconds since initializing the module using fChrono_Init().
+	tick_t HighTick;
 
-	sChrono ChronoTickMs; // **chrono** object that holds the tick value in milliseconds since initializing the module using fChrono_Init().
+	tick_t PrevTick;
 
-	sChrono ChronoTickS; // **chrono** object that holds the tick value in seconds since initializing the module using fChrono_Init().
-
-	uint64_t ContinuousTickUs; // Time length in microseconds since initializing the chrono module.
-
-	uint64_t ContinuousTickMs; // Time length in milliseconds since initializing the chrono module.
-
-	uint64_t ContinuousTickS; // Time length in seconds since initializing the chrono module.
+  uint8_t TickBitWith;
 
 #if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
 
@@ -318,6 +312,8 @@ static sChronoInternal _chrono = {
 };
 
 /* Private function prototypes -----------------------------------------------*/
+unsigned int fBitLength(unsigned long long n);
+
 /* Variables -----------------------------------------------------------------*/
 
 /*
@@ -374,19 +370,16 @@ uint8_t fChrono_Init(volatile tick_t *tickValue) {
   _chrono.UsToTickCoef = (1000U / CHRONO_TICK_TO_NANOSECOND_COEF);
   _chrono.MsToTickCoef = (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
   _chrono.SecToTickCoef = (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
-  
-  _chrono.ContinuousTickUs = 0U;
-	_chrono.ContinuousTickMs = 0U;
-	_chrono.ContinuousTickS = 0U;
 	
   _chrono.Init = TRUE;
   _chrono.InitUs = (_chrono.UsToTickCoef != 0U);
   _chrono.InitMs = (_chrono.MsToTickCoef != 0U);
   _chrono.InitSec = (_chrono.SecToTickCoef != 0U);
   
-	START_(&_chrono.ChronoTickUs);
-	START_(&_chrono.ChronoTickMs);
-	START_(&_chrono.ChronoTickS);
+  _chrono.TickBitWith = fBitLength(_chrono.TickTopValue);
+
+  _chrono.HighTick = 0;
+  _chrono.PrevTick = 0;
 
   _chrono.TickInitValue = GET_TICK_();
 
@@ -462,6 +455,20 @@ uint8_t fChrono_Init(tick_t(*fpTickValue)(void)) {
  *  @{
  */
 
+
+
+void fChrono_Run(void) {
+
+  uint32_t currentTick = GET_TICK_();
+
+  if (currentTick < _chrono.PrevTick) {
+    _chrono.HighTick++;
+  }
+
+  _chrono.PrevTick = currentTick;
+
+}
+
 /**
  * @brief Returns the availability of tick in microsecond after initialization of the chrono module.
  * 
@@ -529,6 +536,31 @@ tick_t fChrono_GetTick(void) {
 }
 
 /**
+ * @brief Returns the continuous raw tick count since calling fChrono_Init().
+ * 
+ * This function returns the accumulated tick count without any scaling.
+ * It is overflow-safe as long as the function is called before the internal
+ * tick counter wraps around twice between calls (typically >71 minutes on 32-bit tick).
+ *
+ * @attention Must be called frequently enough to prevent missing an overflow
+ *            of the hardware tick counter (same constraint as fChrono_GetContinuousTickUs).
+ *
+ * @retval Continuous raw tick count since initialization
+ */
+uint64_t fChrono_GetContinuousTick(void) {
+
+  ASSERT_RETURN_(_chrono.Init, 0); /* MISRA 2012 Rule 15.5 deviation */
+
+  tick_t currentTick = GET_TICK_();
+
+  if(currentTick < _chrono.PrevTick) {
+    return currentTick | (((_chrono.HighTick + 1) << _chrono.TickBitWith));
+  } else {
+    return currentTick | (((_chrono.HighTick + 0) << _chrono.TickBitWith));
+  }
+}
+
+/**
  * @brief Returns the continuous tick value converted to microseconds since calling fChrono_Init().
  * 
  * @attention Always remember to call this function before tick generator overflows. For example if tick generator reaches its topValue in 71 minutes,
@@ -540,11 +572,7 @@ uint64_t fChrono_GetContinuousTickUs(void) {
 
   ASSERT_RETURN_(_chrono.Init, 0); /* MISRA 2012 Rule 15.5 deviation */
   
-  _chrono.ContinuousTickUs += (uint64_t)fChrono_ElapsedUs(&_chrono.ChronoTickUs);
-  
-  START_(&_chrono.ChronoTickUs);
-  
-  return _chrono.ContinuousTickUs;
+  return fChrono_GetContinuousTick() / _chrono.UsToTickCoef;
 }
 
 /**
@@ -559,11 +587,7 @@ uint64_t fChrono_GetContinuousTickMs(void) {
 
   ASSERT_RETURN_(_chrono.Init, 0); /* MISRA 2012 Rule 15.5 deviation */
   
-  _chrono.ContinuousTickMs += (uint64_t)fChrono_ElapsedMs(&_chrono.ChronoTickMs);
-  
-  START_(&_chrono.ChronoTickMs);
-  
-  return _chrono.ContinuousTickMs;
+ return fChrono_GetContinuousTick() / _chrono.MsToTickCoef;
 }
 
 /**
@@ -578,11 +602,7 @@ uint64_t fChrono_GetContinuousTickS(void) {
 
   ASSERT_RETURN_(_chrono.Init, 0); /* MISRA 2012 Rule 15.5 deviation */
   
-  _chrono.ContinuousTickS += (uint64_t)fChrono_ElapsedS(&_chrono.ChronoTickS);
-  
-  START_(&_chrono.ChronoTickS);
-  
-  return _chrono.ContinuousTickS;
+  return fChrono_GetContinuousTick() / _chrono.SecToTickCoef;
 }
 
 /**
@@ -602,7 +622,7 @@ tick_t fChrono_GetTickTopValue(void) {
 /**
  * @brief Get Tick init value.
  * 
- * @note User can get tick init value, using this function. It returns the tick value when calling fChrono_Init().
+ * @note User can get tick init value, using this function. It returns the tick value when calling fChronoInit().
  * 
  * @retval initValue: Tick init value
  */
@@ -1195,6 +1215,23 @@ timeUs_t fChrono_IntervalUs(sChrono * const me) {
 ║                            ##### Private Functions #####                         ║
 ╚══════════════════════════════════════════════════════════════════════════════════╝
 */
+/**
+ * 
+ */
+unsigned int fBitLength(unsigned long long n) {
 
+  uint32_t bits = 0;
+  
+  if (n == 0) {
+    return 1;
+  }
+  
+  while (n > 0) {
+    bits++;
+    n >>= 1;
+  }
+  
+  return bits;
+}
 
 /************************ Copyright (c) 2024 FaraabinCo *****END OF FILE****/

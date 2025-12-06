@@ -197,6 +197,8 @@ typedef struct {
  *  @{
  */
 
+void fChrono_Run(void);
+
 /**
  * @brief Returns the availability of corresponding tick after initialization of the chrono module.
  * 
@@ -225,6 +227,7 @@ tick_t fChrono_GetTick(void);
  * @note This functions are not re-entrant. Use critical section if needed.
  * @retval timeLength: Time length since calling fChrono_Init() in microseconds, milliseconds & seconds
  */
+uint64_t fChrono_GetContinuousTick(void);
 uint64_t fChrono_GetContinuousTickUs(void);
 uint64_t fChrono_GetContinuousTickMs(void);
 uint64_t fChrono_GetContinuousTickS(void);
