@@ -275,11 +275,11 @@ typedef struct {
 
 	tick_t TickInitValue; // The tick init value. This private value is tick value when calling fChrono_Init().
 
-	tick_t HighTick;
+	uint32_t HighTick;
 
-	tick_t PrevTick;
+	tick_t LastTick;
 
-  uint8_t TickBitWith;
+  uint8_t TickBitwidth;
 
 #if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
 
@@ -376,10 +376,10 @@ uint8_t fChrono_Init(volatile tick_t *tickValue) {
   _chrono.InitMs = (_chrono.MsToTickCoef != 0U);
   _chrono.InitSec = (_chrono.SecToTickCoef != 0U);
   
-  _chrono.TickBitWith = fBitLength(_chrono.TickTopValue);
+  _chrono.TickBitwidth = fBitLength(_chrono.TickTopValue);
 
   _chrono.HighTick = 0;
-  _chrono.PrevTick = 0;
+  _chrono.LastTick = 0;
 
   _chrono.TickInitValue = GET_TICK_();
 
@@ -457,15 +457,15 @@ uint8_t fChrono_Init(tick_t(*fpTickValue)(void)) {
 
 
 
-void fChrono_Run(void) {
+void fChrono_ContinuousMaker_Run(void) {
 
   uint32_t currentTick = GET_TICK_();
 
-  if (currentTick < _chrono.PrevTick) {
+  if (currentTick < _chrono.LastTick) {
     _chrono.HighTick++;
   }
 
-  _chrono.PrevTick = currentTick;
+  _chrono.LastTick = currentTick;
 
 }
 
@@ -553,10 +553,10 @@ uint64_t fChrono_GetContinuousTick(void) {
 
   tick_t currentTick = GET_TICK_();
 
-  if(currentTick < _chrono.PrevTick) {
-    return currentTick | (((_chrono.HighTick + 1) << _chrono.TickBitWith));
+  if(currentTick < _chrono.LastTick) {
+    return currentTick | (((_chrono.HighTick + 1) << _chrono.TickBitwidth));
   } else {
-    return currentTick | (((_chrono.HighTick + 0) << _chrono.TickBitWith));
+    return currentTick | (((_chrono.HighTick + 0) << _chrono.TickBitwidth));
   }
 }
 

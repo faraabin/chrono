@@ -197,7 +197,7 @@ typedef struct {
  *  @{
  */
 
-void fChrono_Run(void);
+void fChrono_ContinuousMaker_Run(void);
 
 /**
  * @brief Returns the availability of corresponding tick after initialization of the chrono module.
