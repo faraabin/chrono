@@ -275,7 +275,7 @@ typedef struct {
 
 	tick_t TickInitValue; // The tick init value. This private value is tick value when calling fChrono_Init().
 
-	uint32_t ContinuousTickHigh;
+	uint32_t ContinuousTickUpperU32;
 
 	tick_t ContinuousMakerLastTick;
 
@@ -380,7 +380,7 @@ uint8_t fChrono_Init(volatile tick_t *tickValue) {
   
   
 
-  _chrono.ContinuousTickHigh = 0;
+  _chrono.ContinuousTickUpperU32 = 0;
   _chrono.ContinuousMakerLastTick = 0;
 
   _chrono.TickInitValue = GET_TICK_();
@@ -453,15 +453,24 @@ uint8_t fChrono_Init(tick_t(*fpTickValue)(void)) {
 
 /** @defgroup FUNCTIONAL_API Functional API in chrono module
  *  @brief These functions don't require an object of type sChrono.
- *  @note The functional API in this module is re-entrant.
+ *  @note Except fChrono_ContinuousMaker_Run() all other functional API in this module are re-entrant.
  *  @{
+ */
+
+/**
+ * @brief This function increments the High word of the continuous tick whenever a tick overflow is detected.
+ * 
+ * @note User must call this function in a task (or runtime) with the lowest priority.
+ *       This function must be called atleast once in every tick overflow period.
+ *       User must call this function inside a critical section so that fChrono_GetContinuousTick() or its time based versions
+ *       won't be executed until this function terminates.
  */
 void fChrono_ContinuousMaker_Run(void) {
 
   uint32_t currentTick = GET_TICK_();
   
   if (currentTick < _chrono.ContinuousMakerLastTick) {
-    _chrono.ContinuousTickHigh++;
+    _chrono.ContinuousTickUpperU32++;
   }
 
   _chrono.ContinuousMakerLastTick = currentTick;
@@ -538,7 +547,7 @@ tick_t fChrono_GetTick(void) {
  * 
  * This function returns the accumulated tick count without any scaling.
  * It is overflow-safe as long as the function is called before the internal
- * tick counter wraps around twice between calls (typically >71 minutes on 32-bit tick).
+ * tick counter wraps around twice between calls (typically >71 minutes on 32-bit 1us tick).
  *
  * @attention Must be called frequently enough to prevent missing an overflow
  *            of the hardware tick counter (same constraint as fChrono_GetContinuousTickUs).
@@ -552,9 +561,9 @@ uint64_t fChrono_GetContinuousTick(void) {
   tick_t currentTick = GET_TICK_();
 
   if(currentTick < _chrono.ContinuousMakerLastTick) {
-    return currentTick | (((_chrono.ContinuousTickHigh + 1) << _chrono.TickBitwidth))High;
+    return currentTick | (((_chrono.ContinuousTickUpperU32 + 1) << _chrono.TickBitwidth));
   } else {
-    return currentTick | (((_chrono.ContinuousTickHigh + 0) << _chrono.TickBitwidth))High;
+    return currentTick | (((_chrono.ContinuousTickUpperU32 + 0) << _chrono.TickBitwidth));
   }
 }
 

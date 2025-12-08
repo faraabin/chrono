@@ -193,15 +193,18 @@ typedef struct {
 
 /** @defgroup FUNCTIONAL_API Functional API in chrono module
  *  @brief These functions don't require an object of type sChrono.
- *  @note This function should run periodically in lowest priority task.
- *        This function should run at least on in every tick overflow period.
- *        This function should run in critical section vs all GetContinuous
- *        function of this module function.
- *        This means that non of GetContinuous function of this module should
- *        called nested to this function.
+ *  @note Except fChrono_ContinuousMaker_Run() all other functional API in this module are re-entrant.
  *  @{
  */
 
+/**
+ * @brief This function increments the High word of the continuous tick whenever a tick overflow is detected.
+ * 
+ * @note User must call this function in a task (or runtime) with the lowest priority.
+ *       This function must be called atleast once in every tick overflow period.
+ *       User must call this function inside a critical section so that fChrono_GetContinuousTick() or its time based versions
+ *       won't be executed until this function terminates.
+ */
 void fChrono_ContinuousMaker_Run(void);
 
 /**
