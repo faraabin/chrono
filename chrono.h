@@ -193,9 +193,19 @@ typedef struct {
 
 /** @defgroup FUNCTIONAL_API Functional API in chrono module
  *  @brief These functions don't require an object of type sChrono.
- *  @note The functional API in this module is re-entrant.
+ *  @note Except fChrono_ContinuousMaker_Run() all other functional API in this module are re-entrant.
  *  @{
  */
+
+/**
+ * @brief This function increments the High word of the continuous tick whenever a tick overflow is detected.
+ * 
+ * @note User must call this function in a task (or runtime) with the lowest priority.
+ *       This function must be called atleast once in every tick overflow period.
+ *       User must call this function inside a critical section so that fChrono_GetContinuousTick() or its time based versions
+ *       won't be executed until this function terminates.
+ */
+void fChrono_ContinuousMaker_Run(void);
 
 /**
  * @brief Returns the availability of corresponding tick after initialization of the chrono module.
@@ -225,6 +235,7 @@ tick_t fChrono_GetTick(void);
  * @note This functions are not re-entrant. Use critical section if needed.
  * @retval timeLength: Time length since calling fChrono_Init() in microseconds, milliseconds & seconds
  */
+uint64_t fChrono_GetContinuousTick(void);
 uint64_t fChrono_GetContinuousTickUs(void);
 uint64_t fChrono_GetContinuousTickMs(void);
 uint64_t fChrono_GetContinuousTickS(void);
