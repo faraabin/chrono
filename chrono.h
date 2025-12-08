@@ -193,7 +193,12 @@ typedef struct {
 
 /** @defgroup FUNCTIONAL_API Functional API in chrono module
  *  @brief These functions don't require an object of type sChrono.
- *  @note The functional API in this module is re-entrant.
+ *  @note This function should run periodically in lowest priority task.
+ *        This function should run at least on in every tick overflow period.
+ *        This function should run in critical section vs all GetContinuous
+ *        function of this module function.
+ *        This means that non of GetContinuous function of this module should
+ *        called nested to this function.
  *  @{
  */
 

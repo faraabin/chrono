@@ -275,9 +275,9 @@ typedef struct {
 
 	tick_t TickInitValue; // The tick init value. This private value is tick value when calling fChrono_Init().
 
-	uint32_t HighTick;
+	uint32_t ContinuousTickHigh;
 
-	tick_t LastTick;
+	tick_t ContinuousMakerLastTick;
 
   uint8_t TickBitwidth;
 
@@ -312,7 +312,7 @@ static sChronoInternal _chrono = {
 };
 
 /* Private function prototypes -----------------------------------------------*/
-unsigned int fBitLength(unsigned long long n);
+static uint8_t fGetBitwidth(tick_t value);
 
 /* Variables -----------------------------------------------------------------*/
 
@@ -364,6 +364,8 @@ uint8_t fChrono_Init(volatile tick_t *tickValue) {
   }
   
   _chrono.TickTopValue = CHRONO_TICK_TOP_VALUE;
+  _chrono.TickBitwidth = fGetBitwidth(_chrono.TickTopValue);
+
   _chrono.TickToNsCoef = CHRONO_TICK_TO_NANOSECOND_COEF;
   _chrono.pTickValue = tickValue;
 
@@ -376,10 +378,10 @@ uint8_t fChrono_Init(volatile tick_t *tickValue) {
   _chrono.InitMs = (_chrono.MsToTickCoef != 0U);
   _chrono.InitSec = (_chrono.SecToTickCoef != 0U);
   
-  _chrono.TickBitwidth = fBitLength(_chrono.TickTopValue);
+  
 
-  _chrono.HighTick = 0;
-  _chrono.LastTick = 0;
+  _chrono.ContinuousTickHigh = 0;
+  _chrono.ContinuousMakerLastTick = 0;
 
   _chrono.TickInitValue = GET_TICK_();
 
@@ -454,19 +456,15 @@ uint8_t fChrono_Init(tick_t(*fpTickValue)(void)) {
  *  @note The functional API in this module is re-entrant.
  *  @{
  */
-
-
-
 void fChrono_ContinuousMaker_Run(void) {
 
   uint32_t currentTick = GET_TICK_();
-
-  if (currentTick < _chrono.LastTick) {
-    _chrono.HighTick++;
+  
+  if (currentTick < _chrono.ContinuousMakerLastTick) {
+    _chrono.ContinuousTickHigh++;
   }
 
-  _chrono.LastTick = currentTick;
-
+  _chrono.ContinuousMakerLastTick = currentTick;
 }
 
 /**
@@ -553,10 +551,10 @@ uint64_t fChrono_GetContinuousTick(void) {
 
   tick_t currentTick = GET_TICK_();
 
-  if(currentTick < _chrono.LastTick) {
-    return currentTick | (((_chrono.HighTick + 1) << _chrono.TickBitwidth));
+  if(currentTick < _chrono.ContinuousMakerLastTick) {
+    return currentTick | (((_chrono.ContinuousTickHigh + 1) << _chrono.TickBitwidth))High;
   } else {
-    return currentTick | (((_chrono.HighTick + 0) << _chrono.TickBitwidth));
+    return currentTick | (((_chrono.ContinuousTickHigh + 0) << _chrono.TickBitwidth))High;
   }
 }
 
@@ -1218,17 +1216,17 @@ timeUs_t fChrono_IntervalUs(sChrono * const me) {
 /**
  * 
  */
-unsigned int fBitLength(unsigned long long n) {
+static uint8_t fGetBitwidth(tick_t value) {
 
   uint32_t bits = 0;
   
-  if (n == 0) {
+  if (value == 0) {
     return 1;
   }
   
-  while (n > 0) {
+  while (value > 0) {
     bits++;
-    n >>= 1;
+    value >>= 1;
   }
   
   return bits;
