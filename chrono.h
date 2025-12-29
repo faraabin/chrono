@@ -57,10 +57,28 @@ typedef uint8_t chrono_res_t;
  */
 
 /**
- * @brief Returns current tick value a the number of ticks, since the start of the tick generator.
+ * @brief Returns current tick value as the number of ticks, since the start of the tick generator.
  *       
  */
 #define tick_()		fChrono_GetTick()
+
+/**
+ * @brief Returns current tick value as microseconds.
+ *       
+ */
+#define tickUs_()		(tick_() * CHRONO_TICK_TO_NANOSECOND_COEF) / 1000)
+
+/**
+ * @brief Returns current tick value as microseconds.
+ *       
+ */
+#define tickMs_()		(tick_() * CHRONO_TICK_TO_NANOSECOND_COEF) / 1000000)
+
+/**
+ * @brief Returns current tick value as microseconds.
+ *       
+ */
+#define tickS_()		(tick_() * CHRONO_TICK_TO_NANOSECOND_COEF) / 1000000000)
 
 /**
  * @brief Returns the number of microseconds passed since the initialization of the chrono module.
