@@ -35,6 +35,14 @@
 #include "chrono_hr.h"
 
 /* Private define ------------------------------------------------------------*/
+#ifndef CHRONO_HR_TICK_TYPE_MAX_VALUE
+# error "User must define max value of the defined tick_t in chrono_hr_config header file."
+#endif
+
+#if(CHRONO_HR_TICK_TYPE_MAX_VALUE == CHRONO_HR_TICK_TOP_VALUE)
+# define CHRONO_HR_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
+#endif
+
 /* Private macro -------------------------------------------------------------*/
 /**
  * @brief Returns the time length between "a" and "b".
@@ -43,12 +51,20 @@
  * 
  */
 #if(CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
-#define ELAPSED_(a, b)  (((a) >= (b)) ? ((a) - (b)) : ((_chronoHr.TickTopValue) - ((b) - (a))))
+# ifdef CHRONO_HR_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
+#   define ELAPSED_(a, b) (tick_t)(a - b)
+# else
+#   define ELAPSED_(a, b) (((a) >= (b)) ? ((a) - (b)) : ((_chrono.TickTopValue) - ((b) - (a)) + 1))
+# endif //CHRONO_HR_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
 #elif(CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
-#define ELAPSED_(a, b)  (((a) <= (b)) ? ((b) - (a)) : ((_chronoHr.TickTopValue) - ((a) - (b))))
+# ifdef CHRONO_HR_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
+#   define ELAPSED_(a, b) (tick_t)(b - a)
+# else
+#   define ELAPSED_(a, b) (((a) <= (b)) ? ((b) - (a)) : ((_chrono.TickTopValue) - ((a) - (b)) + 1))
+# endif //CHRONO_HR_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
 #else
-#error "CHRONO_HR_TICK_COUNTERMODE should be either TICK_COUNTERMODE_UP or TICK_COUNTERMODE_DOWN in chrono_hr_config.h file."
-#endif
+# error "CHRONO_HR_TICK_COUNTERMODE should be either TICK_COUNTERMODE_UP or TICK_COUNTERMODE_DOWN in chrono_config.h file."
+#endif  //CHRONO_HR_TICK_COUNTERMODE
 
 /**
  * @brief Define GET_TICK_() macro for internal use.

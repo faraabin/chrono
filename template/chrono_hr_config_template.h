@@ -78,6 +78,8 @@ extern "C" {
  * 
  */
 typedef uint32_t tick_hr_t;
+#define CHRONO_HR_TICK_TYPE_MAX_VALUE (0xFFFFFFFFU)
+
 typedef float timeNs_t;
 
 #ifdef __cplusplus
