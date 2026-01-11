@@ -52,15 +52,15 @@
  */
 #if(CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
 # ifdef CHRONO_HR_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
-#   define ELAPSED_(a, b) (tick_t)(a - b)
+#   define ELAPSED_(a, b) (tick_hr_t)(a - b)
 # else
-#   define ELAPSED_(a, b) (((a) >= (b)) ? ((a) - (b)) : ((_chrono.TickTopValue) - ((b) - (a)) + 1))
+#   define ELAPSED_(a, b) (((a) >= (b)) ? ((a) - (b)) : ((_chronoHr.TickTopValue) - ((b) - (a)) + 1))
 # endif //CHRONO_HR_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
 #elif(CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
 # ifdef CHRONO_HR_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
-#   define ELAPSED_(a, b) (tick_t)(b - a)
+#   define ELAPSED_(a, b) (tick_hr_t)(b - a)
 # else
-#   define ELAPSED_(a, b) (((a) <= (b)) ? ((b) - (a)) : ((_chrono.TickTopValue) - ((a) - (b)) + 1))
+#   define ELAPSED_(a, b) (((a) <= (b)) ? ((b) - (a)) : ((_chronoHr.TickTopValue) - ((a) - (b)) + 1))
 # endif //CHRONO_HR_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
 #else
 # error "CHRONO_HR_TICK_COUNTERMODE should be either TICK_COUNTERMODE_UP or TICK_COUNTERMODE_DOWN in chrono_config.h file."
