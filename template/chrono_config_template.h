@@ -77,12 +77,10 @@ extern "C" {
  * @note These types must be one of the stdint unsigned types.
  * 
  */
-typedef uint32_t tick_t;
-#define CHRONO_TICK_TYPE_MAX_VALUE  (0xFFFFFFFFU)
-
-typedef uint32_t timeS_t;
-typedef uint32_t timeMs_t;
-typedef uint32_t timeUs_t;
+#define tick_type    uint32_t
+#define timeS_type   uint32_t
+#define timeMs_type  uint32_t
+#define timeUs_type  uint32_t
 
 #ifdef __cplusplus
 }

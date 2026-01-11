@@ -35,11 +35,17 @@
 #include "chrono_hr.h"
 
 /* Private define ------------------------------------------------------------*/
-#ifndef CHRONO_HR_TICK_TYPE_MAX_VALUE
-# error "User must define max value of the defined tick_t in chrono_hr_config header file."
-#endif
+#define CONCAT_(x_, y_)         x_##y_
+#define CONCAT_VALUES_(x_, y_)  CONCAT_(x_, y_)
 
-#if(CHRONO_HR_TICK_TYPE_MAX_VALUE == CHRONO_HR_TICK_TOP_VALUE)
+#define uint8_t_MAX_VALUE   (0xFFU)
+#define uint16_t_MAX_VALUE  (0xFFFFU)
+#define uint32_t_MAX_VALUE  (0xFFFFFFFFU)
+#define uint64_t_MAX_VALUE  (0xFFFFFFFFFFFFFFFFU)
+
+#define CHRONO_HR_TICK_TYPE_MAX_VALUE CONCAT_VALUES_(tick_type, _MAX_VALUE)
+
+#if (CHRONO_HR_TICK_TYPE_MAX_VALUE == CHRONO_HR_TICK_TOP_VALUE)
 # define CHRONO_HR_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
 #endif
 
