@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file           : chrono_test.h
+  * @file           : test_chrono.h
   * @brief          : chrono module unit tests header file.
   ******************************************************************************
   * @attention
@@ -18,8 +18,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __chrono_test_H
-#define __chrono_test_H
+#ifndef TEST_CHRONO_H
+#define TEST_CHRONO_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,7 +33,7 @@ extern "C" {
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported functions prototypes ---------------------------------------------*/
-int fChrono_UnitTests_Run(int argc, const char* argv[]);
+int fTestChrono_Run(int argc, const char* argv[]);
 
 /* Exported variables --------------------------------------------------------*/
 

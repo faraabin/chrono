@@ -209,7 +209,7 @@ typedef struct {
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
   
   typedef tick_t(*fpTick_t)(void);
-  chrono_res_t fChrono_Init(tick_t(*fpTickValue)(void));
+  chrono_res_t fChrono_Init(fpTick_t fGetTickValue);
 
 #else
 
@@ -318,7 +318,6 @@ uint32_t fChrono_GetTickToNsCoef(void);
  *  @brief These functions return the maximum time interval that can be measured with the tick generator, until the tick generator reaches its top value.
  *  @{
  */
-
 timeS_t fChrono_GetMaxMeasurableTimeS(void);
 timeMs_t fChrono_GetMaxMeasurableTimeMs(void);
 timeUs_t fChrono_GetMaxMeasurableTimeUs(void);
@@ -330,7 +329,6 @@ timeUs_t fChrono_GetMaxMeasurableTimeUs(void);
  *  @brief These functions return the time length between two time ticks.
  *  @{
  */
-
 timeS_t fChrono_TimeSpanS(tick_t startTick, tick_t endTick);
 timeMs_t fChrono_TimeSpanMs(tick_t startTick, tick_t endTick);
 timeUs_t fChrono_TimeSpanUs(tick_t startTick, tick_t endTick);
@@ -343,7 +341,6 @@ tick_t fChrono_TimeSpanTick(tick_t startTick, tick_t endTick);
  *  @brief These functions generate delay.
  *  @{
  */
-
 void fChrono_DelayS(timeS_t delayS);
 void fChrono_DelayMs(timeMs_t delayMs);
 void fChrono_DelayUs(timeUs_t delayUs);
@@ -361,7 +358,6 @@ void fChrono_DelayUs(timeUs_t delayUs);
  *         fChrono_Stop() stops the chrono object.
  *  @{
  */
-
 void fChrono_Start(sChrono * const me);
 void fChrono_Stop(sChrono * const me);
 
@@ -372,7 +368,6 @@ void fChrono_Stop(sChrono * const me);
  *  @brief These functions return the elapsed time since the start of the measurement using fChrono_Start().
  *  @{
  */
-
 timeS_t fChrono_ElapsedS(sChrono const * const me);
 timeMs_t fChrono_ElapsedMs(sChrono const * const me);
 timeUs_t fChrono_ElapsedUs(sChrono const * const me);
@@ -395,7 +390,6 @@ timeUs_t fChrono_LeftUs(sChrono * const me);
  *  @brief These functions are used for measuring timeout.
  *  @{
  */
-
 void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout);
 void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout);
 void fChrono_StartTimeoutUs(sChrono * const me, timeUs_t timeout);
@@ -408,7 +402,6 @@ bool_t fChrono_IsTimeout(sChrono * const me);
  *  @brief These functions return the time interval between two consecutive calls.
  *  @{
  */
-
 timeS_t fChrono_IntervalS(sChrono * const me);
 timeMs_t fChrono_IntervalMs(sChrono * const me);
 timeUs_t fChrono_IntervalUs(sChrono * const me);
