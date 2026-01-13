@@ -38,6 +38,13 @@ extern "C" {
 
 /* Exported defines ----------------------------------------------------------*/
 /**
+ * @brief Type definitions for tick and time measurements.
+ * 
+ */
+typedef tick_hr_type  tick_hr_t;
+typedef timeNs_type   timeNs_t;
+
+/**
  * @brief Define result type & value of chrono high resolution functions.
  * 
  */

@@ -39,7 +39,6 @@ extern "C" {
   */
  #define CHRONO_HR_TICK_TYPE              TICK_TYPE_VARIABLE
 
-
 /**
  * @brief Set the top value that the tick generator can count.
  * 
@@ -75,10 +74,11 @@ extern "C" {
  * @brief User typedefs for measurements in chrono module.
  * 
  * @note Modify these types based on your application.
+ * @note tick_hr_type must be one of the stdint unsigned types.
  * 
  */
-typedef uint32_t tick_hr_t;
-typedef float timeNs_t;
+#define tick_hr_type  uint32_t
+#define timeNs_type   float
 
 #ifdef __cplusplus
 }

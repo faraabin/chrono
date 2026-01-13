@@ -184,6 +184,20 @@
 #include "chrono.h"
 
 /* Private define ------------------------------------------------------------*/
+#define CONCAT_(x_, y_)         x_##y_
+#define CONCAT_VALUES_(x_, y_)  CONCAT_(x_, y_)
+
+#define uint8_t_MAX_VALUE   (0xFFU)
+#define uint16_t_MAX_VALUE  (0xFFFFU)
+#define uint32_t_MAX_VALUE  (0xFFFFFFFFU)
+#define uint64_t_MAX_VALUE  (0xFFFFFFFFFFFFFFFFU)
+
+#define CHRONO_TICK_TYPE_MAX_VALUE  CONCAT_VALUES_(tick_type, _MAX_VALUE)
+
+#if (CHRONO_TICK_TYPE_MAX_VALUE == CHRONO_TICK_TOP_VALUE)
+# define CHRONO_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
+#endif
+
 /* Private macro -------------------------------------------------------------*/
 /**
  * @brief Returns the time length between "a" and "b".
@@ -191,12 +205,10 @@
  * @note Chronologically, "a" must be a time tick after "b", but the value of "a" could be less than "b" i.e., when tick overflows.
  * 
  */
-#if(CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
-#define ELAPSED_(a, b)  (((a) >= (b)) ? ((a) - (b)) : ((_chrono.TickTopValue) - ((b) - (a))))
-#elif(CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
-#define ELAPSED_(a, b)  (((a) <= (b)) ? ((b) - (a)) : ((_chrono.TickTopValue) - ((a) - (b))))
+#ifdef CHRONO_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
+# define ELAPSED_(a, b) (tick_t)(a - b)
 #else
-#error "CHRONO_TICK_COUNTERMODE should be either TICK_COUNTERMODE_UP or TICK_COUNTERMODE_DOWN in chrono_config.h file."
+# define ELAPSED_(a, b) (((a) >= (b)) ? ((a) - (b)) : ((_chrono.TickTopValue) - ((b) - (a)) + 1))
 #endif
 
 /**
@@ -204,11 +216,23 @@
  * 
  */
 #if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
-  #define GET_TICK_() (*_chrono.pTickValue)
+# if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+#   define GET_TICK_()  (*(_chrono.pTickValue))
+# elif (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
+#   define GET_TICK_()  (CHRONO_TICK_TOP_VALUE - (*(_chrono.pTickValue)))
+# else
+#   define GET_TICK_()  ((tick_t)0)
+# endif
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
-  #define GET_TICK_() (_chrono.GetTickValue())
+# if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+#   define GET_TICK_()  (_chrono.GetTickValue())
+# elif (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
+#   define GET_TICK_()  (CHRONO_TICK_TOP_VALUE - (_chrono.GetTickValue()))
+# else
+#   define GET_TICK_()  ((tick_t)0)
+#endif
 #else
-  #define GET_TICK_() (tick_t)0;
+# define GET_TICK_()    ((tick_t)0)
 #endif
 
 /**
@@ -233,9 +257,9 @@
    * @brief Define TIMESPAN_() macro for internal use.
    * 
    */
-#define TIMESPAN_S_(startTick_, endTick_) ((timeS_t)(ELAPSED_((endTick_), (startTick_))) / _chrono.SecToTickCoef)
-#define TIMESPAN_MS_(startTick_, endTick_) ((timeMs_t)(ELAPSED_((endTick_), (startTick_))) / _chrono.MsToTickCoef)
-#define TIMESPAN_US_(startTick_, endTick_) ((timeUs_t)(ELAPSED_((endTick_), (startTick_))) / _chrono.UsToTickCoef)
+#define TIMESPAN_S_(startTick_, endTick_)   ((timeS_t)(ELAPSED_((endTick_), (startTick_))) / _chrono.SecToTickCoef)
+#define TIMESPAN_MS_(startTick_, endTick_)  ((timeMs_t)(ELAPSED_((endTick_), (startTick_))) / _chrono.MsToTickCoef)
+#define TIMESPAN_US_(startTick_, endTick_)  ((timeUs_t)(ELAPSED_((endTick_), (startTick_))) / _chrono.UsToTickCoef)
 
 /**
  * @brief Define assert macros.
@@ -279,15 +303,13 @@ typedef struct {
 
 	tick_t ContinuousMakerLastTick;
 
-  uint8_t TickBitwidth;
-
 #if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
 
 	volatile tick_t *pTickValue; // Pointer to an unsigned integer that hold current value of the tick.
 
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
 
-	tick_t(*GetTickValue)(void); // Function pointer to a function that returns current value of the tick.
+	fpTick_t GetTickValue; // Function pointer to a function that returns current value of the tick.
 
 #endif
 
@@ -312,8 +334,6 @@ static sChronoInternal _chrono = {
 };
 
 /* Private function prototypes -----------------------------------------------*/
-static uint8_t fGetBitwidth(tick_t value);
-
 /* Variables -----------------------------------------------------------------*/
 
 /*
@@ -344,7 +364,7 @@ static uint8_t fGetBitwidth(tick_t value);
  * @param tickValue Pointer to the memory location that contains the tick value.
  * @retval initStatus: returns 0 if successful and 1 if it fails.
  */
-uint8_t fChrono_Init(volatile tick_t *tickValue) {
+chrono_res_t fChrono_Init(volatile tick_t *tickValue) {
   
   _chrono.Init = FALSE;
   _chrono.InitUs = FALSE;
@@ -364,7 +384,6 @@ uint8_t fChrono_Init(volatile tick_t *tickValue) {
   }
   
   _chrono.TickTopValue = CHRONO_TICK_TOP_VALUE;
-  _chrono.TickBitwidth = fGetBitwidth(_chrono.TickTopValue);
 
   _chrono.TickToNsCoef = CHRONO_TICK_TO_NANOSECOND_COEF;
   _chrono.pTickValue = tickValue;
@@ -377,8 +396,6 @@ uint8_t fChrono_Init(volatile tick_t *tickValue) {
   _chrono.InitUs = (_chrono.UsToTickCoef != 0U);
   _chrono.InitMs = (_chrono.MsToTickCoef != 0U);
   _chrono.InitSec = (_chrono.SecToTickCoef != 0U);
-  
-  
 
   _chrono.ContinuousTickUpperU32 = 0;
   _chrono.ContinuousMakerLastTick = 0;
@@ -403,7 +420,7 @@ uint8_t fChrono_Init(volatile tick_t *tickValue) {
  * @param fpTickValue Pointer to the function that returns tick value.
  * @retval initStatus: returns 0 if successful and 1 if it fails.
  */
-uint8_t fChrono_Init(tick_t(*fpTickValue)(void)) {
+chrono_res_t fChrono_Init(fpTick_t fGetTickValue) {
 
   _chrono.Init = FALSE;
   _chrono.InitUs = FALSE;
@@ -418,13 +435,13 @@ uint8_t fChrono_Init(tick_t(*fpTickValue)(void)) {
     return CHRONO_ERROR_TICK_TO_NS_ZERO; /* MISRA 2012 Rule 15.5 deviation */
   }
   
-  if(fpTickValue == NULL) {
+  if(fGetTickValue == NULL) {
     return CHRONO_ERROR_TICK_PTR_ERROR; /* MISRA 2012 Rule 15.5 deviation */
   }
   
   _chrono.TickTopValue = CHRONO_TICK_TOP_VALUE;
   _chrono.TickToNsCoef = CHRONO_TICK_TO_NANOSECOND_COEF;
-  _chrono.GetTickValue = fpTickValue;
+  _chrono.GetTickValue = fGetTickValue;
 
   _chrono.UsToTickCoef = (1000U / CHRONO_TICK_TO_NANOSECOND_COEF);
   _chrono.MsToTickCoef = (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF);
@@ -561,9 +578,9 @@ uint64_t fChrono_GetContinuousTick(void) {
   tick_t currentTick = GET_TICK_();
 
   if(currentTick < _chrono.ContinuousMakerLastTick) {
-    return currentTick | (((_chrono.ContinuousTickUpperU32 + 1) << _chrono.TickBitwidth));
+    return (uint64_t)((_chrono.ContinuousTickUpperU32 + 1) * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) + currentTick;
   } else {
-    return currentTick | (((_chrono.ContinuousTickUpperU32 + 0) << _chrono.TickBitwidth));
+    return (uint64_t)((_chrono.ContinuousTickUpperU32 + 0) * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) + currentTick;
   }
 }
 
@@ -577,7 +594,7 @@ uint64_t fChrono_GetContinuousTick(void) {
  */
 uint64_t fChrono_GetContinuousTickUs(void) {
 
-  ASSERT_RETURN_(_chrono.Init, 0); /* MISRA 2012 Rule 15.5 deviation */
+  ASSERT_RETURN_(_chrono.UsToTickCoef != 0, 0);  /* MISRA 2012 Rule 15.5 deviation */
   
   return fChrono_GetContinuousTick() / _chrono.UsToTickCoef;
 }
@@ -592,7 +609,7 @@ uint64_t fChrono_GetContinuousTickUs(void) {
  */
 uint64_t fChrono_GetContinuousTickMs(void) {
 
-  ASSERT_RETURN_(_chrono.Init, 0); /* MISRA 2012 Rule 15.5 deviation */
+  ASSERT_RETURN_(_chrono.MsToTickCoef != 0, 0);  /* MISRA 2012 Rule 15.5 deviation */
   
  return fChrono_GetContinuousTick() / _chrono.MsToTickCoef;
 }
@@ -607,7 +624,7 @@ uint64_t fChrono_GetContinuousTickMs(void) {
  */
 uint64_t fChrono_GetContinuousTickS(void) {
 
-  ASSERT_RETURN_(_chrono.Init, 0); /* MISRA 2012 Rule 15.5 deviation */
+  ASSERT_RETURN_(_chrono.SecToTickCoef != 0, 0);  /* MISRA 2012 Rule 15.5 deviation */
   
   return fChrono_GetContinuousTick() / _chrono.SecToTickCoef;
 }
@@ -1066,8 +1083,8 @@ void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout) {
  */
 void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
 
-  ASSERT_(_chrono.Init);  /* MISRA 2012 Rule 15.5 deviation */
-  ASSERT_NOT_NULL_(me);   /* MISRA 2012 Rule 15.5 deviation */
+  ASSERT_(_chrono.InitMs);  /* MISRA 2012 Rule 15.5 deviation */
+  ASSERT_NOT_NULL_(me);     /* MISRA 2012 Rule 15.5 deviation */
   
   me->_timeout = (tick_t)(timeout * (timeMs_t)_chrono.MsToTickCoef);
   me->_isTimeout = FALSE;
@@ -1222,23 +1239,5 @@ timeUs_t fChrono_IntervalUs(sChrono * const me) {
 ║                            ##### Private Functions #####                         ║
 ╚══════════════════════════════════════════════════════════════════════════════════╝
 */
-/**
- * 
- */
-static uint8_t fGetBitwidth(tick_t value) {
-
-  uint32_t bits = 0;
-  
-  if (value == 0) {
-    return 1;
-  }
-  
-  while (value > 0) {
-    bits++;
-    value >>= 1;
-  }
-  
-  return bits;
-}
 
 /************************ Copyright (c) 2024 FaraabinCo *****END OF FILE****/

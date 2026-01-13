@@ -35,6 +35,20 @@
 #include "chrono_hr.h"
 
 /* Private define ------------------------------------------------------------*/
+#define CONCAT_(x_, y_)         x_##y_
+#define CONCAT_VALUES_(x_, y_)  CONCAT_(x_, y_)
+
+#define uint8_t_MAX_VALUE   (0xFFU)
+#define uint16_t_MAX_VALUE  (0xFFFFU)
+#define uint32_t_MAX_VALUE  (0xFFFFFFFFU)
+#define uint64_t_MAX_VALUE  (0xFFFFFFFFFFFFFFFFU)
+
+#define CHRONO_HR_TICK_TYPE_MAX_VALUE CONCAT_VALUES_(tick_type, _MAX_VALUE)
+
+#if (CHRONO_HR_TICK_TYPE_MAX_VALUE == CHRONO_HR_TICK_TOP_VALUE)
+# define CHRONO_HR_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
+#endif
+
 /* Private macro -------------------------------------------------------------*/
 /**
  * @brief Returns the time length between "a" and "b".
@@ -42,12 +56,10 @@
  * @note Chronologically, "a" must be a time tick after "b", but the value of "a" could be less than "b" i.e., when tick overflows.
  * 
  */
-#if(CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
-#define ELAPSED_(a, b)  (((a) >= (b)) ? ((a) - (b)) : ((_chronoHr.TickTopValue) - ((b) - (a))))
-#elif(CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
-#define ELAPSED_(a, b)  (((a) <= (b)) ? ((b) - (a)) : ((_chronoHr.TickTopValue) - ((a) - (b))))
+#ifdef CHRONO_HR_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
+# define ELAPSED_(a, b) (tick_t)(a - b)
 #else
-#error "CHRONO_HR_TICK_COUNTERMODE should be either TICK_COUNTERMODE_UP or TICK_COUNTERMODE_DOWN in chrono_hr_config.h file."
+# define ELAPSED_(a, b) (((a) >= (b)) ? ((a) - (b)) : ((_chronoHr.TickTopValue) - ((b) - (a)) + 1))
 #endif
 
 /**
@@ -55,11 +67,23 @@
  * 
  */
 #if (CHRONO_HR_TICK_TYPE == TICK_TYPE_VARIABLE)
-  #define GET_TICK_() (*_chronoHr.pTickValue)
+# if (CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+#   define GET_TICK_()  (*(_chronoHr.pTickValue))
+# elif (CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
+#   define GET_TICK_()  (CHRONO_HR_TICK_TOP_VALUE - (*(_chronoHr.pTickValue)))
+# else
+#   define GET_TICK_()  ((tick_hr_t)0)
+# endif
 #elif (CHRONO_HR_TICK_TYPE == TICK_TYPE_FUNCTION)
-  #define GET_TICK_() (_chronoHr.GetTickValue())
+# if (CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+#   define GET_TICK_()  (_chronoHr.GetTickValue())
+# elif (CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
+#   define GET_TICK_()  (CHRONO_TICK_TOP_VALUE - (_chronoHr.GetTickValue()))
+# else
+#   define GET_TICK_()  ((tick_hr_t)0)
+#endif
 #else
-  #define GET_TICK_() (tick_hr_t)0;
+# define GET_TICK_()    ((tick_hr_t)0)
 #endif
 
 /**
