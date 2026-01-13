@@ -66,18 +66,18 @@
  * @brief Define GET_TICK_() macro for internal use.
  * 
  */
-#if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
-# if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+#if (CHRONO_HR_TICK_TYPE == TICK_TYPE_VARIABLE)
+# if (CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
 #   define GET_TICK_()  (*(_chronoHr.pTickValue))
-# elif (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
-#   define GET_TICK_()  (CHRONO_TICK_TOP_VALUE - (*(_chronoHr.pTickValue)))
+# elif (CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
+#   define GET_TICK_()  (CHRONO_HR_TICK_TOP_VALUE - (*(_chronoHr.pTickValue)))
 # else
 #   define GET_TICK_()  (tick_hr_t)0
 # endif
-#elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
-# if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+#elif (CHRONO_HR_TICK_TYPE == TICK_TYPE_FUNCTION)
+# if (CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
 #   define GET_TICK_()  (_chronoHr.GetTickValue())
-# elif (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
+# elif (CHRONO_HR_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
 #   define GET_TICK_()  (CHRONO_TICK_TOP_VALUE - (_chronoHr.GetTickValue()))
 # else
 #   define GET_TICK_()  (tick_hr_t)0
