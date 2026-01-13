@@ -221,7 +221,7 @@
 # elif (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
 #   define GET_TICK_()  (CHRONO_TICK_TOP_VALUE - (*(_chrono.pTickValue)))
 # else
-#   define GET_TICK_()  (tick_t)0
+#   define GET_TICK_()  ((tick_t)0)
 # endif
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
 # if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -229,10 +229,10 @@
 # elif (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
 #   define GET_TICK_()  (CHRONO_TICK_TOP_VALUE - (_chrono.GetTickValue()))
 # else
-#   define GET_TICK_()  (tick_t)0
+#   define GET_TICK_()  ((tick_t)0)
 #endif
 #else
-# define GET_TICK_()    (tick_t)0
+# define GET_TICK_()    ((tick_t)0)
 #endif
 
 /**
