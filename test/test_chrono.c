@@ -43,9 +43,15 @@ static sChrono TestChrono;
 static uint32_t UsToTick;
 static uint32_t MsToTick;
 static uint32_t SToTick;
+#if (1000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 static double TickToUs;
+#endif
+#if (1000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 static double TickToMs;
+#endif
+#if (1000000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 static double TickToS;
+#endif
 
 TEST_GROUP(Init);
 TEST_GROUP(IsTickAvailable);
@@ -112,10 +118,15 @@ static void fOneTimeSetup(void) {
   UsToTick = 1000U / CHRONO_TICK_TO_NANOSECOND_COEF;
   MsToTick = 1000000U / CHRONO_TICK_TO_NANOSECOND_COEF;
   SToTick = 1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF;
-
+#if (1000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
   TickToUs = 1.0 / (double)(UsToTick);
+#endif
+#if (1000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
   TickToMs = 1.0 / (double)(MsToTick);
+#endif
+#if (1000000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
   TickToS = 1.0 / (double)(SToTick);
+#endif
 
 }
 
@@ -447,47 +458,71 @@ TEST(GetTick, Chrono_TickIsOverflowedCallGetContnuousTick_ReturnsContinuousTickV
   fChrono_Init_();
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  //Start
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(0x00U, fChrono_GetContinuousTick());
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(CHRONO_TICK_TOP_VALUE, fChrono_GetContinuousTick());
   
+  fChrono_ContinuousMaker_Run();
+  
+  //First overflow
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_HEX((1 * CHRONO_TICK_TOP_VALUE) + 1, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1), fChrono_GetContinuousTick());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_HEX((1 * CHRONO_TICK_TOP_VALUE) + 2, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1, fChrono_GetContinuousTick());
 
+  fChrono_ContinuousMaker_Run();
+  
+  //Second overflow
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_HEX((2 * CHRONO_TICK_TOP_VALUE) + 1, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1), fChrono_GetContinuousTick());
+
+  fChrono_ContinuousMaker_Run();
 
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_HEX((2 * CHRONO_TICK_TOP_VALUE) + 2, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1, fChrono_GetContinuousTick());
 
+  fChrono_ContinuousMaker_Run();
+
+  //Third overflow
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_HEX((3 * CHRONO_TICK_TOP_VALUE) + 1, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1), fChrono_GetContinuousTick());
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(0x00U, fChrono_GetContinuousTick());
   
   TickValue = 0x00;
-  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(CHRONO_TICK_TOP_VALUE, fChrono_GetContinuousTick());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX((1 * CHRONO_TICK_TOP_VALUE) + 1, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1), fChrono_GetContinuousTick());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_HEX((1 * CHRONO_TICK_TOP_VALUE) + 2, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1, fChrono_GetContinuousTick());
+  
+  fChrono_ContinuousMaker_Run();
 
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX((2 * CHRONO_TICK_TOP_VALUE) + 1, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1), fChrono_GetContinuousTick());
+  
+  fChrono_ContinuousMaker_Run();
 
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_HEX((2 * CHRONO_TICK_TOP_VALUE) + 2, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1, fChrono_GetContinuousTick());
+  
+  fChrono_ContinuousMaker_Run();
 
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX((3 * CHRONO_TICK_TOP_VALUE) + 1, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX64(3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1), fChrono_GetContinuousTick());
 #endif
   
 }
@@ -514,7 +549,7 @@ TEST(GetTick, Chrono_RunContinuousMakerAfterTickOverflowThenCallGetContinuousTic
   TickValue = 0x01U;
   fChrono_ContinuousMaker_Run();
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_HEX((3 * CHRONO_TICK_TOP_VALUE) + 1, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX(3 * (CHRONO_TICK_TOP_VALUE + 1), fChrono_GetContinuousTick());
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
   fChrono_ContinuousMaker_Run();
@@ -529,7 +564,7 @@ TEST(GetTick, Chrono_RunContinuousMakerAfterTickOverflowThenCallGetContinuousTic
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
   fChrono_ContinuousMaker_Run();
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX((3 * CHRONO_TICK_TOP_VALUE) + 1, fChrono_GetContinuousTick());
+  TEST_ASSERT_EQUAL_HEX(3 * (CHRONO_TICK_TOP_VALUE + 1), fChrono_GetContinuousTick());
 #endif
   
 }
@@ -544,7 +579,7 @@ TEST(GetTick, Chrono_ChronoNotInitializedCallGetContinuousTickUs_ReturnsZero) {
   
   fChrono_DeInit_();
   
-  TEST_ASSERT_EQUAL_UINT64(0x0UL, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x0UL, fChrono_GetContinuousTickUs());
 }
 
 /**
@@ -557,17 +592,17 @@ TEST(GetTick, Chrono_ChronoInitializedCallGetContinuousTickUs_ReturnsContinuousT
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0;
-  TEST_ASSERT_EQUAL_UINT64(0, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_GetContinuousTickUs());
   
   TickValue = 1 * UsToTick;
-  TEST_ASSERT_EQUAL_UINT64(1, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_GetContinuousTickUs());
   
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_GetContinuousTickUs());
   
   TickValue = CHRONO_TICK_TOP_VALUE - (1 * UsToTick);
-  TEST_ASSERT_EQUAL_UINT64(1, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_GetContinuousTickUs());
   
 #endif
   
@@ -583,46 +618,72 @@ TEST(GetTick, Chrono_TickIsOverflowedCallGetContnuousTickUs_ReturnsContinuousTic
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_GetContinuousTickUs());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(CHRONO_TICK_TOP_VALUE * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToUs, fChrono_GetContinuousTickUs());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(((1 * CHRONO_TICK_TOP_VALUE) + 1) * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX((1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToUs, fChrono_GetContinuousTickUs());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_UINT64(((1 * CHRONO_TICK_TOP_VALUE) + 2) * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX((1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1) * TickToUs, fChrono_GetContinuousTickUs());
+  
+  fChrono_ContinuousMaker_Run();
 
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(((2 * CHRONO_TICK_TOP_VALUE) + 1) * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX((2 *((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToUs, fChrono_GetContinuousTickUs());
 
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_UINT64(((2 * CHRONO_TICK_TOP_VALUE) + 2) * TickToUs, fChrono_GetContinuousTickUs());
-
+  TEST_ASSERT_EQUAL_HEX((2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1) * TickToUs, fChrono_GetContinuousTickUs());
+  
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(((3 * CHRONO_TICK_TOP_VALUE) + 1) * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX((3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToUs, fChrono_GetContinuousTickUs());
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_GetContinuousTickUs());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x00;
-  TEST_ASSERT_EQUAL_UINT64(CHRONO_TICK_TOP_VALUE * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToUs, fChrono_GetContinuousTickUs());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(((1 * CHRONO_TICK_TOP_VALUE) + 1) * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX((uint64_t)(1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToUs, fChrono_GetContinuousTickUs());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(((1 * CHRONO_TICK_TOP_VALUE) + 2) * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX((uint64_t)(1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1) * TickToUs, fChrono_GetContinuousTickUs());
+  
+  fChrono_ContinuousMaker_Run();
 
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(((2 * CHRONO_TICK_TOP_VALUE) + 1) * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX((uint64_t)(2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToUs, fChrono_GetContinuousTickUs());
+  
+  fChrono_ContinuousMaker_Run();
 
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(((2 * CHRONO_TICK_TOP_VALUE) + 2) * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX((uint64_t)(2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1) * TickToUs, fChrono_GetContinuousTickUs());
+  
+  fChrono_ContinuousMaker_Run();
 
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(((3 * CHRONO_TICK_TOP_VALUE) + 1) * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX((uint64_t)(3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToUs, fChrono_GetContinuousTickUs());
+  
+  fChrono_ContinuousMaker_Run();
 #endif
   
 }
@@ -649,7 +710,7 @@ TEST(GetTick, Chrono_RunContinuousMakerAfterTickOverflowThenCallGetContinuousTic
   TickValue = 0x01U;
   fChrono_ContinuousMaker_Run();
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(((3 * CHRONO_TICK_TOP_VALUE) + 1) * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX((3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToUs, fChrono_GetContinuousTickUs());
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
   fChrono_ContinuousMaker_Run();
@@ -664,7 +725,7 @@ TEST(GetTick, Chrono_RunContinuousMakerAfterTickOverflowThenCallGetContinuousTic
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
   fChrono_ContinuousMaker_Run();
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(((3 * CHRONO_TICK_TOP_VALUE) + 1) * TickToUs, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX((3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToUs, fChrono_GetContinuousTickUs());
 #endif
   
 }
@@ -679,7 +740,7 @@ TEST(GetTick, Chrono_ChronoNotInitializedCallGetContinuousTickUs_ReturnsZero) {
   
   fChrono_DeInit_();
   
-  TEST_ASSERT_EQUAL_UINT64(0x0UL, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x0UL, fChrono_GetContinuousTickUs());
 }
 
 /**
@@ -692,17 +753,17 @@ TEST(GetTick, Chrono_TickUsCoefIsZeroCallGetContinuousTickUs_ReturnsZero) {
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
   
   TickValue = 0x01;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
   
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
   
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
   
 #endif
   
@@ -718,46 +779,46 @@ TEST(GetTick, Chrono_TickUsCoefIsZeroAndTickOverflowedCallGetContinuousTickUs_Re
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
   
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
   
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
 
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
 
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
 
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
   
   TickValue = 0x00;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
   
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
 
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
 
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
 
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickUs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickUs());
 #endif
   
 }
@@ -774,7 +835,7 @@ TEST(GetTick, Chrono_ChronoNotInitializedCallGetContinuousTickMs_ReturnsZero) {
   
   fChrono_DeInit_();
   
-  TEST_ASSERT_EQUAL_UINT64(0x0UL, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x0UL, fChrono_GetContinuousTickMs());
 }
 
 /**
@@ -787,17 +848,17 @@ TEST(GetTick, Chrono_ChronoInitializedCallGetContinuousTickMs_ReturnsContinuousT
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0;
-  TEST_ASSERT_EQUAL_UINT64(0x00U * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U * TickToMs, fChrono_GetContinuousTickMs());
   
   TickValue = 1 * MsToTick;
-  TEST_ASSERT_EQUAL_UINT64(1, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_GetContinuousTickMs());
   
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_GetContinuousTickMs());
   
   TickValue = CHRONO_TICK_TOP_VALUE - (1 * MsToTick);
-  TEST_ASSERT_EQUAL_UINT64(1, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_GetContinuousTickMs());
   
 #endif
   
@@ -813,46 +874,68 @@ TEST(GetTick, Chrono_TickIsOverflowedCallGetContnuousTickMs_ReturnsContinuousTic
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_GetContinuousTickMs());
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(CHRONO_TICK_TOP_VALUE * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToMs, fChrono_GetContinuousTickMs());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(((1 * CHRONO_TICK_TOP_VALUE) + 1) * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX((1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToMs, fChrono_GetContinuousTickMs());
+
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_UINT64(((1 * CHRONO_TICK_TOP_VALUE) + 2) * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX((1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1) * TickToMs, fChrono_GetContinuousTickMs());
 
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(((2 * CHRONO_TICK_TOP_VALUE) + 1) * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX((2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToMs, fChrono_GetContinuousTickMs());
 
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_UINT64(((2 * CHRONO_TICK_TOP_VALUE) + 2) * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX((2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1) * TickToMs, fChrono_GetContinuousTickMs());
 
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(((3 * CHRONO_TICK_TOP_VALUE) + 1) * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX((3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToMs, fChrono_GetContinuousTickMs());
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U * TickToMs, fChrono_GetContinuousTickMs());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x00;
-  TEST_ASSERT_EQUAL_UINT64(CHRONO_TICK_TOP_VALUE * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToMs, fChrono_GetContinuousTickMs());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(((1 * CHRONO_TICK_TOP_VALUE) + 1) * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX((1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToMs, fChrono_GetContinuousTickMs());
+    
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(((1 * CHRONO_TICK_TOP_VALUE) + 2) * TickToMs, fChrono_GetContinuousTickMs());
-
+  TEST_ASSERT_EQUAL_HEX((1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1) * TickToMs, fChrono_GetContinuousTickMs());
+  
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(((2 * CHRONO_TICK_TOP_VALUE) + 1) * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX((2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToMs, fChrono_GetContinuousTickMs());
 
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(((2 * CHRONO_TICK_TOP_VALUE) + 2) * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX((2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1) * TickToMs, fChrono_GetContinuousTickMs());
 
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(((3 * CHRONO_TICK_TOP_VALUE) + 1) * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX((3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToMs, fChrono_GetContinuousTickMs());
 #endif
   
 }
@@ -879,7 +962,7 @@ TEST(GetTick, Chrono_RunContinuousMakerAfterTickOverflowThenCallGetContinuousTic
   TickValue = 0x01U;
   fChrono_ContinuousMaker_Run();
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(((3 * CHRONO_TICK_TOP_VALUE) + 1) * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX((3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToMs, fChrono_GetContinuousTickMs());
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
   fChrono_ContinuousMaker_Run();
@@ -894,7 +977,7 @@ TEST(GetTick, Chrono_RunContinuousMakerAfterTickOverflowThenCallGetContinuousTic
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
   fChrono_ContinuousMaker_Run();
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(((3 * CHRONO_TICK_TOP_VALUE) + 1) * TickToMs, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX((3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToMs, fChrono_GetContinuousTickMs());
 #endif
   
 }
@@ -909,7 +992,7 @@ TEST(GetTick, Chrono_ChronoNotInitializedCallGetContinuousTickMs_ReturnsZero) {
   
   fChrono_DeInit_();
   
-  TEST_ASSERT_EQUAL_UINT64(0x0UL, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x0UL, fChrono_GetContinuousTickMs());
 }
 
 /**
@@ -922,17 +1005,17 @@ TEST(GetTick, Chrono_TickMsCoefIsZeroCallGetContinuousTickMs_ReturnsZero) {
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
   
   TickValue = 0x01;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
   
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
   
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
   
 #endif
   
@@ -948,46 +1031,46 @@ TEST(GetTick, Chrono_TickMsCoefIsZeroAndTickOverflowedCallGetContinuousTickMs_Re
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
   
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
   
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
 
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
 
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
 
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
   
   TickValue = 0x00;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
   
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
 
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
 
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
 
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickMs());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickMs());
 #endif
   
 }
@@ -1004,7 +1087,7 @@ TEST(GetTick, Chrono_ChronoNotInitializedCallGetContinuousTickS_ReturnsZero) {
   
   fChrono_DeInit_();
   
-  TEST_ASSERT_EQUAL_UINT64(0x0UL, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x0UL, fChrono_GetContinuousTickS());
 }
 
 /**
@@ -1017,17 +1100,17 @@ TEST(GetTick, Chrono_ChronoInitializedCallGetContinuousTickS_ReturnsContinuousTi
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0;
-  TEST_ASSERT_EQUAL_UINT64(0, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_GetContinuousTickS());
   
   TickValue = 1 * SToTick;
-  TEST_ASSERT_EQUAL_UINT64(1, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_GetContinuousTickS());
   
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_GetContinuousTickS());
   
   TickValue = CHRONO_TICK_TOP_VALUE - (1 * SToTick);
-  TEST_ASSERT_EQUAL_UINT64(1, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_GetContinuousTickS());
   
 #endif
   
@@ -1043,46 +1126,70 @@ TEST(GetTick, Chrono_TickIsOverflowedCallGetContnuousTickS_ReturnsContinuousTick
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(CHRONO_TICK_TOP_VALUE * TickToS, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToS, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(((1 * CHRONO_TICK_TOP_VALUE) + 1) * TickToS, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX((1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToS, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_UINT64(((1 * CHRONO_TICK_TOP_VALUE) + 2) * TickToS, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX((1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1) * TickToS, fChrono_GetContinuousTickS());
 
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(((2 * CHRONO_TICK_TOP_VALUE) + 1) * TickToS, fChrono_GetContinuousTickS());
-
+  TEST_ASSERT_EQUAL_HEX((2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToS, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_UINT64(((2 * CHRONO_TICK_TOP_VALUE) + 2) * TickToS, fChrono_GetContinuousTickS());
-
+  TEST_ASSERT_EQUAL_HEX((2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1) * TickToS, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(((3 * CHRONO_TICK_TOP_VALUE) + 1) * TickToS, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX((3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToS, fChrono_GetContinuousTickS());
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x00;
-  TEST_ASSERT_EQUAL_UINT64(CHRONO_TICK_TOP_VALUE * TickToS, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToS, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(((1 * CHRONO_TICK_TOP_VALUE) + 1) * TickToS, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX((1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToS, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(((1 * CHRONO_TICK_TOP_VALUE) + 2) * TickToS, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX((1 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1) * TickToS, fChrono_GetContinuousTickS());
 
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(((2 * CHRONO_TICK_TOP_VALUE) + 1) * TickToS, fChrono_GetContinuousTickS());
-
+  TEST_ASSERT_EQUAL_HEX((2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToS, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(((2 * CHRONO_TICK_TOP_VALUE) + 2) * TickToS, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX((2 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1) + 1) * TickToS, fChrono_GetContinuousTickS());
 
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(((3 * CHRONO_TICK_TOP_VALUE) + 1) * TickToS, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX((3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToS, fChrono_GetContinuousTickS());
 #endif
   
 }
@@ -1109,7 +1216,7 @@ TEST(GetTick, Chrono_RunContinuousMakerAfterTickOverflowThenCallGetContinuousTic
   TickValue = 0x01U;
   fChrono_ContinuousMaker_Run();
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(((3 * CHRONO_TICK_TOP_VALUE) + 1) * TickToS, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX((3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToS, fChrono_GetContinuousTickS());
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
   fChrono_ContinuousMaker_Run();
@@ -1124,7 +1231,7 @@ TEST(GetTick, Chrono_RunContinuousMakerAfterTickOverflowThenCallGetContinuousTic
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
   fChrono_ContinuousMaker_Run();
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(((3 * CHRONO_TICK_TOP_VALUE) + 1) * TickToS, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX((3 * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) * TickToS, fChrono_GetContinuousTickS());
 #endif
   
 }
@@ -1139,7 +1246,7 @@ TEST(GetTick, Chrono_ChronoNotInitializedCallGetContinuousTickS_ReturnsZero) {
   
   fChrono_DeInit_();
   
-  TEST_ASSERT_EQUAL_UINT64(0x0UL, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x0UL, fChrono_GetContinuousTickS());
 }
 
 /**
@@ -1152,17 +1259,17 @@ TEST(GetTick, Chrono_TickSCoefIsZeroCallGetContinuousTickS_ReturnsZero) {
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
   
   TickValue = 0x01;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
   
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
   
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
   
 #endif
   
@@ -1178,46 +1285,70 @@ TEST(GetTick, Chrono_TickSCoefIsZeroAndTickOverflowedCallGetContinuousTickS_Retu
 
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
 
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
 
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = 0x01U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
 
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = 0x00U;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = 0x00;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
   
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
-
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
-
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = CHRONO_TICK_TOP_VALUE - 1;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
-
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
+  
+  fChrono_ContinuousMaker_Run();
+  
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_UINT64(0x00U, fChrono_GetContinuousTickS());
+  TEST_ASSERT_EQUAL_HEX(0x00U, fChrono_GetContinuousTickS());
 #endif
   
 }
@@ -1266,7 +1397,7 @@ TEST(GetTick, Chrono_ChronoNotInitializedCallGetTickToNsCoef_ReturnsZero) {
  */
 TEST(GetTick, Chrono_ChronoInitializedCallGetTickToNsCoef_ReturnsTickToNsCoef) {
 
-  fChrono_DeInit_();
+  fChrono_Init_();
 
   TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TO_NANOSECOND_COEF, fChrono_GetTickToNsCoef());
 
@@ -1513,6 +1644,7 @@ TEST(GetTimeSpan, Chrono_ChronoNotInitializedCallTimeSpanUs_ReturnsZero) {
  * @brief 
  * 
  */
+#if (1000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(GetTimeSpan, Chrono_ChronoInitializedCallTimeSpanUs_ReturnsTimeSpanInUs) {
 
   fChrono_Init_();
@@ -1523,6 +1655,18 @@ TEST(GetTimeSpan, Chrono_ChronoInitializedCallTimeSpanUs_ReturnsTimeSpanInUs) {
   TEST_ASSERT_EQUAL_HEX(1 * TickToUs, fChrono_TimeSpanUs(CHRONO_TICK_TOP_VALUE, 0x00));
 
 }
+#else
+TEST(GetTimeSpan, Chrono_ChronoInitializedCallTimeSpanUs_ReturnsTimeSpanInUs) {
+
+  fChrono_Init_();
+
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanUs(0, 0));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanUs(0, (1 * UsToTick)));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanUs(0x00, CHRONO_TICK_TOP_VALUE));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanUs(CHRONO_TICK_TOP_VALUE, 0x00));
+
+}
+#endif
 
 /**
  * @brief 
@@ -1540,16 +1684,29 @@ TEST(GetTimeSpan, Chrono_ChronoNotInitializedCallTimeSpanMs_ReturnsZero) {
  * @brief 
  * 
  */
+#if (1000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(GetTimeSpan, Chrono_ChronoInitializedCallTimeSpanMs_ReturnsTimeSpanInMs) {
 
   fChrono_Init_();
 
   TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanMs(0, 0));
-  TEST_ASSERT_EQUAL_HEX(1, fChrono_TimeSpanMs(0, (1 * UsToTick)));
-  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToUs, fChrono_TimeSpanMs(0x00, CHRONO_TICK_TOP_VALUE));
-  TEST_ASSERT_EQUAL_HEX(1 * TickToUs, fChrono_TimeSpanMs(CHRONO_TICK_TOP_VALUE, 0x00));
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_TimeSpanMs(0, (1 * MsToTick)));
+  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToMs, fChrono_TimeSpanMs(0x00, CHRONO_TICK_TOP_VALUE));
+  TEST_ASSERT_EQUAL_HEX(1 * TickToMs, fChrono_TimeSpanMs(CHRONO_TICK_TOP_VALUE, 0x00));
 
 }
+#else
+TEST(GetTimeSpan, Chrono_ChronoInitializedCallTimeSpanMs_ReturnsTimeSpanInMs) {
+
+  fChrono_Init_();
+
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanMs(0, 0));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanMs(0, (1 * MsToTick)));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanMs(0x00, CHRONO_TICK_TOP_VALUE));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanMs(CHRONO_TICK_TOP_VALUE, 0x00));
+
+}
+#endif
 
 /**
  * @brief 
@@ -1567,16 +1724,29 @@ TEST(GetTimeSpan, Chrono_ChronoNotInitializedCallTimeSpanS_ReturnsZero) {
  * @brief 
  * 
  */
+#if (1000000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(GetTimeSpan, Chrono_ChronoInitializedCallTimeSpanS_ReturnsTimeSpanInS) {
 
   fChrono_Init_();
 
   TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanS(0, 0));
-  TEST_ASSERT_EQUAL_HEX(1, fChrono_TimeSpanS(0, (1 * UsToTick)));
-  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToUs, fChrono_TimeSpanS(0x00, CHRONO_TICK_TOP_VALUE));
-  TEST_ASSERT_EQUAL_HEX(1 * TickToUs, fChrono_TimeSpanS(CHRONO_TICK_TOP_VALUE, 0x00));
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_TimeSpanS(0, (1 * SToTick)));
+  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToS, fChrono_TimeSpanS(0x00, CHRONO_TICK_TOP_VALUE));
+  TEST_ASSERT_EQUAL_HEX(1 * TickToS, fChrono_TimeSpanS(CHRONO_TICK_TOP_VALUE, 0x00));
 
 }
+#else
+TEST(GetTimeSpan, Chrono_ChronoInitializedCallTimeSpanS_ReturnsTimeSpanInS) {
+
+  fChrono_Init_();
+
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanS(0, 0));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanS(0, (1 * SToTick)));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanS(0x00, CHRONO_TICK_TOP_VALUE));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_TimeSpanS(CHRONO_TICK_TOP_VALUE, 0x00));
+
+}
+#endif
 
 /**
  * @brief 
@@ -1754,6 +1924,7 @@ TEST(Elapsed, Chrono_ChronoNotInitializedCallElapsedUs_ReturnsZero) {
  * @brief 
  * 
  */
+#if (1000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Elapsed, Chrono_ChronoInitializedCallElapsedUs_ReturnsElapsedTime) {
   
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -1766,7 +1937,7 @@ TEST(Elapsed, Chrono_ChronoInitializedCallElapsedUs_ReturnsElapsedTime) {
   TEST_ASSERT_EQUAL_HEX(1, fChrono_ElapsedUs(&TestChrono));
 
   TickValue = 0;
-  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToUs, fChrono_ElapsedUs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedUs(&TestChrono)); //Chrono cannot measure elapsed times more than a complete tick period.
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
   fChrono_Start(&TestChrono);
@@ -1777,15 +1948,45 @@ TEST(Elapsed, Chrono_ChronoInitializedCallElapsedUs_ReturnsElapsedTime) {
   TEST_ASSERT_EQUAL_HEX(1, fChrono_ElapsedUs(&TestChrono));
 
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToUs, fChrono_ElapsedUs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedUs(&TestChrono)); //Chrono cannot measure elapsed times more than a complete tick period.
 #endif
 
 }
+#else
+TEST(Elapsed, Chrono_ChronoInitializedCallElapsedUs_ReturnsElapsedTime) {
+  
+  #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TickValue = 0;
+  fChrono_Start(&TestChrono);
+  
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedUs(&TestChrono));
+
+  TickValue = 1 * UsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedUs(&TestChrono));
+
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedUs(&TestChrono));
+#else
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  fChrono_Start(&TestChrono);
+
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedUs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * UsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedUs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedUs(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
  * 
  */
+#if (1000 / CHRONO_TICK_TO_NANOSECOND_COEF)
 TEST(Elapsed, Chrono_StartChronoAndCallElapsedUs_ReturnsElapsedTime) {
   
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -1811,6 +2012,33 @@ TEST(Elapsed, Chrono_StartChronoAndCallElapsedUs_ReturnsElapsedTime) {
 #endif
 
 }
+#else
+TEST(Elapsed, Chrono_StartChronoAndCallElapsedUs_ReturnsElapsedTime) {
+  
+  #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TickValue = 0;
+  fChrono_Start(&TestChrono);
+  TickValue = 1 * UsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedUs(&TestChrono));
+
+  TickValue = 1;
+  fChrono_Start(&TestChrono);
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedUs(&TestChrono));
+#else
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  fChrono_Start(&TestChrono);
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * UsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedUs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - 1;
+  fChrono_Start(&TestChrono);
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedUs(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
@@ -1829,6 +2057,7 @@ TEST(Elapsed, Chrono_ChronoNotInitializedCallElapsedMs_ReturnsZero) {
  * @brief 
  * 
  */
+#if (1000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Elapsed, Chrono_ChronoInitializedCallElapsedMs_ReturnsElapsedTime) {
   
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -1841,7 +2070,7 @@ TEST(Elapsed, Chrono_ChronoInitializedCallElapsedMs_ReturnsElapsedTime) {
   TEST_ASSERT_EQUAL_HEX(1, fChrono_ElapsedMs(&TestChrono));
 
   TickValue = 0;
-  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToMs, fChrono_ElapsedMs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedMs(&TestChrono)); //Chrono cannot measure elapsed times more than a complete tick period.
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
   fChrono_Start(&TestChrono);
@@ -1852,15 +2081,45 @@ TEST(Elapsed, Chrono_ChronoInitializedCallElapsedMs_ReturnsElapsedTime) {
   TEST_ASSERT_EQUAL_HEX(1, fChrono_ElapsedMs(&TestChrono));
 
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToMs, fChrono_ElapsedMs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedMs(&TestChrono));  //Chrono cannot measure elapsed times more than a complete tick period.
 #endif
 
 }
+#else
+TEST(Elapsed, Chrono_ChronoInitializedCallElapsedMs_ReturnsElapsedTime) {
+  
+  #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TickValue = 0;
+  fChrono_Start(&TestChrono);
+  
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedMs(&TestChrono));
+
+  TickValue = 1 * MsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedMs(&TestChrono));
+
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedMs(&TestChrono)); //Chrono cannot measure elapsed times more than a complete tick period.
+#else
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  fChrono_Start(&TestChrono);
+
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedMs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * MsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedMs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedMs(&TestChrono));  //Chrono cannot measure elapsed times more than a complete tick period.
+#endif
+
+}
+#endif
 
 /**
  * @brief 
  * 
  */
+#if (1000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Elapsed, Chrono_StartChronoAndCallElapsedMs_ReturnsElapsedTime) {
   
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -1886,6 +2145,33 @@ TEST(Elapsed, Chrono_StartChronoAndCallElapsedMs_ReturnsElapsedTime) {
 #endif
 
 }
+#else
+TEST(Elapsed, Chrono_StartChronoAndCallElapsedMs_ReturnsElapsedTime) {
+  
+  #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TickValue = 0;
+  fChrono_Start(&TestChrono);
+  TickValue = 1 * MsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedMs(&TestChrono));
+
+  TickValue = 1;
+  fChrono_Start(&TestChrono);
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedMs(&TestChrono));
+#else
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  fChrono_Start(&TestChrono);
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * MsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedMs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - 1;
+  fChrono_Start(&TestChrono);
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedMs(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
@@ -1904,6 +2190,7 @@ TEST(Elapsed, Chrono_ChronoNotInitializedCallElapsedS_ReturnsZero) {
  * @brief 
  * 
  */
+#if (1000000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Elapsed, Chrono_ChronoInitializedCallElapsedS_ReturnsElapsedTime) {
   
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -1916,7 +2203,7 @@ TEST(Elapsed, Chrono_ChronoInitializedCallElapsedS_ReturnsElapsedTime) {
   TEST_ASSERT_EQUAL_HEX(1, fChrono_ElapsedS(&TestChrono));
 
   TickValue = 0;
-  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToS, fChrono_ElapsedS(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedS(&TestChrono));  //Chrono cannot measure elapsed times more than a complete tick period.
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
   fChrono_Start(&TestChrono);
@@ -1927,15 +2214,39 @@ TEST(Elapsed, Chrono_ChronoInitializedCallElapsedS_ReturnsElapsedTime) {
   TEST_ASSERT_EQUAL_HEX(1, fChrono_ElapsedS(&TestChrono));
 
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE * TickToS, fChrono_ElapsedS(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedS(&TestChrono));  //Chrono cannot measure elapsed times more than a complete tick period.
 #endif
 
 }
+#else
+TEST(Elapsed, Chrono_ChronoInitializedCallElapsedS_ReturnsElapsedTime) {
+  
+  #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TickValue = 0;
+  fChrono_Start(&TestChrono);
+  
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedS(&TestChrono));
+
+  TickValue = 1 * SToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedS(&TestChrono));
+#else
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  fChrono_Start(&TestChrono);
+
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedS(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * SToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedS(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
  * 
  */
+#if (1000000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Elapsed, Chrono_StartChronoAndCallElapsedS_ReturnsElapsedTime) {
   
   #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -1961,6 +2272,33 @@ TEST(Elapsed, Chrono_StartChronoAndCallElapsedS_ReturnsElapsedTime) {
 #endif
 
 }
+#else
+TEST(Elapsed, Chrono_StartChronoAndCallElapsedS_ReturnsElapsedTime) {
+  
+  #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TickValue = 0;
+  fChrono_Start(&TestChrono);
+  TickValue = 1 * SToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedS(&TestChrono));
+
+  TickValue = 1;
+  fChrono_Start(&TestChrono);
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedS(&TestChrono));
+#else
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  fChrono_Start(&TestChrono);
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * SToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedS(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - 1;
+  fChrono_Start(&TestChrono);
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_ElapsedS(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
@@ -2036,15 +2374,16 @@ TEST(Left, Chrono_ChronoNotInitializedCallLeftUs_ReturnsZero) {
  * @brief 
  * 
  */
+#if (1000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Left, Chrono_StartTimeoutAndGetLeftUs_ReturnsZero) {
 
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0;
-  fChrono_StartTimeoutUs(&TestChrono, 5 * UsToTick);
-  TEST_ASSERT_EQUAL_HEX(5 * UsToTick, fChrono_LeftUs(&TestChrono));
+  fChrono_StartTimeoutUs(&TestChrono, 5);
+  TEST_ASSERT_EQUAL_HEX(5, fChrono_LeftUs(&TestChrono));
 
   TickValue = 1 * UsToTick;
-  TEST_ASSERT_EQUAL_HEX(4 * UsToTick, fChrono_LeftUs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(4, fChrono_LeftUs(&TestChrono));
 
   TickValue = 5 * UsToTick;
   TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
@@ -2059,13 +2398,13 @@ TEST(Left, Chrono_StartTimeoutAndGetLeftUs_ReturnsZero) {
   TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  fChrono_StartTimeoutUs(&TestChrono, 5 * UsToTick);
-  TEST_ASSERT_EQUAL_HEX(5 * UsToTick, fChrono_LeftUs(&TestChrono));
+  fChrono_StartTimeoutUs(&TestChrono, 5);
+  TEST_ASSERT_EQUAL_HEX(5, fChrono_LeftUs(&TestChrono));
 
   TickValue = CHRONO_TICK_TOP_VALUE - (1 * UsToTick);
-  TEST_ASSERT_EQUAL_HEX(4 * UsToTick, fChrono_LeftUs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(4, fChrono_LeftUs(&TestChrono));
 
-  TickValue = 0;
+  TickValue = CHRONO_TICK_TOP_VALUE - (5 * UsToTick);
   TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
   
   TickValue = CHRONO_TICK_TOP_VALUE;
@@ -2079,6 +2418,51 @@ TEST(Left, Chrono_StartTimeoutAndGetLeftUs_ReturnsZero) {
 #endif
 
 }
+#else
+TEST(Left, Chrono_StartTimeoutAndGetLeftUs_ReturnsZero) {
+
+#if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TickValue = 0;
+  fChrono_StartTimeoutUs(&TestChrono, 5);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
+
+  TickValue = 1 * UsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
+
+  TickValue = 5 * UsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
+  
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
+
+  TickValue = 1;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
+#else
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  fChrono_StartTimeoutUs(&TestChrono, 5);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * UsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - (5 * UsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
+  
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - 1;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
+
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftUs(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
@@ -2098,15 +2482,16 @@ TEST(Left, Chrono_ChronoNotInitializedCallLeftMs_ReturnsZero) {
  * @brief 
  * 
  */
+#if (1000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Left, Chrono_StartTimeoutAndGetLeftMs_ReturnsZero) {
 
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0;
-  fChrono_StartTimeoutMs(&TestChrono, 5 * MsToTick);
-  TEST_ASSERT_EQUAL_HEX(5 * MsToTick, fChrono_LeftMs(&TestChrono));
+  fChrono_StartTimeoutMs(&TestChrono, 5);
+  TEST_ASSERT_EQUAL_HEX(5, fChrono_LeftMs(&TestChrono));
 
   TickValue = 1 * MsToTick;
-  TEST_ASSERT_EQUAL_HEX(4 * MsToTick, fChrono_LeftMs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(4, fChrono_LeftMs(&TestChrono));
 
   TickValue = 5 * MsToTick;
   TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
@@ -2121,13 +2506,13 @@ TEST(Left, Chrono_StartTimeoutAndGetLeftMs_ReturnsZero) {
   TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  fChrono_StartTimeoutMs(&TestChrono, 5 * MsToTick);
-  TEST_ASSERT_EQUAL_HEX(5 * MsToTick, fChrono_LeftMs(&TestChrono));
+  fChrono_StartTimeoutMs(&TestChrono, 5);
+  TEST_ASSERT_EQUAL_HEX(5, fChrono_LeftMs(&TestChrono));
 
   TickValue = CHRONO_TICK_TOP_VALUE - (1 * MsToTick);
-  TEST_ASSERT_EQUAL_HEX(4 * MsToTick, fChrono_LeftMs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(4, fChrono_LeftMs(&TestChrono));
 
-  TickValue = 0;
+  TickValue = CHRONO_TICK_TOP_VALUE - (5 * MsToTick);
   TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
   
   TickValue = CHRONO_TICK_TOP_VALUE;
@@ -2141,6 +2526,51 @@ TEST(Left, Chrono_StartTimeoutAndGetLeftMs_ReturnsZero) {
 #endif
 
 }
+#else
+TEST(Left, Chrono_StartTimeoutAndGetLeftMs_ReturnsZero) {
+
+#if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TickValue = 0;
+  fChrono_StartTimeoutMs(&TestChrono, 5);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
+
+  TickValue = 1 * MsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
+
+  TickValue = 5 * MsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
+  
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
+
+  TickValue = 1;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
+#else
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  fChrono_StartTimeoutMs(&TestChrono, 5);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * MsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - (5 * MsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
+  
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - 1;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
+
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftMs(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
@@ -2160,15 +2590,16 @@ TEST(Left, Chrono_ChronoNotInitializedCallLeftS_ReturnsZero) {
  * @brief 
  * 
  */
+#if (1000000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Left, Chrono_StartTimeoutAndGetLeftS_ReturnsZero) {
 
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0;
-  fChrono_StartTimeoutS(&TestChrono, 5 * SToTick);
-  TEST_ASSERT_EQUAL_HEX(CHRONO_TICK_TOP_VALUE, fChrono_LeftS(&TestChrono));
+  fChrono_StartTimeoutS(&TestChrono, 5);
+  TEST_ASSERT_EQUAL_HEX(5, fChrono_LeftS(&TestChrono));
 
   TickValue = 1 * SToTick;
-  TEST_ASSERT_EQUAL_HEX(4 * SToTick, fChrono_LeftS(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(4, fChrono_LeftS(&TestChrono));
 
   TickValue = 5 * SToTick;
   TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
@@ -2183,13 +2614,13 @@ TEST(Left, Chrono_StartTimeoutAndGetLeftS_ReturnsZero) {
   TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
-  fChrono_StartTimeoutS(&TestChrono, CHRONO_TICK_TOP_VALUE);
-  TEST_ASSERT_EQUAL_HEX(5 * SToTick, fChrono_LeftS(&TestChrono));
+  fChrono_StartTimeoutS(&TestChrono, 5);
+  TEST_ASSERT_EQUAL_HEX(5, fChrono_LeftS(&TestChrono));
 
   TickValue = CHRONO_TICK_TOP_VALUE - (1 * SToTick);
-  TEST_ASSERT_EQUAL_HEX(4 * SToTick - 1000, fChrono_LeftS(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(4, fChrono_LeftS(&TestChrono));
 
-  TickValue = 0;
+  TickValue = CHRONO_TICK_TOP_VALUE - (5 * SToTick);
   TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
   
   TickValue = CHRONO_TICK_TOP_VALUE;
@@ -2203,6 +2634,51 @@ TEST(Left, Chrono_StartTimeoutAndGetLeftS_ReturnsZero) {
 #endif
 
 }
+#else
+TEST(Left, Chrono_StartTimeoutAndGetLeftS_ReturnsZero) {
+
+#if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TickValue = 0;
+  fChrono_StartTimeoutS(&TestChrono, 5);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
+
+  TickValue = 1 * SToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
+
+  TickValue = 5 * SToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
+  
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
+
+  TickValue = 1;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
+#else
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  fChrono_StartTimeoutS(&TestChrono, 5);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * SToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - (5 * SToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
+  
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
+
+  TickValue = CHRONO_TICK_TOP_VALUE - 1;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
+
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_LeftS(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
@@ -2871,15 +3347,16 @@ static TEST_GROUP_RUNNER(Timeout) {
  * 
  */
 static TEST_SETUP(Interval) {
-
-  fChrono_Init_();
-  fChrono_Stop(&TestChrono);
-
+  
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 0;
 #else
   TickValue = CHRONO_TICK_TOP_VALUE;
 #endif
+
+  fChrono_Init_();
+  fChrono_Start(&TestChrono);
+
 }
 
 /**
@@ -2934,6 +3411,7 @@ TEST(Interval, Chrono_StopChronoAndCallIntervalUs_ReturnsZero) {
  * @brief 
  * 
  */
+#if (1000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Interval, Chrono_StartChronoAndCallIntervalUs_ReturnsInterval) {
 
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -2941,29 +3419,49 @@ TEST(Interval, Chrono_StartChronoAndCallIntervalUs_ReturnsInterval) {
   TickValue = 1 * UsToTick;
   TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalUs(&TestChrono));
   TickValue = 2 * UsToTick;
-  TEST_ASSERT_EQUAL_HEX(2, fChrono_IntervalUs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalUs(&TestChrono));
   TickValue = 20 * UsToTick;
-  TEST_ASSERT_EQUAL_HEX(20, fChrono_IntervalUs(&TestChrono));
-  TickValue = 0;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 1) * TickToUs, fChrono_IntervalUs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(18, fChrono_IntervalUs(&TestChrono));
 #else
   TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
   TickValue = CHRONO_TICK_TOP_VALUE - (1 * UsToTick);
   TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalUs(&TestChrono));
   TickValue = CHRONO_TICK_TOP_VALUE - (2 * UsToTick);
-  TEST_ASSERT_EQUAL_HEX(2, fChrono_IntervalUs(&TestChrono));
-  TickValue = 0;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 0) * TickToUs, fChrono_IntervalUs(&TestChrono));
-  TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 1) * TickToUs, fChrono_IntervalUs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalUs(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (20 * UsToTick);
+  TEST_ASSERT_EQUAL_HEX(18, fChrono_IntervalUs(&TestChrono));
 #endif
 
 }
+#else
+TEST(Interval, Chrono_StartChronoAndCallIntervalUs_ReturnsInterval) {
+
+#if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  TickValue = 1 * UsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  TickValue = 2 * UsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  TickValue = 20 * UsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+#else
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * UsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (2 * UsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (20 * UsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
  * 
  */
+#if (1000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Interval, Chrono_StartChronoEachTimeAndCallIntervalUs_ReturnsIntervalFromStart) {
 
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -2989,26 +3487,71 @@ TEST(Interval, Chrono_StartChronoEachTimeAndCallIntervalUs_ReturnsIntervalFromSt
 #endif
 
 }
+#else
+TEST(Interval, Chrono_StartChronoEachTimeAndCallIntervalUs_ReturnsIntervalFromStart) {
+
+#if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  TickValue = 1 * UsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  fChrono_Start(&TestChrono);
+  TickValue = 2 * UsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  fChrono_Start(&TestChrono);
+  TickValue = 3 * UsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+#else
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * UsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  fChrono_Start(&TestChrono);
+  TickValue = CHRONO_TICK_TOP_VALUE - (2 * UsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  fChrono_Start(&TestChrono);
+  TickValue = CHRONO_TICK_TOP_VALUE - (3 * UsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
  * 
  */
+#if (1000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Interval, Chrono_CallIntervalUsWhileTickIsOverflowed_ReturnsInterval) {
 
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 1 * UsToTick;
   TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalUs(&TestChrono));
   TickValue = 0;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 1) * TickToUs, fChrono_IntervalUs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE - (1 * UsToTick) + 1) * TickToUs, fChrono_IntervalUs(&TestChrono));
 #else
   TickValue = CHRONO_TICK_TOP_VALUE - (1 * UsToTick);
   TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalUs(&TestChrono));
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 1) * TickToUs, fChrono_IntervalUs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE - (1 * UsToTick) + 1) * TickToUs, fChrono_IntervalUs(&TestChrono));
 #endif
 
 }
+#else
+TEST(Interval, Chrono_CallIntervalUsWhileTickIsOverflowed_ReturnsInterval) {
+
+#if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TickValue = 1 * UsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+#else
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * UsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalUs(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
@@ -3046,6 +3589,7 @@ TEST(Interval, Chrono_StopChronoAndCallIntervalMs_ReturnsZero) {
  * @brief 
  * 
  */
+#if (1000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Interval, Chrono_StartChronoAndCallIntervalMs_ReturnsInterval) {
 
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -3053,29 +3597,49 @@ TEST(Interval, Chrono_StartChronoAndCallIntervalMs_ReturnsInterval) {
   TickValue = 1 * MsToTick;
   TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalMs(&TestChrono));
   TickValue = 2 * MsToTick;
-  TEST_ASSERT_EQUAL_HEX(2, fChrono_IntervalMs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalMs(&TestChrono));
   TickValue = 20 * MsToTick;
-  TEST_ASSERT_EQUAL_HEX(20, fChrono_IntervalMs(&TestChrono));
-  TickValue = 0;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 1) * TickToMs, fChrono_IntervalMs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(18, fChrono_IntervalMs(&TestChrono));
 #else
   TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
   TickValue = CHRONO_TICK_TOP_VALUE - (1 * MsToTick);
   TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalMs(&TestChrono));
   TickValue = CHRONO_TICK_TOP_VALUE - (2 * MsToTick);
-  TEST_ASSERT_EQUAL_HEX(2, fChrono_IntervalMs(&TestChrono));
-  TickValue = 0;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 0) * TickToMs, fChrono_IntervalMs(&TestChrono));
-  TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 1) * TickToMs, fChrono_IntervalMs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalMs(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (20 * MsToTick);
+  TEST_ASSERT_EQUAL_HEX(18, fChrono_IntervalMs(&TestChrono));
 #endif
 
 }
+#else
+TEST(Interval, Chrono_StartChronoAndCallIntervalMs_ReturnsInterval) {
+
+#if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  TickValue = 1 * MsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  TickValue = 2 * MsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  TickValue = 20 * MsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+#else
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * MsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (2 * MsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (20 * MsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
  * 
  */
+#if (1000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Interval, Chrono_StartChronoEachTimeAndCallIntervalMs_ReturnsIntervalFromStart) {
 
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -3101,26 +3665,71 @@ TEST(Interval, Chrono_StartChronoEachTimeAndCallIntervalMs_ReturnsIntervalFromSt
 #endif
 
 }
+#else
+TEST(Interval, Chrono_StartChronoEachTimeAndCallIntervalMs_ReturnsIntervalFromStart) {
+
+#if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  TickValue = 1 * MsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  fChrono_Start(&TestChrono);
+  TickValue = 2 * MsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  fChrono_Start(&TestChrono);
+  TickValue = 3 * MsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+#else
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * MsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  fChrono_Start(&TestChrono);
+  TickValue = CHRONO_TICK_TOP_VALUE - (2 * MsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  fChrono_Start(&TestChrono);
+  TickValue = CHRONO_TICK_TOP_VALUE - (3 * MsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
  * 
  */
+#if (1000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Interval, Chrono_CallIntervalMsWhileTickIsOverflowed_ReturnsInterval) {
 
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 1 * MsToTick;
   TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalMs(&TestChrono));
   TickValue = 0;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 1) * TickToMs, fChrono_IntervalMs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE - (1 * MsToTick) + 1) * TickToMs, fChrono_IntervalMs(&TestChrono));
 #else
   TickValue = CHRONO_TICK_TOP_VALUE - (1 * MsToTick);
   TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalMs(&TestChrono));
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 1) * TickToMs, fChrono_IntervalMs(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE - (1 * MsToTick) + 1) * TickToMs, fChrono_IntervalMs(&TestChrono));
 #endif
 
 }
+#else
+TEST(Interval, Chrono_CallIntervalMsWhileTickIsOverflowed_ReturnsInterval) {
+
+#if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TickValue = 1 * MsToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+#else
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * MsToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalMs(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
@@ -3158,6 +3767,7 @@ TEST(Interval, Chrono_StopChronoAndCallIntervalS_ReturnsZero) {
  * @brief 
  * 
  */
+#if (1000000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Interval, Chrono_StartChronoAndCallIntervalS_ReturnsInterval) {
 
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -3165,29 +3775,49 @@ TEST(Interval, Chrono_StartChronoAndCallIntervalS_ReturnsInterval) {
   TickValue = 1 * SToTick;
   TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalS(&TestChrono));
   TickValue = 2 * SToTick;
-  TEST_ASSERT_EQUAL_HEX(2, fChrono_IntervalS(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalS(&TestChrono));
   TickValue = 20 * SToTick;
-  TEST_ASSERT_EQUAL_HEX(20, fChrono_IntervalS(&TestChrono));
-  TickValue = 0;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 1) * TickToS, fChrono_IntervalS(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(18, fChrono_IntervalS(&TestChrono));
 #else
   TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
   TickValue = CHRONO_TICK_TOP_VALUE - (1 * SToTick);
   TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalS(&TestChrono));
   TickValue = CHRONO_TICK_TOP_VALUE - (2 * SToTick);
-  TEST_ASSERT_EQUAL_HEX(2, fChrono_IntervalS(&TestChrono));
-  TickValue = 0;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 0) * TickToS, fChrono_IntervalS(&TestChrono));
-  TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 1) * TickToS, fChrono_IntervalS(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalS(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (20 * SToTick);
+  TEST_ASSERT_EQUAL_HEX(18, fChrono_IntervalS(&TestChrono));
 #endif
 
 }
+#else
+TEST(Interval, Chrono_StartChronoAndCallIntervalS_ReturnsInterval) {
+
+#if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  TickValue = 1 * SToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  TickValue = 2 * SToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  TickValue = 20 * SToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+#else
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * SToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (2 * SToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (20 * SToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
  * 
  */
+#if (1000000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Interval, Chrono_StartChronoEachTimeAndCallIntervalS_ReturnsIntervalFromStart) {
 
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
@@ -3213,26 +3843,71 @@ TEST(Interval, Chrono_StartChronoEachTimeAndCallIntervalS_ReturnsIntervalFromSta
 #endif
 
 }
+#else
+TEST(Interval, Chrono_StartChronoEachTimeAndCallIntervalS_ReturnsIntervalFromStart) {
+
+#if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  TickValue = 1 * SToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  fChrono_Start(&TestChrono);
+  TickValue = 2 * SToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  fChrono_Start(&TestChrono);
+  TickValue = 3 * SToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+#else
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * SToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  fChrono_Start(&TestChrono);
+  TickValue = CHRONO_TICK_TOP_VALUE - (2 * SToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  fChrono_Start(&TestChrono);
+  TickValue = CHRONO_TICK_TOP_VALUE - (3 * SToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 
  * 
  */
+#if (1000000000 / CHRONO_TICK_TO_NANOSECOND_COEF != 0)
 TEST(Interval, Chrono_CallIntervalSWhileTickIsOverflowed_ReturnsInterval) {
 
 #if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
   TickValue = 1 * SToTick;
   TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalS(&TestChrono));
   TickValue = 0;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 1) * TickToS, fChrono_IntervalS(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE - (1 * SToTick) + 1) * TickToS, fChrono_IntervalS(&TestChrono));
 #else
   TickValue = CHRONO_TICK_TOP_VALUE - (1 * SToTick);
   TEST_ASSERT_EQUAL_HEX(1, fChrono_IntervalS(&TestChrono));
   TickValue = CHRONO_TICK_TOP_VALUE;
-  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE + 1) * TickToS, fChrono_IntervalS(&TestChrono));
+  TEST_ASSERT_EQUAL_HEX((CHRONO_TICK_TOP_VALUE - (1 * SToTick) + 1) * TickToS, fChrono_IntervalS(&TestChrono));
 #endif
 
 }
+#else
+TEST(Interval, Chrono_CallIntervalSWhileTickIsOverflowed_ReturnsInterval) {
+
+#if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+  TickValue = 1 * SToTick;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  TickValue = 0;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+#else
+  TickValue = CHRONO_TICK_TOP_VALUE - (1 * SToTick);
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+  TickValue = CHRONO_TICK_TOP_VALUE;
+  TEST_ASSERT_EQUAL_HEX(0, fChrono_IntervalS(&TestChrono));
+#endif
+
+}
+#endif
 
 /**
  * @brief 

@@ -205,32 +205,34 @@
  * @note Chronologically, "a" must be a time tick after "b", but the value of "a" could be less than "b" i.e., when tick overflows.
  * 
  */
-#if(CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
-# ifdef CHRONO_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
-#   define ELAPSED_(a, b) (tick_t)(a - b)
-# else
-#   define ELAPSED_(a, b) (((a) >= (b)) ? ((a) - (b)) : ((_chrono.TickTopValue) - ((b) - (a)) + 1))
-# endif //CHRONO_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
-#elif(CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
-# ifdef CHRONO_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
-#   define ELAPSED_(a, b) (tick_t)(b - a)
-# else
-#   define ELAPSED_(a, b) (((a) <= (b)) ? ((b) - (a)) : ((_chrono.TickTopValue) - ((a) - (b)) + 1))
-# endif //CHRONO_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
+#ifdef CHRONO_TICK_TYPE_MAX_VALUE_IS_EQUAL_TOP_VALUE
+# define ELAPSED_(a, b) (tick_t)(a - b)
 #else
-# error "CHRONO_TICK_COUNTERMODE should be either TICK_COUNTERMODE_UP or TICK_COUNTERMODE_DOWN in chrono_config.h file."
-#endif  //CHRONO_TICK_COUNTERMODE
+# define ELAPSED_(a, b) (((a) >= (b)) ? ((a) - (b)) : ((_chrono.TickTopValue) - ((b) - (a)) + 1))
+#endif
 
 /**
  * @brief Define GET_TICK_() macro for internal use.
  * 
  */
 #if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
-  #define GET_TICK_() (*_chrono.pTickValue)
+# if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+#   define GET_TICK_()  (*(_chrono.pTickValue))
+# elif (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
+#   define GET_TICK_()  (CHRONO_TICK_TOP_VALUE - (*(_chrono.pTickValue)))
+# else
+#   define GET_TICK_()  (tick_t)0
+# endif
 #elif (CHRONO_TICK_TYPE == TICK_TYPE_FUNCTION)
-  #define GET_TICK_() (_chrono.GetTickValue())
+# if (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_UP)
+#   define GET_TICK_()  (_chrono.GetTickValue())
+# elif (CHRONO_TICK_COUNTERMODE == TICK_COUNTERMODE_DOWN)
+#   define GET_TICK_()  (CHRONO_TICK_TOP_VALUE - (_chrono.GetTickValue()))
+# else
+#   define GET_TICK_()  (tick_t)0
+#endif
 #else
-  #define GET_TICK_() (tick_t)0;
+# define GET_TICK_()    (tick_t)0
 #endif
 
 /**
@@ -301,8 +303,6 @@ typedef struct {
 
 	tick_t ContinuousMakerLastTick;
 
-  uint8_t TickBitwidth;
-
 #if (CHRONO_TICK_TYPE == TICK_TYPE_VARIABLE)
 
 	volatile tick_t *pTickValue; // Pointer to an unsigned integer that hold current value of the tick.
@@ -334,8 +334,6 @@ static sChronoInternal _chrono = {
 };
 
 /* Private function prototypes -----------------------------------------------*/
-static uint8_t fGetBitwidth(tick_t value);
-
 /* Variables -----------------------------------------------------------------*/
 
 /*
@@ -386,7 +384,6 @@ chrono_res_t fChrono_Init(volatile tick_t *tickValue) {
   }
   
   _chrono.TickTopValue = CHRONO_TICK_TOP_VALUE;
-  _chrono.TickBitwidth = fGetBitwidth(_chrono.TickTopValue);
 
   _chrono.TickToNsCoef = CHRONO_TICK_TO_NANOSECOND_COEF;
   _chrono.pTickValue = tickValue;
@@ -581,9 +578,9 @@ uint64_t fChrono_GetContinuousTick(void) {
   tick_t currentTick = GET_TICK_();
 
   if(currentTick < _chrono.ContinuousMakerLastTick) {
-    return currentTick | (((_chrono.ContinuousTickUpperU32 + 1) << _chrono.TickBitwidth));
+    return (uint64_t)((_chrono.ContinuousTickUpperU32 + 1) * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) + currentTick;
   } else {
-    return currentTick | (((_chrono.ContinuousTickUpperU32 + 0) << _chrono.TickBitwidth));
+    return (uint64_t)((_chrono.ContinuousTickUpperU32 + 0) * ((uint64_t)CHRONO_TICK_TOP_VALUE + 1)) + currentTick;
   }
 }
 
@@ -1086,8 +1083,8 @@ void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout) {
  */
 void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
 
-  ASSERT_(_chrono.Init);  /* MISRA 2012 Rule 15.5 deviation */
-  ASSERT_NOT_NULL_(me);   /* MISRA 2012 Rule 15.5 deviation */
+  ASSERT_(_chrono.InitMs);  /* MISRA 2012 Rule 15.5 deviation */
+  ASSERT_NOT_NULL_(me);     /* MISRA 2012 Rule 15.5 deviation */
   
   me->_timeout = (tick_t)(timeout * (timeMs_t)_chrono.MsToTickCoef);
   me->_isTimeout = FALSE;
@@ -1242,23 +1239,5 @@ timeUs_t fChrono_IntervalUs(sChrono * const me) {
 ║                            ##### Private Functions #####                         ║
 ╚══════════════════════════════════════════════════════════════════════════════════╝
 */
-/**
- * 
- */
-static uint8_t fGetBitwidth(tick_t value) {
-
-  uint32_t bits = 0;
-  
-  if (value == 0) {
-    return 1;
-  }
-  
-  while (value > 0) {
-    bits++;
-    value >>= 1;
-  }
-  
-  return bits;
-}
 
 /************************ Copyright (c) 2024 FaraabinCo *****END OF FILE****/
