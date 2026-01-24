@@ -802,7 +802,7 @@ tick_t fChrono_TimeSpanTick(tick_t startTick, tick_t endTick) {
  * @note Call this function, and it will terminate when the elapsed time is greater than the input argument.
  * 
  * @param delayS Delay time length (seconds)
- *        Input must be less than (2^32 / (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *        Must be less than (2^32 / (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
  */
 void fChrono_DelayS(timeS_t delayS) {
 
@@ -820,7 +820,7 @@ void fChrono_DelayS(timeS_t delayS) {
  * @note Call this function, and it will terminate when the elapsed time is greater than the input argument.
  * 
  * @param delayMs Delay time length (milliseconds)
- *        Input must be less than (2^32 / (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *        Must be less than (2^32 / (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
  */
 void fChrono_DelayMs(timeMs_t delayMs) {
 
@@ -838,7 +838,7 @@ void fChrono_DelayMs(timeMs_t delayMs) {
  * @note Call this function, and it will terminate when the elapsed time is greater than the input argument.
  *
  * @param delayUs Delay time length (microseconds).
- *        Input must be less than (2^32 / (1000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *        Must be less than (2^32 / (1000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
  */
 void fChrono_DelayUs(timeUs_t delayUs) {
 
@@ -1066,7 +1066,7 @@ timeUs_t fChrono_LeftUs(sChrono * const me) {
  * 
  * @param me Pointer to the chrono object
  * @param timeout Time length until the chrono object times out (seconds)
- *        Input must be less than (2^32 / (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *        Must be less than (2^32 / (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
  */
 void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout) {
 
@@ -1084,7 +1084,7 @@ void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout) {
  * 
  * @param me Pointer to the chrono object
  * @param timeout Time length until the chrono object times out (milliseconds)
- *        Input must be less than (2^32 / (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *        Must be less than (2^32 / (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
  */
 void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
 
@@ -1102,7 +1102,7 @@ void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
  * 
  * @param me Pointer to the chrono object
  * @param timeout Time length until the chrono object times out (microseconds)
- *        Input must be less than (2^32 / (1000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *        Must be less than (2^32 / (1000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
  */
 void fChrono_StartTimeoutUs(sChrono * const me, timeUs_t timeout) {
 

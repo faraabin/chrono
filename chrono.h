@@ -75,19 +75,19 @@ typedef uint8_t chrono_res_t;
  * @brief Returns current tick value as microseconds.
  *       
  */
-#define tickUs_()		(((uint64_t)tick_() * CHRONO_TICK_TO_NANOSECOND_COEF) / 1000)
+#define tickUs_()		(((uint64_t)tick_() * (uint64_t)CHRONO_TICK_TO_NANOSECOND_COEF) / (uint64_t)1000)
 
 /**
  * @brief Returns current tick value as microseconds.
  *       
  */
-#define tickMs_()		(((uint64_t)tick_() * CHRONO_TICK_TO_NANOSECOND_COEF) / 1000000)
+#define tickMs_()		(((uint64_t)tick_() * (uint64_t)CHRONO_TICK_TO_NANOSECOND_COEF) / (uint64_t)1000000)
 
 /**
  * @brief Returns current tick value as microseconds.
  *       
  */
-#define tickS_()		(((uint64_t)tick_() * CHRONO_TICK_TO_NANOSECOND_COEF) / 1000000000)
+#define tickS_()		(((uint64_t)tick_() * (uint64_t)CHRONO_TICK_TO_NANOSECOND_COEF) / (uint64_t)1000000000)
 
 /**
  * @brief Returns the number of microseconds passed since the initialization of the chrono module.
@@ -341,9 +341,9 @@ tick_t fChrono_TimeSpanTick(tick_t startTick, tick_t endTick);
  *  @brief These functions generate delay.
  *  @{
  */
-void fChrono_DelayS(timeS_t delayS);      /* (Input must be less than 2^32 / (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF)) */
-void fChrono_DelayMs(timeMs_t delayMs);   /* (Input must be less than 2^32 / (1000000U    / CHRONO_TICK_TO_NANOSECOND_COEF)) */
-void fChrono_DelayUs(timeUs_t delayUs);   /* (Input must be less than 2^32 / (1000U       / CHRONO_TICK_TO_NANOSECOND_COEF)) */
+void fChrono_DelayS(timeS_t delayS);      /* Input must be less than (2^32 / (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF)) */
+void fChrono_DelayMs(timeMs_t delayMs);   /* Input must be less than (2^32 / (1000000U    / CHRONO_TICK_TO_NANOSECOND_COEF)) */
+void fChrono_DelayUs(timeUs_t delayUs);   /* Input must be less than (2^32 / (1000U       / CHRONO_TICK_TO_NANOSECOND_COEF)) */
 
 /** @} */ //End of DELAY
 
@@ -390,9 +390,9 @@ timeUs_t fChrono_LeftUs(sChrono * const me);
  *  @brief These functions are used for measuring timeout.
  *  @{
  */
-void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout);     /* (Input must be less than 2^32 / (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF)) */
-void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout);   /* (Input must be less than 2^32 / (1000000U    / CHRONO_TICK_TO_NANOSECOND_COEF)) */
-void fChrono_StartTimeoutUs(sChrono * const me, timeUs_t timeout);   /* (Input must be less than 2^32 / (1000U       / CHRONO_TICK_TO_NANOSECOND_COEF)) */
+void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout);     /* Input must be less than (2^32 / (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF)) */
+void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout);   /* Input must be less than (2^32 / (1000000U    / CHRONO_TICK_TO_NANOSECOND_COEF)) */
+void fChrono_StartTimeoutUs(sChrono * const me, timeUs_t timeout);   /* Input must be less than (2^32 / (1000U       / CHRONO_TICK_TO_NANOSECOND_COEF)) */
 bool_t fChrono_IsTimeout(sChrono * const me);
 
 /** @} */ //End of TIMEOUT
