@@ -803,7 +803,7 @@ tick_t fChrono_TimeSpanTick(tick_t startTick, tick_t endTick) {
  * 
  * @param delayS Delay time length (seconds)
  */
-void fChrono_DelayS(timeS_t delayS) {
+void fChrono_DelayS(timeS_t delayS) { /* Input must be less than 2^32 / "_chrono.SecToTickCoef" */
 
   ASSERT_(_chrono.InitSec); /* MISRA 2012 Rule 15.5 deviation */
   
@@ -820,7 +820,7 @@ void fChrono_DelayS(timeS_t delayS) {
  * 
  * @param delayMs Delay time length (milliseconds)
  */
-void fChrono_DelayMs(timeMs_t delayMs) {
+void fChrono_DelayMs(timeMs_t delayMs) { /* Input must be less than 2^32 / "_chrono.MsToTickCoef" */
 
   ASSERT_(_chrono.InitMs); /* MISRA 2012 Rule 15.5 deviation */
   
@@ -837,7 +837,7 @@ void fChrono_DelayMs(timeMs_t delayMs) {
  * 
  * @param delayMs Delay time length (microseconds)
  */
-void fChrono_DelayUs(timeUs_t delayUs) {
+void fChrono_DelayUs(timeUs_t delayUs) { /* Input must be less than 2^32 / "_chrono.UsToTickCoef" */
 
   ASSERT_(_chrono.InitUs); /* MISRA 2012 Rule 15.5 deviation */
   
