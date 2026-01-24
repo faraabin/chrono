@@ -341,9 +341,9 @@ tick_t fChrono_TimeSpanTick(tick_t startTick, tick_t endTick);
  *  @brief These functions generate delay.
  *  @{
  */
-void fChrono_DelayS(timeS_t delayS);
-void fChrono_DelayMs(timeMs_t delayMs);
-void fChrono_DelayUs(timeUs_t delayUs);
+void fChrono_DelayS(timeS_t delayS);      /* (Input must be less than 2^32 / (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF)) */
+void fChrono_DelayMs(timeMs_t delayMs);   /* (Input must be less than 2^32 / (1000000U    / CHRONO_TICK_TO_NANOSECOND_COEF)) */
+void fChrono_DelayUs(timeUs_t delayUs);   /* (Input must be less than 2^32 / (1000U       / CHRONO_TICK_TO_NANOSECOND_COEF)) */
 
 /** @} */ //End of DELAY
 
@@ -390,9 +390,9 @@ timeUs_t fChrono_LeftUs(sChrono * const me);
  *  @brief These functions are used for measuring timeout.
  *  @{
  */
-void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout);
-void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout);
-void fChrono_StartTimeoutUs(sChrono * const me, timeUs_t timeout);
+void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout);     /* (Input must be less than 2^32 / (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF)) */
+void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout);   /* (Input must be less than 2^32 / (1000000U    / CHRONO_TICK_TO_NANOSECOND_COEF)) */
+void fChrono_StartTimeoutUs(sChrono * const me, timeUs_t timeout);   /* (Input must be less than 2^32 / (1000U       / CHRONO_TICK_TO_NANOSECOND_COEF)) */
 bool_t fChrono_IsTimeout(sChrono * const me);
 
 /** @} */ //End of TIMEOUT
