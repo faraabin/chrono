@@ -802,7 +802,12 @@ tick_t fChrono_TimeSpanTick(tick_t startTick, tick_t endTick) {
  * @note Call this function, and it will terminate when the elapsed time is greater than the input argument.
  * 
  * @param delayS Delay time length (seconds)
- *        Must be less than (2^32 / (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ * @note `delayS` value is subject to the range of the underlying time type `timeS_t`.
+ *       Do not pass values larger than the maximum representable delay for the configured type.
+ *       For example:
+ *       - If `timeS_t` is `uint16_t`, the maximum delay in seconds is (UINT16_MAX_VALUE / (1000000000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *       - If `timeS_t` is `uint32_t`, the maximum delay in seconds is (UINT32_MAX_VALUE / (1000000000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *       - If `timeS_t` is `uint64_t`, the maximum delay in seconds is (UINT64_MAX_VALUE / (1000000000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
  */
 void fChrono_DelayS(timeS_t delayS) {
 
@@ -820,7 +825,12 @@ void fChrono_DelayS(timeS_t delayS) {
  * @note Call this function, and it will terminate when the elapsed time is greater than the input argument.
  * 
  * @param delayMs Delay time length (milliseconds)
- *        Must be less than (2^32 / (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ * @note `delayMs` value is subject to the range of the underlying time type `timeMs_t`.
+ *       Do not pass values larger than the maximum representable delay for the configured type.
+ *       For example:
+ *       - If `timeMs_t` is `uint16_t`, the maximum delay in milliseconds is (UINT16_MAX_VALUE / (1000000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *       - If `timeMs_t` is `uint32_t`, the maximum delay in milliseconds is (UINT32_MAX_VALUE / (1000000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *       - If `timeMs_t` is `uint64_t`, the maximum delay in milliseconds is (UINT64_MAX_VALUE / (1000000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
  */
 void fChrono_DelayMs(timeMs_t delayMs) {
 
@@ -838,7 +848,12 @@ void fChrono_DelayMs(timeMs_t delayMs) {
  * @note Call this function, and it will terminate when the elapsed time is greater than the input argument.
  *
  * @param delayUs Delay time length (microseconds).
- *        Must be less than (2^32 / (1000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ * @note `delayUs` value is subject to the range of the underlying time type `timeUs_t`.
+ *       Do not pass values larger than the maximum representable delay for the configured type.
+ *       For example:
+ *       - If `timeUs_t` is `uint16_t`, the maximum delay in microseconds is (UINT16_MAX_VALUE / (1000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *       - If `timeUs_t` is `uint32_t`, the maximum delay in microseconds is (UINT32_MAX_VALUE / (1000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *       - If `timeUs_t` is `uint64_t`, the maximum delay in microseconds is (UINT64_MAX_VALUE / (1000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
  */
 void fChrono_DelayUs(timeUs_t delayUs) {
 
@@ -1066,7 +1081,12 @@ timeUs_t fChrono_LeftUs(sChrono * const me) {
  * 
  * @param me Pointer to the chrono object
  * @param timeout Time length until the chrono object times out (seconds)
- *        Must be less than (2^32 / (1000000000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ * @note `timeout` value is subject to the range of the underlying time type `timeS_t`.
+ *       Do not pass values larger than the maximum representable timeout for the configured type.
+ *       For example:
+ *       - If `timeS_t` is `uint16_t`, the maximum timeout in seconds is (UINT16_MAX_VALUE / (1000000000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *       - If `timeS_t` is `uint32_t`, the maximum timeout in seconds is (UINT32_MAX_VALUE / (1000000000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *       - If `timeS_t` is `uint64_t`, the maximum timeout in seconds is (UINT64_MAX_VALUE / (1000000000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
  */
 void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout) {
 
@@ -1084,7 +1104,12 @@ void fChrono_StartTimeoutS(sChrono * const me, timeS_t timeout) {
  * 
  * @param me Pointer to the chrono object
  * @param timeout Time length until the chrono object times out (milliseconds)
- *        Must be less than (2^32 / (1000000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ * @note `timeout` value is subject to the range of the underlying time type `timeMs_t`.
+ *       Do not pass values larger than the maximum representable timeout for the configured type.
+ *       For example:
+ *       - If `timeMs_t` is `uint16_t`, the maximum timeout in milliseconds is (UINT16_MAX_VALUE / (1000000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *       - If `timeMs_t` is `uint32_t`, the maximum timeout in milliseconds is (UINT32_MAX_VALUE / (1000000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *       - If `timeMs_t` is `uint64_t`, the maximum timeout in milliseconds is (UINT64_MAX_VALUE / (1000000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
  */
 void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
 
@@ -1102,7 +1127,12 @@ void fChrono_StartTimeoutMs(sChrono * const me, timeMs_t timeout) {
  * 
  * @param me Pointer to the chrono object
  * @param timeout Time length until the chrono object times out (microseconds)
- *        Must be less than (2^32 / (1000U / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ * @note `timeout` value is subject to the range of the underlying time type `timeUs_t`.
+ *       Do not pass values larger than the maximum representable timeout for the configured type.
+ *       For example:
+ *       - If `timeUs_t` is `uint16_t`, the maximum timeout in microseconds is (UINT16_MAX_VALUE / (1000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *       - If `timeUs_t` is `uint32_t`, the maximum timeout in microseconds is (UINT32_MAX_VALUE / (1000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
+ *       - If `timeUs_t` is `uint64_t`, the maximum timeout in microseconds is (UINT64_MAX_VALUE / (1000UL / CHRONO_TICK_TO_NANOSECOND_COEF)).
  */
 void fChrono_StartTimeoutUs(sChrono * const me, timeUs_t timeout) {
 
